@@ -59,13 +59,13 @@ With this setup, I can now do the following:
 <pre>
   @alarm = Alarm.create(:priority => :medium)
   
-  @alarm.priority _returns_ _AlarmPriorityMedium_
+  @alarm.priority => AlarmPriorityMedium
   
-  @alarm.email? _returns_ _false_
+  @alarm.email? => false
   
   @alarm.update_attribute(:priority, :high)
   
-  @alarm.email? _returns_ _true_
+  @alarm.email? => true
 </pre>
 
 h2. Notes
