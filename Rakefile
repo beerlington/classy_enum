@@ -5,9 +5,9 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "classy_enum"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "pete@lette.us"
+    gem.summary = %Q{A class based enumerator utility for Ruby on Rails}
+    gem.description = %Q{A utility that adds class based enum functionaltiy to ActiveRecord attributes}
+    gem.email = "github@lette.us"
     gem.homepage = "http://github.com/beerlington/classy_enum"
     gem.authors = ["Peter Brown"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
