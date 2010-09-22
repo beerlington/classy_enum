@@ -1,7 +1,0 @@
-= classy_enum
-
-More Description love in the works
-
-== Copyright
-
-Copyright (c) 2010 Peter Brown. See LICENSE for details.
