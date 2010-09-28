@@ -61,7 +61,7 @@ module ClassyEnum
       
       other::OPTION_HASH[option] = other::OPTION_HASH[option.to_s.downcase] = instance
       
-      ClassyEnum.const_set(option.to_s.upcase, instance)
+      ClassyEnum.const_set(option.to_s.upcase, instance) unless ClassyEnum.const_defined?(option.to_s.upcase)
     end
 
   end

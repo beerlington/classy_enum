@@ -4,7 +4,7 @@ ClassyEnum adds class-based enumerator functionality to your ActiveRecord model'
 
 h2. Installation
 
-ClassyEnum has only been testing with Rails 2.3.8, but should work with any version of Rails 2.3.x. The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum
+ClassyEnum has only been tested with Rails 2.3.8, but should work with any version of Rails 2.3.x. The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum
 
 It can be installed with:
 
@@ -14,11 +14,11 @@ It can be installed with:
 
 h2. Example Usage
 
-The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called @Alarm@ with an attribute called @priority@. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. Using the OPTIONS constant, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. 
+The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called @Alarm@ with an attribute called @priority@. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
+
+Using the OPTIONS constant, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum value has a method called @email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
 
 *It is important that you include ClassyEnum AFTER declaring your OPTIONS and Default methods because they are used when creating the enum classes*
-
-In my example, each enum value has a method called @email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
 
 Create a file in app/models called alarm_priority.rb 
 
@@ -42,7 +42,9 @@ Create a file in app/models called alarm_priority.rb
   end
 </pre>
 
-Then in Alarm class, add a line that calls @classy_enum_attr@. The first argument is required, and is the name of the module defined above. The second argument is optional and specifies which attribute on Alarm will be used as an enumerable. In this case, I am using the module AlarmPriority, but the name of my attribute is priority. By default, it will use the name of module as the attribute name. If I wanted to do @alarm.alarm_priority@, I would not have included the second argument.
+Then in my ActiveRecord model, Alarm, I've added a line that calls @classy_enum_attr@. The first argument is required, and is the name of the module defined above. The second argument is optional and specifies which Alarm attribute will be used as an enumerable. 
+
+In this case, I am using the module AlarmPriority, but the name of my attribute is priority. By default, it will use the name of module as the attribute name. If I wanted to do @alarm.alarm_priority@, I would not have included the second argument.
 
 <pre>
   class Alarm < ActiveRecord::Base
@@ -57,13 +59,13 @@ With this setup, I can now do the following:
 <pre>
   @alarm = Alarm.create(:priority => :medium)
   
-  @alarm.priority _returns AlarmPriorityMedium_
+  @alarm.priority => AlarmPriorityMedium
   
-  @alarm.email? _returns false_
+  @alarm.email? => false
   
   @alarm.update_attribute(:priority, :high)
   
-  @alarm.email? _return true_
+  @alarm.email? => true
 </pre>
 
 h2. Notes
