@@ -16,14 +16,46 @@ h2. Example Usage
 
 The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called @Alarm@ with an attribute called @priority@. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
 
+The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
+
+@script/generate classy_enum AlarmPriority low medium high@
+
+A new file will be created at app/enums/alarm_priority.rb that will look like:
+
+<pre>
+  module AlarmPriority
+
+    OPTIONS = [:low, :medium, :high]
+
+    module Defaults
+   
+    end
+
+    include ClassyEnum
+  end
+
+  class AlarmPriorityLow
+
+  end
+
+  class AlarmPriorityMedium
+
+  end
+
+  class AlarmPriorityHigh
+
+  end
+</pre>
+
+That is the default setup, but can be changed to fit your needs, like so...
+
 Using the OPTIONS constant, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum value has a method called @email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
 
 *It is important that you include ClassyEnum AFTER declaring your OPTIONS and Default methods because they are used when creating the enum classes*
 
-Create a file in app/models called alarm_priority.rb 
-
 <pre>
   module AlarmPriority
+
     OPTIONS = [:low, :medium, :high]
 
     module Defaults
