@@ -53,9 +53,11 @@ module ClassyEnum
     other.const_set("OPTION_HASH", Hash.new)
 
     other::OPTIONS.each do |option|
-      klass = Class.new(ClassyEnumValue) {
-        include other::Defaults if other.const_defined?("Defaults")
-      }
+
+      klass = Class.new(ClassyEnumValue) do
+        include other::InstanceMethods if other.const_defined?("InstanceMethods")
+        extend other::ClassMethods if other.const_defined?("ClassMethods")
+      end
 
       Object.const_set("#{other}#{option.to_s.camelize}", klass)
     

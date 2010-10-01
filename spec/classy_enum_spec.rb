@@ -3,8 +3,14 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 module TestEnum 
   OPTIONS = [:one, :two, :three]
   
-  module Defaults
-    def do_something?
+  module InstanceMethods
+    def test_instance_method?
+      false
+    end
+  end
+
+  module ClassMethods
+    def test_class_method?
       false
     end
   end
@@ -13,7 +19,11 @@ module TestEnum
 end
 
 class TestEnumTwo
-  def do_something?
+  def self.test_class_method?
+    true
+  end
+
+  def test_instance_method?
     true
   end
 end
@@ -73,8 +83,12 @@ describe "An ClassyEnumValue" do
     @enum.name.should == "One"
   end
   
-  it "should inherit the Default methods" do
-    @enum.do_something?.should be_false
+  it "should inherit the default instance methods" do
+    @enum.test_instance_method?.should be_false
+  end
+
+  it "should inherit the default class methods" do
+    TestEnumOne.test_class_method?.should be_false
   end
   
   it "should create the same instance with a string or symbol" do
@@ -87,7 +101,11 @@ end
 describe "An ClassyEnumValue" do
   before(:each) { @enum = TestEnum.new(:two) }
   
-  it "should override the Default methods" do
-    @enum.do_something?.should be_true
+  it "should override the default instance methods" do
+    @enum.test_instance_method?.should be_true
+  end
+
+  it "should override the default class methods" do
+    TestEnumTwo.test_class_method?.should be_true
   end
 end
