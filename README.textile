@@ -24,26 +24,24 @@ A new file will be created at app/enums/alarm_priority.rb that will look like:
 
 <pre>
   module AlarmPriority
-
     OPTIONS = [:low, :medium, :high]
 
-    module Defaults
-   
+    module InstanceMethods
+    end
+
+    module ClassMethods
     end
 
     include ClassyEnum
   end
 
   class AlarmPriorityLow
-
   end
 
   class AlarmPriorityMedium
-
   end
 
   class AlarmPriorityHigh
-
   end
 </pre>
 
@@ -55,10 +53,9 @@ Using the OPTIONS constant, I have defined three priority levels: low, medium, a
 
 <pre>
   module AlarmPriority
-
     OPTIONS = [:low, :medium, :high]
 
-    module Defaults
+    module InstanceMethods
       def email?
         false
       end
