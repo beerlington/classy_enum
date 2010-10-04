@@ -1,29 +1,20 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
-
-ActiveRecord::Schema.define(:version => 1) do
-  create_table :dogs, :force => true do |t|
-    t.string :breed
-  end
-
-  create_table :things, :force => true do |t|
-    t.string :dog_breed
-  end
-end
-
-module Breed
-  OPTIONS = [:golden_retriever, :snoop]
-  
-  module Defaults
-    
-  end
-  
-  include ClassyEnum
-end
-
 class Dog < ActiveRecord::Base
   classy_enum_attr :breed
+end
+
+describe "A Dog Collection" do
+  before(:each) do
+    dog1 = Dog.new(:breed => :golden_retriever)
+    dog2 = Dog.new(:breed => :snoop)
+
+    @dogs = [dog1, dog2]
+  end
+
+  it "should sort by breed" do
+    @dogs.sort_by(&:breed).should == @dogs
+  end
 end
 
 describe "A Dog" do
@@ -32,6 +23,10 @@ describe "A Dog" do
   
   it "should have an enumerable breed" do
     @dog.breed.class.should == BreedGoldenRetriever
+  end
+
+  it "should have a base class of Breed" do
+    @dog.breed.base_class.should == Breed
   end
   
 end
@@ -45,5 +40,9 @@ describe "A Thing" do
 
   it "should have an enumerable dog breed as breed" do
     @thing.dog_breed.class.should == BreedSnoop
+  end
+
+  it "should have a base class of Breed" do
+    @thing.dog_breed.base_class.should == Breed
   end
 end

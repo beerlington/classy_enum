@@ -79,6 +79,14 @@ end
 describe "An ClassyEnumValue" do
   before(:each) { @enum = TestEnum.new(:one) }
   
+  it "should convert to a string" do
+    @enum.to_s.should == "one"
+  end
+  
+  it "should convert to a symbol" do
+    @enum.to_sym.should == :one
+  end
+
   it "should have a name" do
     @enum.name.should == "One"
   end

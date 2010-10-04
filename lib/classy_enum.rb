@@ -1,12 +1,15 @@
 require "classy_enum/classy_enum_attributes"
+require 'classy_enum/classy_enum_helper'
 
 class ClassyEnumValue < Object 
- 
-  attr_reader :to_s, :index
 
-  def initialize(option, index)
+  attr_reader :to_s, :to_sym, :index, :base_class
+
+  def initialize(base_class, option, index)
     @to_s = option.to_s.downcase
+    @to_sym = @to_s.to_sym
     @index = index + 1
+    @base_class = base_class
   end
   
   def name
@@ -61,7 +64,7 @@ module ClassyEnum
 
       Object.const_set("#{other}#{option.to_s.camelize}", klass)
     
-      instance = klass.new(option, other::OPTIONS.index(option))
+      instance = klass.new(other, option, other::OPTIONS.index(option))
       
       other::OPTION_HASH[option] = other::OPTION_HASH[option.to_s.downcase] = instance
       
