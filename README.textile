@@ -99,6 +99,16 @@ With this setup, I can now do the following:
 @alarm.email? => true
 </pre>
 
+h2. Formtastic Support
+
+To add ClassyEnum support to Formtastic, add the following to your formtastic.rb initializer (config/initializers/formtastic.rb):
+
+<pre>
+Formtastic::SemanticFormHelper.builder = ClassyEnumHelper::SemanticFormBuilder
+</pre>
+
+Then in your Formtastic view forms, use this syntax: @<%= f.input :priority, :as => :enum_select %>@
+
 h2. Notes
 
 An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all@ is automatically added to your model when you use @classy_enum_attr@. 
