@@ -6,6 +6,8 @@ require 'spec'
 
 require 'active_record'
 require 'action_view'
+require 'action_pack'
+require 'action_controller'
 require 'formtastic'
 require 'classy_enum'
 
@@ -26,3 +28,38 @@ module Breed
   
   include ClassyEnum
 end
+
+class Dog < ActiveRecord::Base
+  classy_enum_attr :breed
+end
+
+module FormtasticSpecHelper
+  include ActionPack
+  include ActionController::RecordIdentifier
+  include ActionView::Helpers::FormHelper
+  include ActionView::Helpers::FormTagHelper
+  include ActionView::Helpers::FormOptionsHelper
+  include ActionView::Helpers::UrlHelper
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::DateHelper
+  include ActionView::Helpers::CaptureHelper
+  include ActionView::Helpers::AssetTagHelper
+  include ActiveSupport
+  include ActionController::PolymorphicRoutes if defined?(ActionController::PolymorphicRoutes)
+  include Formtastic::SemanticFormHelper
+
+  def self.included(base)
+    base.class_eval do
+
+      attr_accessor :output_buffer
+
+      def protect_against_forgery?
+        false
+      end
+
+    end
+  end
+  
+end
+

@@ -1,9 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class Dog < ActiveRecord::Base
-  classy_enum_attr :breed
-end
-
 describe "A Dog Collection" do
   before(:each) do
     dog1 = Dog.new(:breed => :golden_retriever)
