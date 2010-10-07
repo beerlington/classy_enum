@@ -4,9 +4,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'rubygems'
 require 'spec'
 
-require 'active_record'
-require 'action_view'
-require 'action_pack'
+require 'activerecord'
+require 'actionpack'
 require 'action_controller'
 require 'formtastic'
 require 'classy_enum'
@@ -35,6 +34,7 @@ end
 
 module FormtasticSpecHelper
   include ActionPack
+  include ActionView::Context if defined?(ActionView::Context)
   include ActionController::RecordIdentifier
   include ActionView::Helpers::FormHelper
   include ActionView::Helpers::FormTagHelper
@@ -46,6 +46,8 @@ module FormtasticSpecHelper
   include ActionView::Helpers::CaptureHelper
   include ActionView::Helpers::AssetTagHelper
   include ActiveSupport
+  include ActionView::Helpers::ActiveRecordHelper if defined?(ActionView::Helpers::ActiveRecordHelper)
+  include ActionView::Helpers::ActiveModelHelper if defined?(ActionView::Helpers::ActiveModelHelper)
   include ActionController::PolymorphicRoutes if defined?(ActionController::PolymorphicRoutes)
   include Formtastic::SemanticFormHelper
 
