@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{classy_enum}
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Brown"]
-  s.date = %q{2010-10-04}
+  s.date = %q{2010-10-06}
   s.description = %q{A utility that adds class based enum functionaltiy to ActiveRecord attributes}
   s.email = %q{github@lette.us}
   s.extra_rdoc_files = [
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
      "lib/classy_enum/classy_enum_attributes.rb",
      "lib/classy_enum/classy_enum_helper.rb",
      "spec/classy_enum_attributes_spec.rb",
+     "spec/classy_enum_helper_spec.rb",
      "spec/classy_enum_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
@@ -42,6 +43,7 @@ Gem::Specification.new do |s|
   s.summary = %q{A class based enumerator utility for Ruby on Rails}
   s.test_files = [
     "spec/classy_enum_attributes_spec.rb",
+     "spec/classy_enum_helper_spec.rb",
      "spec/classy_enum_spec.rb",
      "spec/spec_helper.rb"
   ]
