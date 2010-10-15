@@ -1,4 +1,4 @@
-module ClassyEnumHelper
+module ClassyEnumFormtasticInput
   class SemanticFormBuilder < Formtastic::SemanticFormBuilder
     def enum_select_input(method, options)
       enum_class = object.send(method)
