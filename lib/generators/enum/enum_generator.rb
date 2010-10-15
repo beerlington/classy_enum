@@ -1,4 +1,4 @@
-class EnumGenerator < Rails::Generators::NamedBase
+class ClassyEnumGenerator < Rails::Generators::NamedBase
   desc "Generate a ClassyEnum definition in app/enums/"
 
   argument :name, :type => :string, :required => true, :banner => 'EnumName'
@@ -6,10 +6,6 @@ class EnumGenerator < Rails::Generators::NamedBase
 
   source_root File.expand_path("../templates", __FILE__)
 
-  #def self.banner
-  #  "rails generate enum NewEnum value1 value2 value3"
-  #end
-  
   def copy_files
     empty_directory 'app/enums'
     template "enum.erb", "app/enums/#{file_name}.rb"
