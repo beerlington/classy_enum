@@ -3,7 +3,7 @@ require "spec/spec_helper"
 describe 'using enum_select input' do 
   include FormtasticSpecHelper
   
-  Formtastic::SemanticFormHelper.builder = ClassyEnumHelper::SemanticFormBuilder
+  Formtastic::SemanticFormHelper.builder = ClassyEnumFormtasticInput::SemanticFormBuilder
 
   context "when building a form with a classy_enum select" do
     before(:each) do
