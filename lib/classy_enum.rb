@@ -1,5 +1,5 @@
 require "classy_enum/classy_enum_attributes"
-require 'classy_enum/classy_enum_helper'
+require 'classy_enum/classy_enum_formtastic_input' if Object.const_defined? 'Formtastic'
 
 class ClassyEnumValue < Object 
 
