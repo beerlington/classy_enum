@@ -11,7 +11,7 @@ begin
     gem.homepage = "http://github.com/beerlington/classy_enum"
     gem.authors = ["Peter Brown"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_dependency "activerecord", "~> 2.3"
+    gem.add_dependency "activerecord", ">= 2.3"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
