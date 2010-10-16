@@ -13,12 +13,12 @@ module ClassyEnumAttributes
 
       # Define getter method
       define_method method do
-        klass.new(super)
+        klass.new(super())
       end
 
       # Define setter method
       define_method "#{method}=" do |value|
-        super value.to_s
+        super(value.to_s)
       end
 
     end
