@@ -2,9 +2,15 @@ h1. classy_enum
 
 ClassyEnum adds class-based enumerator functionality to your ActiveRecord model's attributes.
 
+h2. Requirements
+
+*Rails:* ClassyEnum should work with any version of Rails 2.3.x. Rails 3 support is in the works, and should be ready soon.
+
+*Ruby:* ClassyEnum has been tested with Ruby 1.8.7 and 1.9.2.
+
 h2. Installation
 
-ClassyEnum has only been tested with Rails 2.3.8, but should work with any version of Rails 2.3.x. The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum
+The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum
 
 It can be installed with:
 
