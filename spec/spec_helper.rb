@@ -33,22 +33,11 @@ class Dog < ActiveRecord::Base
 end
 
 module FormtasticSpecHelper
-  include ActionPack
   include ActionView::Context if defined?(ActionView::Context)
   include ActionController::RecordIdentifier
   include ActionView::Helpers::FormHelper
   include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::FormOptionsHelper
-  include ActionView::Helpers::UrlHelper
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::TextHelper
-  include ActionView::Helpers::DateHelper
-  include ActionView::Helpers::CaptureHelper
-  include ActionView::Helpers::AssetTagHelper
-  include ActiveSupport
-  include ActionView::Helpers::ActiveRecordHelper if defined?(ActionView::Helpers::ActiveRecordHelper)
-  include ActionView::Helpers::ActiveModelHelper if defined?(ActionView::Helpers::ActiveModelHelper)
-  include ActionController::PolymorphicRoutes if defined?(ActionController::PolymorphicRoutes)
   include Formtastic::SemanticFormHelper
 
   def self.included(base)
@@ -63,5 +52,10 @@ module FormtasticSpecHelper
     end
   end
   
+end
+
+module ActionView
+  class OutputBuffer < ActiveSupport::SafeBuffer
+  end
 end
 
