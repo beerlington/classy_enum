@@ -24,7 +24,7 @@ end
 
 module ClassyEnum
     
-  module ClassMethods
+  module SuperClassMethods
       
     def new(option)
       self::OPTION_HASH[option] || TypeError.new("Valid #{self} options are #{self.valid_options}")
@@ -51,7 +51,7 @@ module ClassyEnum
   end
   
   def self.included(other)
-    other.extend ClassMethods
+    other.extend SuperClassMethods
     
     other.const_set("OPTION_HASH", Hash.new)
 
