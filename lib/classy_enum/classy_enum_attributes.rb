@@ -9,6 +9,9 @@ module ClassyEnumAttributes
     # Add ActiveRecord validation to ensure it won't be saved unless it's an option
     self.send(:validates_inclusion_of, method, :in => klass.all)
 
+    # Preload the model to prevent validation from failing before a real object is instantiated
+    self.new(method => nil)
+
     self.instance_eval do
 
       # Define getter method
