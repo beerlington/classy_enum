@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{classy_enum}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Brown"]
-  s.date = %q{2010-10-15}
+  s.date = %q{2010-10-19}
   s.description = %q{A utility that adds class based enum functionaltiy to ActiveRecord attributes}
   s.email = %q{github@lette.us}
   s.extra_rdoc_files = [
@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     "Gemfile",
+     "Gemfile.lock",
      "LICENSE",
      "README.textile",
      "Rakefile",
@@ -30,12 +32,11 @@ Gem::Specification.new do |s|
      "lib/classy_enum.rb",
      "lib/classy_enum/classy_enum_attributes.rb",
      "lib/classy_enum/classy_enum_formtastic_input.rb",
-     "lib/generators/enum/enum_generator.rb",
-     "lib/generators/enum/templates/enum.erb",
-     "spec/class_enum_formtastic_input_spec.rb",
+     "lib/generators/classy_enum/classy_enum_generator.rb",
+     "lib/generators/classy_enum/templates/enum.erb",
      "spec/classy_enum_attributes_spec.rb",
+     "spec/classy_enum_formtastic_input_spec.rb",
      "spec/classy_enum_spec.rb",
-     "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/beerlington/classy_enum}
@@ -44,8 +45,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{A class based enumerator utility for Ruby on Rails}
   s.test_files = [
-    "spec/class_enum_formtastic_input_spec.rb",
-     "spec/classy_enum_attributes_spec.rb",
+    "spec/classy_enum_attributes_spec.rb",
+     "spec/classy_enum_formtastic_input_spec.rb",
      "spec/classy_enum_spec.rb",
      "spec/spec_helper.rb"
   ]
@@ -55,15 +56,15 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_runtime_dependency(%q<activerecord>, [">= 2.3"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.0"])
+      s.add_runtime_dependency(%q<activerecord>, ["~> 3.0"])
     else
-      s.add_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_dependency(%q<activerecord>, [">= 2.3"])
+      s.add_dependency(%q<rspec>, ["~> 2.0"])
+      s.add_dependency(%q<activerecord>, ["~> 3.0"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 1.2.9"])
-    s.add_dependency(%q<activerecord>, [">= 2.3"])
+    s.add_dependency(%q<rspec>, ["~> 2.0"])
+    s.add_dependency(%q<activerecord>, ["~> 3.0"])
   end
 end
 
