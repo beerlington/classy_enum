@@ -1,33 +1,14 @@
 require "classy_enum/classy_enum_attributes"
-require 'classy_enum/classy_enum_formtastic_input' if Object.const_defined? 'Formtastic'
-
-class ClassyEnumValue < Object 
-
-  attr_reader :to_s, :to_sym, :index, :base_class
-
-  def initialize(base_class, option, index)
-    @to_s = option.to_s.downcase
-    @to_sym = @to_s.to_sym
-    @index = index + 1
-    @base_class = base_class
-  end
-  
-  def name
-    to_s.titleize
-  end
-  
-  def <=> other
-    @index <=> other.index
-  end
-
-end
+require 'formtastic'
+require 'classy_enum/classy_enum_formtastic_input'
 
 module ClassyEnum
     
   module SuperClassMethods
       
     def new(option)
-      self::OPTION_HASH[option] || TypeError.new("Valid #{self} options are #{self.valid_options}")
+      return nil if option.nil?
+      self::OPTION_HASH[option.to_sym] || TypeError.new("Valid #{self} options are #{self.valid_options}")
     end
     
     def all
@@ -53,11 +34,28 @@ module ClassyEnum
   def self.included(other)
     other.extend SuperClassMethods
     
-    other.const_set("OPTION_HASH", Hash.new)
+    other.const_set("OPTION_HASH", Hash.new) unless other.const_defined? "OPTION_HASH"
 
     other::OPTIONS.each do |option|
 
-      klass = Class.new(ClassyEnumValue) do
+      klass = Class.new do
+        self.send(:attr_reader, :to_s, :to_sym, :index, :base_class)
+        
+        def initialize(base_class, option, index)
+          @to_s = option.to_s.downcase
+          @to_sym = @to_s.to_sym
+          @index = index + 1
+          @base_class = base_class
+        end
+
+        def name
+          to_s.titleize
+        end
+
+        def <=> other
+          @index <=> other.index
+        end
+        
         include other::InstanceMethods if other.const_defined?("InstanceMethods")
         extend other::ClassMethods if other.const_defined?("ClassMethods")
       end
@@ -66,7 +64,7 @@ module ClassyEnum
     
       instance = klass.new(other, option, other::OPTIONS.index(option))
       
-      other::OPTION_HASH[option] = other::OPTION_HASH[option.to_s.downcase] = instance
+      other::OPTION_HASH[option] = instance
       
       ClassyEnum.const_set(option.to_s.upcase, instance) unless ClassyEnum.const_defined?(option.to_s.upcase)
     end

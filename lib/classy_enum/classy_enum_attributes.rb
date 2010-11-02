@@ -7,10 +7,7 @@ module ClassyEnumAttributes
     klass = klass.to_s.camelize.constantize
 
     # Add ActiveRecord validation to ensure it won't be saved unless it's an option
-    self.send(:validates_inclusion_of, method, :in => klass.all)
-
-    # Preload the model to prevent validation from failing before a real object is instantiated
-    self.new(method => nil)
+    self.send(:validates_inclusion_of, method, :in => klass.all, :allow_nil => true)
 
     self.instance_eval do
 
