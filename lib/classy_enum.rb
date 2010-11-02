@@ -1,6 +1,9 @@
 require "classy_enum/classy_enum_attributes"
-require 'formtastic'
-require 'classy_enum/classy_enum_formtastic_input'
+
+if Gem.available? 'formtastic'
+  require 'formtastic' 
+  require 'classy_enum/semantic_form_builder'
+end
 
 module ClassyEnum
     
