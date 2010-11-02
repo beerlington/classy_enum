@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{classy_enum}
-  s.version = "0.4.1"
+  s.version = "0.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Brown"]
-  s.date = %q{2010-10-19}
+  s.date = %q{2010-11-02}
   s.description = %q{A utility that adds class based enum functionaltiy to ActiveRecord attributes}
   s.email = %q{github@lette.us}
   s.extra_rdoc_files = [
@@ -30,12 +30,12 @@ Gem::Specification.new do |s|
      "generators/templates/enum.erb",
      "init.rb",
      "lib/classy_enum.rb",
-     "lib/classy_enum/classy_enum_attributes.rb",
-     "lib/classy_enum/classy_enum_formtastic_input.rb",
+     "lib/classy_enum/attributes.rb",
+     "lib/classy_enum/semantic_form_builder.rb",
      "lib/generators/classy_enum/classy_enum_generator.rb",
      "lib/generators/classy_enum/templates/enum.erb",
      "spec/classy_enum_attributes_spec.rb",
-     "spec/classy_enum_formtastic_input_spec.rb",
+     "spec/classy_enum_semantic_form_builder.rb",
      "spec/classy_enum_spec.rb",
      "spec/spec_helper.rb"
   ]
@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
   s.summary = %q{A class based enumerator utility for Ruby on Rails}
   s.test_files = [
     "spec/classy_enum_attributes_spec.rb",
-     "spec/classy_enum_formtastic_input_spec.rb",
+     "spec/classy_enum_semantic_form_builder.rb",
      "spec/classy_enum_spec.rb",
      "spec/spec_helper.rb"
   ]
