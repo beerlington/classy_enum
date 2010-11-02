@@ -1,4 +1,4 @@
-require "classy_enum/classy_enum_attributes"
+require "classy_enum/attributes"
 
 if Gem.available? 'formtastic'
   require 'formtastic' 
