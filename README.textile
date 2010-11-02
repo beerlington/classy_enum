@@ -110,7 +110,7 @@ h2. Formtastic Support
 To add ClassyEnum support to Formtastic, add the following to your formtastic.rb initializer (config/initializers/formtastic.rb):
 
 <pre>
-Formtastic::SemanticFormHelper.builder = ClassyEnumHelper::SemanticFormBuilder
+Formtastic::SemanticFormHelper.builder = ClassyEnum::SemanticFormBuilder
 </pre>
 
 Then in your Formtastic view forms, use this syntax: @<%= f.input :priority, :as => :enum_select %>@
