@@ -2,7 +2,7 @@ source :rubygems
 
 gem 'rails', '~> 3.0'
 
-group :text do
+group :test do
   gem 'rspec', '~> 2.0'
   gem 'rspec-rails', '~> 2.0'
   gem 'formtastic', '~> 1.1'

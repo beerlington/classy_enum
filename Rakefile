@@ -6,12 +6,15 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "classy_enum"
     gem.summary = %Q{A class based enumerator utility for Ruby on Rails}
-    gem.description = %Q{A utility that adds class based enum functionaltiy to ActiveRecord attributes}
+    gem.description = %Q{A utility that adds class based enum functionality to ActiveRecord attributes}
     gem.email = "github@lette.us"
     gem.homepage = "http://github.com/beerlington/classy_enum"
     gem.authors = ["Peter Brown"]
     gem.add_development_dependency "rspec", "~> 2.0"
-    gem.add_dependency "activerecord", "~> 3.0"
+    gem.add_development_dependency 'rspec-rails', '~> 2.0'
+    gem.add_development_dependency 'formtastic', '~> 1.1'
+    gem.add_development_dependency 'sqlite3-ruby', :require => 'sqlite3'
+    gem.add_dependency "activerecord", ">= 2.3"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
