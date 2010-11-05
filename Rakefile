@@ -13,7 +13,7 @@ begin
     gem.add_development_dependency "rspec", "~> 2.0"
     gem.add_development_dependency 'rspec-rails', '~> 2.0'
     gem.add_development_dependency 'formtastic', '~> 1.1'
-    gem.add_development_dependency 'sqlite3-ruby', :require => 'sqlite3'
+    gem.add_development_dependency 'sqlite3-ruby'
     gem.add_dependency "activerecord", ">= 2.3"
   end
   Jeweler::GemcutterTasks.new
