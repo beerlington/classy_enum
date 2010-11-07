@@ -13,18 +13,17 @@ module ClassyEnum
     self.const_set("OPTIONS", options) unless self.const_defined? "OPTIONS"
     self.const_set("OPTION_HASH", Hash.new) unless self.const_defined? "OPTION_HASH"
 
-    self.extend SuperClassMethods
+    self.extend ClassMethods
 
     options.each do |option|
 
       klass = Class.new(self) do
-        self.send(:attr_reader, :to_s, :to_sym, :index, :base_class)
+        self.send(:attr_reader, :to_s, :to_sym, :index)
         
-        def initialize(base_class, option, index)
+        def initialize(option, index)
           @to_s = option.to_s.downcase
           @to_sym = @to_s.to_sym
           @index = index + 1
-          @base_class = base_class
         end
 
         def name
@@ -38,7 +37,7 @@ module ClassyEnum
       
       Object.const_set("#{self}#{option.to_s.camelize}", klass)
     
-      instance = klass.new(self, option, options.index(option))
+      instance = klass.new(option, options.index(option))
       
       self::OPTION_HASH[option] = instance
     end
@@ -49,7 +48,7 @@ module ClassyEnum
     klass.send(:extend, ClassyEnum)
   end
 
-  module SuperClassMethods
+  module ClassMethods
       
     def build(option)
       return nil if option.nil?
