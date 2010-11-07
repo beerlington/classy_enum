@@ -10,13 +10,7 @@ h2. Requirements
 
 h2. Installation
 
-The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum
-
-It can be installed with:
-
-<pre>
-gem install classy_enum
-</pre>
+The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum and can be installed with: @gem install classy_enum@
 
 h2. Example Usage
 
@@ -25,11 +19,13 @@ The most common use for ClassyEnum is to replace database lookup tables where th
 The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
 
 Rails 2.3.x:
+
 <pre>
 script/generate classy_enum AlarmPriority low medium high
 </pre>
 
 Rails 3.x
+
 <pre>
 rails g classy_enum AlarmPriority low medium high
 </pre>
