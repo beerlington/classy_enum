@@ -1,7 +1,7 @@
 class <%= class_name %>
   extend ClassyEnum
 
-  enum_classes = <%= values.map {|a| ":#{a}"}.join(", ") %>
+  enum_classes <%= values.map {|a| ":#{a}"}.join(", ") %>
 end
 <% values.each do |arg| %>
 class <%= class_name + arg.camelize %>
