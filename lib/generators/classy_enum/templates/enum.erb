@@ -1,13 +1,7 @@
-module <%= class_name %>
-  OPTIONS = [<%= values.map {|a| ":#{a}"}.join(", ") %>]
-
-  module InstanceMethods
-  end
-
-  module ClassMethods
-  end
-
+class <%= class_name %>
   include ClassyEnum
+
+  enum_classes = <%= values.map {|a| ":#{a}"}.join(", ") %>
 end
 <% values.each do |arg| %>
 class <%= class_name + arg.camelize %>

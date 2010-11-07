@@ -1,21 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-module TestEnum 
-  OPTIONS = [:one, :two, :three]
+class TestEnum 
+  extend ClassyEnum
+
+  enum_classes :one, :two, :three
   
-  module InstanceMethods
-    def test_instance_method?
-      false
-    end
+  def self.test_class_method?
+    false
   end
 
-  module ClassMethods
-    def test_class_method?
-      false
-    end
+  def test_instance_method?
+    false
   end
-
-  include ClassyEnum
 end
 
 class TestEnumTwo
@@ -28,7 +24,14 @@ class TestEnumTwo
   end
 end
 
-describe ClassyEnum do
+# Used to assert include and extend behave identically
+class IncludedEnum
+  include ClassyEnum
+
+  enum_classes :one, :two, :three
+end
+
+describe TestEnum do
 
   TestEnum::OPTIONS.each do |option|
    it "should define a TestEnum#{option.to_s.capitalize} class" do
@@ -37,22 +40,22 @@ describe ClassyEnum do
   end
   
   it "should return an array of enums" do
-    TestEnum.all.should == TestEnum::OPTIONS.map {|o| TestEnum.new(o) }
+    TestEnum.all.should == TestEnum::OPTIONS.map {|o| TestEnum.build(o) }
   end
   
   it "should return an array of enums for a select tag" do
-    TestEnum.all_with_name.should == TestEnum::OPTIONS.map {|o| [TestEnum.new(o).name, TestEnum.new(o).to_s] }
+    TestEnum.all_with_name.should == TestEnum::OPTIONS.map {|o| [TestEnum.build(o).name, TestEnum.build(o).to_s] }
   end
   
   it "should return a type error when adding an invalid option" do
-    TestEnum.new(:invalid_option).class.should == TypeError
+    TestEnum.build(:invalid_option).class.should == TypeError
   end
   
   context "with a collection of enums" do
     before(:each) do
-      @one = TestEnum.new(:one)
-      @two = TestEnum.new(:two)
-      @three = TestEnum.new(:three)
+      @one = TestEnum.build(:one)
+      @two = TestEnum.build(:two)
+      @three = TestEnum.build(:three)
 
       @unordered = [@one, @three, @two]
     end
@@ -73,12 +76,20 @@ describe ClassyEnum do
   it "should find an enum by string" do
     TestEnum.find("one").class.should == TestEnumOne
   end
+
+  it "should work with include ClassyEnum" do
+    IncludedEnum.build(:one).to_s.should == TestEnum.build(:one).to_s
+  end
   
 end
 
-describe "An ClassyEnumValue" do
-  before(:each) { @enum = TestEnum.new(:one) }
+describe "A ClassyEnum instance" do
+  before { @enum = TestEnum.build(:one) }
   
+  it "should be a TestEnum" do
+    @enum.should be_a(TestEnum)
+  end
+
   it "should convert to a string" do
     @enum.to_s.should == "one"
   end
@@ -100,14 +111,14 @@ describe "An ClassyEnumValue" do
   end
   
   it "should create the same instance with a string or symbol" do
-    @enum_string = TestEnum.new("one")
+    @enum_string = TestEnum.build("one")
     
     @enum.should == @enum_string
   end
 end
 
 describe "An ClassyEnumValue" do
-  before(:each) { @enum = TestEnum.new(:two) }
+  before(:each) { @enum = TestEnum.build(:two) }
   
   it "should override the default instance methods" do
     @enum.test_instance_method?.should be_true

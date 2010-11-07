@@ -22,10 +22,10 @@ ActiveRecord::Schema.define(:version => 1) do
   end
 end
 
-module Breed
-  OPTIONS = [:golden_retriever, :snoop]
+class Breed
+  extend ClassyEnum
   
-  include ClassyEnum
+  enum_classes :golden_retriever, :snoop
 end
 
 class Dog < ActiveRecord::Base

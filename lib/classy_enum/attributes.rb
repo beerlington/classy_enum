@@ -14,7 +14,7 @@ module ClassyEnum
 
         # Define getter method
         define_method method do
-          klass.new(super())
+          klass.build(super())
         end
 
         # Define setter method

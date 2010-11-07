@@ -6,42 +6,18 @@ if Gem.available? 'formtastic'
 end
 
 module ClassyEnum
-    
-  module SuperClassMethods
-      
-    def new(option)
-      return nil if option.nil?
-      self::OPTION_HASH[option.to_sym] || TypeError.new("Valid #{self} options are #{self.valid_options}")
-    end
-    
-    def all
-      self::OPTIONS.map {|e| self.new(e) }
-    end
-    
-    # Uses the name field for select options
-    def all_with_name
-      self.all.map {|e| [e.name, e.to_s] }
-    end
-    
-    def valid_options
-      self::OPTIONS.map(&:to_s).join(', ')
-    end
-    
-    # Alias of new
-    def find(option)
-      new(option)
-    end
-  
-  end
-  
-  def self.included(other)
-    other.extend SuperClassMethods
-    
-    other.const_set("OPTION_HASH", Hash.new) unless other.const_defined? "OPTION_HASH"
 
-    other::OPTIONS.each do |option|
+  def enum_classes(*options)
+    self.send(:attr_reader, :enum_classes)
 
-      klass = Class.new do
+    self.const_set("OPTIONS", options) unless self.const_defined? "OPTIONS"
+    self.const_set("OPTION_HASH", Hash.new) unless self.const_defined? "OPTION_HASH"
+
+    self.extend SuperClassMethods
+
+    options.each do |option|
+
+      klass = Class.new(self) do
         self.send(:attr_reader, :to_s, :to_sym, :index, :base_class)
         
         def initialize(base_class, option, index)
@@ -58,22 +34,46 @@ module ClassyEnum
         def <=> other
           @index <=> other.index
         end
-        
-        include other::InstanceMethods if other.const_defined?("InstanceMethods")
-        extend other::ClassMethods if other.const_defined?("ClassMethods")
       end
-
-      Object.const_set("#{other}#{option.to_s.camelize}", klass)
+      
+      Object.const_set("#{self}#{option.to_s.camelize}", klass)
     
-      instance = klass.new(other, option, other::OPTIONS.index(option))
+      instance = klass.new(self, option, options.index(option))
       
-      other::OPTION_HASH[option] = instance
+      self::OPTION_HASH[option] = instance
+    end
+  end
+
+  # Added to give someone the option to extend or include with same functionality
+  def self.included(klass)
+    klass.send(:extend, ClassyEnum)
+  end
+
+  module SuperClassMethods
       
-      ClassyEnum.const_set(option.to_s.upcase, instance) unless ClassyEnum.const_defined?(option.to_s.upcase)
+    def build(option)
+      return nil if option.nil?
+      self::OPTION_HASH[option.to_sym] || TypeError.new("Valid #{self} options are #{self.valid_options}")
+    end
+    
+    # Alias of new
+    def find(option)
+      build(option)
     end
 
-  end
+    def all
+      self::OPTIONS.map {|e| build(e) }
+    end
+    
+    # Uses the name field for select options
+    def all_with_name
+      all.map {|e| [e.name, e.to_s] }
+    end
+    
+    def valid_options
+      self::OPTIONS.map(&:to_s).join(', ')
+    end
   
+  end
+
 end
-
-
