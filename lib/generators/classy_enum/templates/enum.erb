@@ -1,5 +1,5 @@
 class <%= class_name %>
-  include ClassyEnum
+  extend ClassyEnum
 
   enum_classes = <%= values.map {|a| ":#{a}"}.join(", ") %>
 end
