@@ -24,23 +24,23 @@ The most common use for ClassyEnum is to replace database lookup tables where th
 
 The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
 
+Rails 2.3.x:
 <pre>
 script/generate classy_enum AlarmPriority low medium high
+</pre>
+
+Rails 3.x
+<pre>
+rails g classy_enum AlarmPriority low medium high
 </pre>
 
 A new file will be created at app/enums/alarm_priority.rb that will look like:
 
 <pre>
-module AlarmPriority
-  OPTIONS = [:low, :medium, :high]
-
-  module InstanceMethods
-  end
-
-  module ClassMethods
-  end
-
-  include ClassyEnum
+class AlarmPriority
+  extend ClassyEnum
+  
+  enum_classes :low, :medium, :high
 end
 
 class AlarmPriorityLow
@@ -55,21 +55,17 @@ end
 
 That is the default setup, but can be changed to fit your needs, like so...
 
-Using the OPTIONS constant, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum value has a method called @email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
-
-*It is important that you include ClassyEnum AFTER declaring your OPTIONS and Default methods because they are used when creating the enum classes*
+Using the @enum_classes@ method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum class has a method called @email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
 
 <pre>
-module AlarmPriority
-  OPTIONS = [:low, :medium, :high]
+class AlarmPriority
+  extend ClassyEnum
 
-  module InstanceMethods
-    def email?
-      false
-    end
+  enum_classes :low, :medium, :high
+  
+  def email?
+    false
   end
-
-  include ClassyEnum
 end
 
 class AlarmPriorityHigh
@@ -79,9 +75,9 @@ class AlarmPriorityHigh
 end
 </pre>
 
-Then in my ActiveRecord model, Alarm, I've added a line that calls @classy_enum_attr@. The first argument is required, and is the name of the module defined above. The second argument is optional and specifies which Alarm attribute will be used as an enumerable. 
+Then in my ActiveRecord model, Alarm, I've added a line that calls @classy_enum_attr@. The first argument is required, and is the name of the class defined above. The second argument is optional and specifies which Alarm attribute will be used as an enumerable. 
 
-In this case, I am using the module AlarmPriority, but the name of my attribute is priority. By default, it will use the name of module as the attribute name. If I wanted to do @alarm.alarm_priority@, I would not have included the second argument.
+In this case, I am using the class AlarmPriority, but the name of my attribute is priority. By default, it will use the name of class as the attribute name. If I wanted to do @alarm.alarm_priority@, I would not have included the second argument.
 
 <pre>
 class Alarm < ActiveRecord::Base
