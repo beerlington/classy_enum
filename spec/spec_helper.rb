@@ -22,9 +22,7 @@ ActiveRecord::Schema.define(:version => 1) do
   end
 end
 
-class Breed
-  extend ClassyEnum
-  
+class Breed < ClassyEnum::Base
   enum_classes :golden_retriever, :snoop
 end
 

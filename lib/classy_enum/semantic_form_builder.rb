@@ -5,10 +5,10 @@ module ClassyEnum
 
       if enum_class.nil?
         enum_class = method.to_s.capitalize.constantize rescue Error.invalid_classy_enum_object(method)
-        options[:collection] = enum_class.all_with_name
+        options[:collection] = enum_class.select_options
       else
         Error.invalid_classy_enum_object unless enum_class.respond_to? :enum_classes
-        options[:collection] = enum_class.class.superclass.all_with_name
+        options[:collection] = enum_class.class.superclass.select_options
         options[:selected] = enum_class.to_s
       end
       

@@ -1,8 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestEnum 
-  extend ClassyEnum
-
+class TestEnum < ClassyEnum::Base
   enum_classes :one, :two, :three
   
   def self.test_class_method?
@@ -24,13 +22,6 @@ class TestEnumTwo
   end
 end
 
-# Used to assert include and extend behave identically
-class IncludedEnum
-  include ClassyEnum
-
-  enum_classes :one, :two, :three
-end
-
 describe TestEnum do
 
   TestEnum::OPTIONS.each do |option|
@@ -40,11 +31,11 @@ describe TestEnum do
   end
   
   it "should return an array of enums" do
-    TestEnum.all.should == TestEnum::OPTIONS.map {|o| TestEnum.build(o) }
+    TestEnum.all.map(&:class).should == [TestEnumOne, TestEnumTwo, TestEnumThree]
   end
   
   it "should return an array of enums for a select tag" do
-    TestEnum.all_with_name.should == TestEnum::OPTIONS.map {|o| [TestEnum.build(o).name, TestEnum.build(o).to_s] }
+    TestEnum.select_options.should == TestEnum::OPTIONS.map {|o| [TestEnum.build(o).name, TestEnum.build(o).to_s] }
   end
   
   it "should return a type error when adding an invalid option" do
@@ -77,15 +68,19 @@ describe TestEnum do
     TestEnum.find("one").class.should == TestEnumOne
   end
 
-  it "should work with include ClassyEnum" do
-    IncludedEnum.build(:one).to_s.should == TestEnum.build(:one).to_s
-  end
-  
 end
 
 describe "A ClassyEnum instance" do
   before { @enum = TestEnum.build(:one) }
   
+  it "should build a TestEnum class" do
+    @enum.class.should == TestEnumOne
+  end
+
+  it "should instantiate a member" do
+    TestEnumOne.new.should be_a(TestEnumOne)
+  end
+
   it "should be a TestEnum" do
     @enum.should be_a(TestEnum)
   end
@@ -113,7 +108,7 @@ describe "A ClassyEnum instance" do
   it "should create the same instance with a string or symbol" do
     @enum_string = TestEnum.build("one")
     
-    @enum.should == @enum_string
+    @enum.class.should == @enum_string.class
   end
 end
 

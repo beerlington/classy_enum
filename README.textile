@@ -33,9 +33,7 @@ rails g classy_enum AlarmPriority low medium high
 A new file will be created at app/enums/alarm_priority.rb that will look like:
 
 <pre>
-class AlarmPriority
-  extend ClassyEnum
-  
+class AlarmPriority < ClassyEnum::Base
   enum_classes :low, :medium, :high
 end
 
@@ -54,9 +52,7 @@ That is the default setup, but can be changed to fit your needs, like so...
 Using the @enum_classes@ method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum class has a method called @email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
 
 <pre>
-class AlarmPriority
-  extend ClassyEnum
-
+class AlarmPriority < ClassyEnum::Base
   enum_classes :low, :medium, :high
   
   def email?
