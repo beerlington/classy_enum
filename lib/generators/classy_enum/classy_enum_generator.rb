@@ -8,7 +8,7 @@ class ClassyEnumGenerator < Rails::Generators::NamedBase
 
   def copy_files
     empty_directory 'app/enums'
-    template "enum.erb", "app/enums/#{file_name}.rb"
+    template "enum.rb", "app/enums/#{file_name}.rb"
   end
 
 end
