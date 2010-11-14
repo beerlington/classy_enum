@@ -52,7 +52,7 @@ module ClassyEnum
       Object.const_get("#{self}#{option.to_s.camelize}").new
     end
     
-    # Alias of new
+    # Alias of build
     def find(option); build(option); end;
 
     def all
