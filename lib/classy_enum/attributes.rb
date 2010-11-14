@@ -7,10 +7,12 @@ module ClassyEnum
 
       klass = klass.to_s.camelize.constantize
 
-      # Add ActiveRecord validation to ensure it won't be saved unless it's an option
-      self.send(:validates_inclusion_of, method, :in => klass.all, :allow_nil => true)
-
       self.instance_eval do
+
+        # Add ActiveRecord validation to ensure it won't be saved unless it's an option
+        validates_each [method], :allow_nil => true do |record, attr_name, value|
+          record.errors.add(attr_name, "must be one of #{klass.all.map(&:to_sym).join(', ')}") unless klass.all.map(&:to_s).include? value.to_s
+        end
 
         # Define getter method
         define_method method do

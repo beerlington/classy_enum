@@ -24,6 +24,28 @@ describe "A Dog" do
   it "should respond to enum_classes" do
     @dog.breed.should respond_to('enum_classes')
   end
+
+  it "should be valid with a valid option" do
+    @dog.should be_valid
+  end
+
+  context "with an invalid breed option" do
+    before { @dog.breed = :golden_doodle }
+      
+    it "should not be valid with an invalid option" do
+      @dog.should_not be_valid
+    end
+
+    it "should have an error for the breed" do
+      @dog.valid?
+      @dog.errors.should include(:breed)
+    end
+    
+    it "should have an error message containing the right options" do
+      @dog.valid?
+      @dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
+    end
+  end
   
 end
 
