@@ -35,6 +35,28 @@ describe 'using enum_select input' do
   context "when building a form with a classy_enum select, but the existing value is nil" do
     before(:each) do
       @output = semantic_form_for(Dog.new, :url => "/") do |builder| 
+        concat(builder.input(:other_breed, :as => :enum_select, :enum_class => :breed)) 
+      end 
+    end
+
+    it "should produce a form tag" do
+      @output.should =~ /<form/
+    end
+
+    it "should produce an unselected option tag for Golden Retriever" do
+      regex = Regexp.new("<option value=\\\"golden_retriever\\\">Golden Retriever")
+      @output.should =~ regex
+    end
+
+    it "should produce an unselected option tag for Snoop" do
+      regex = Regexp.new("<option value=\\\"snoop\\\">Snoop")
+      @output.should =~ regex
+    end
+  end
+
+  context "when building a form with a classy_enum select, using the enum_attr option" do
+    before(:each) do
+      @output = semantic_form_for(Dog.new, :url => "/") do |builder| 
         concat(builder.input(:breed, :as => :enum_select)) 
       end 
     end
