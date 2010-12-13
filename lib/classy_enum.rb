@@ -47,7 +47,7 @@ module ClassyEnum
   module ClassMethods
       
     def build(option)
-      return nil if option.nil?
+      return option if option.blank?
       return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self::OPTIONS.include? option.to_sym
       Object.const_get("#{self}#{option.to_s.camelize}").new
     end
