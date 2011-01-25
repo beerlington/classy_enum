@@ -11,13 +11,13 @@ module ClassyEnum
         options[:collection] = enum_class.class.superclass.select_options
         options[:selected] = enum_class.to_s
       end
-      
+
       options[:include_blank] = false
-      
+
       select_input(method, options)
     end
   end
-  
+
   module Error
     def self.invalid_classy_enum_object(method)
       raise "#{method} is not a ClassyEnum object"

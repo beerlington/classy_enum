@@ -1,7 +1,7 @@
 require "classy_enum/attributes"
 
 if Gem.available? 'formtastic'
-  require 'formtastic' 
+  require 'formtastic'
   require 'classy_enum/semantic_form_builder'
 end
 
@@ -45,29 +45,29 @@ module ClassyEnum
   end
 
   module ClassMethods
-      
+
     def build(option)
       return option if option.blank?
       return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self::OPTIONS.include? option.to_sym
       Object.const_get("#{self}#{option.to_s.camelize}").new
     end
-    
+
     # Alias of build
     def find(option); build(option); end;
 
     def all
       self::OPTIONS.map {|e| build(e) }
     end
-    
+
     # Uses the name field for select options
     def select_options
       all.map {|e| [e.name, e.to_s] }
     end
-    
+
     def valid_options
       self::OPTIONS.map(&:to_s).join(', ')
     end
-  
+
   end
 
 end

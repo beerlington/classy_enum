@@ -51,7 +51,7 @@ module FormtasticSpecHelper
 
     end
   end
-  
+
 end
 
 module ActionView

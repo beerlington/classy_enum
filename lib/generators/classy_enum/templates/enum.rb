@@ -4,4 +4,4 @@ end
 <% values.each do |arg| %>
 class <%= class_name + arg.camelize %>
 end
-<% end %> 
+<% end %>

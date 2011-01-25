@@ -14,9 +14,9 @@ describe "A Dog Collection" do
 end
 
 describe "A Dog" do
-  
+
   before(:each) { @dog = Dog.new(:breed => :golden_retriever) }
-  
+
   it "should have an enumerable breed" do
     @dog.breed.class.should == BreedGoldenRetriever
   end
@@ -31,7 +31,7 @@ describe "A Dog" do
 
   context "with an invalid breed option" do
     before { @dog.breed = :golden_doodle }
-      
+
     it "should not be valid with an invalid option" do
       @dog.should_not be_valid
     end
@@ -40,17 +40,17 @@ describe "A Dog" do
       @dog.valid?
       @dog.errors.should include(:breed)
     end
-    
+
     it "should have an error message containing the right options" do
       @dog.valid?
       @dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
     end
   end
-  
+
 end
 
 class Thing < ActiveRecord::Base
-  classy_enum_attr :breed, :dog_breed 
+  classy_enum_attr :breed, :dog_breed
 end
 
 describe "A Thing" do

@@ -1,8 +1,8 @@
 require "spec/spec_helper"
 
-describe 'using enum_select input' do 
+describe 'using enum_select input' do
   include FormtasticSpecHelper
-  
+
   Formtastic::SemanticFormHelper.builder = ClassyEnum::SemanticFormBuilder
 
   # Copied from how formtastic tests its form helpers
@@ -12,9 +12,9 @@ describe 'using enum_select input' do
 
   context "when building a form with a classy_enum select" do
     before(:each) do
-      @output = semantic_form_for(Dog.new(:breed => :snoop), :url => "/") do |builder| 
-        concat(builder.input(:breed, :as => :enum_select)) 
-      end 
+      @output = semantic_form_for(Dog.new(:breed => :snoop), :url => "/") do |builder|
+        concat(builder.input(:breed, :as => :enum_select))
+      end
     end
 
     it "should produce a form tag" do
@@ -34,9 +34,9 @@ describe 'using enum_select input' do
 
   context "when building a form with a classy_enum select, but the existing value is nil" do
     before(:each) do
-      @output = semantic_form_for(Dog.new, :url => "/") do |builder| 
-        concat(builder.input(:other_breed, :as => :enum_select, :enum_class => :breed)) 
-      end 
+      @output = semantic_form_for(Dog.new, :url => "/") do |builder|
+        concat(builder.input(:other_breed, :as => :enum_select, :enum_class => :breed))
+      end
     end
 
     it "should produce a form tag" do
@@ -56,9 +56,9 @@ describe 'using enum_select input' do
 
   context "when building a form with a classy_enum select, using the enum_attr option" do
     before(:each) do
-      @output = semantic_form_for(Dog.new, :url => "/") do |builder| 
-        concat(builder.input(:breed, :as => :enum_select)) 
-      end 
+      @output = semantic_form_for(Dog.new, :url => "/") do |builder|
+        concat(builder.input(:breed, :as => :enum_select))
+      end
     end
 
     it "should produce a form tag" do
@@ -78,19 +78,19 @@ describe 'using enum_select input' do
 
   it "should raise an error if the attribute is not a ClassyEnum object" do
     lambda do
-      @output = semantic_form_for(Dog.new(:breed => :snoop), :url => "/") do |builder| 
-        concat(builder.input(:id, :as => :enum_select)) 
-      end 
+      @output = semantic_form_for(Dog.new(:breed => :snoop), :url => "/") do |builder|
+        concat(builder.input(:id, :as => :enum_select))
+      end
     end.should raise_error("id is not a ClassyEnum object")
   end
 
   it "should raise an error if the attribute is not a ClassyEnum object and its value is nil" do
     lambda do
-      @output = semantic_form_for(Dog.new, :url => "/") do |builder| 
-        concat(builder.input(:id, :as => :enum_select)) 
-      end 
+      @output = semantic_form_for(Dog.new, :url => "/") do |builder|
+        concat(builder.input(:id, :as => :enum_select))
+      end
     end.should raise_error("id is not a ClassyEnum object")
   end
 
-end 
+end
 
