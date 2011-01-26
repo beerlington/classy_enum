@@ -111,7 +111,7 @@ module ClassyEnum
     #  end
     #
     #  @priority = Priority.build(:really_high)
-    #  @Priority.name # => "Really High"
+    #  @priority.name # => "Really High"
     def name
       @to_s.titleize
     end
