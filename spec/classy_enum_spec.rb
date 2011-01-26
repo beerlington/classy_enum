@@ -91,19 +91,15 @@ describe "A ClassyEnum instance" do
   end
 
   it "should return true for is_element?(:one)" do
-    @enum.element?(:one).should be_true
-  end
-
-  it "should return true for is_element?('one')" do
-    @enum.element?('one').should be_true
-  end
-
-  it "should return true for is_element?('one')" do
-    @enum.element?(TestEnumOne).should be_true
-  end
-
-  it "should alias element? as is?" do
     @enum.is?(:one).should be_true
+  end
+
+  it "should return true for is_element?('one')" do
+    @enum.is?('one').should be_true
+  end
+
+  it "should return true for is_element?('one')" do
+    @enum.is?(TestEnumOne).should be_true
   end
 
   it "should be a TestEnum" do
