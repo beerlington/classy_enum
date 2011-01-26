@@ -1,5 +1,5 @@
 module ClassyEnum
-  class SemanticFormBuilder < Formtastic::SemanticFormBuilder
+  class SemanticFormBuilder < Formtastic::SemanticFormBuilder # :nodoc: all
     def enum_select_input(method, options)
       enum_class = object.send(method)
 
@@ -18,7 +18,7 @@ module ClassyEnum
     end
   end
 
-  module Error
+  module Error # :nodoc: all
     def self.invalid_classy_enum_object(method)
       raise "#{method} is not a ClassyEnum object"
     end

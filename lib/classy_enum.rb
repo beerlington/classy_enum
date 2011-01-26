@@ -8,6 +8,23 @@ end
 module ClassyEnum
 
   class Base
+
+    # Macro for defining enum members within a ClassyEnum class.
+    # Accepts an array of symbols or strings which are converted to
+    # ClassyEnum members as descents of their parent class.
+    #
+    # ==== Example
+    #  # Define an enum called Priority with three child classes
+    #  class Priority < ClassyEnum::Base
+    #    enum_classes :low, :medium, :high
+    #  end
+    #
+    #  The child classes will be defined with the following constants:
+    #  PriorityLow, PriorityMedium, and PriorityHigh
+    #
+    #  These child classes can be instantiated with either:
+    #  Priority.build(:low) or PriorityLow.new
+    #
     def self.enum_classes(*options)
       self.send(:attr_reader, :enum_classes)
 
