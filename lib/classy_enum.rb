@@ -136,7 +136,7 @@ module ClassyEnum
     end
 
     # Determine if the enum attribute is a particular member.
-    # Accepts a symbol, string or class constant representing a member
+    # Accepts a symbol or string representing a member
     #
     # ==== Example
     #  # Create an Enum with some elements
@@ -152,12 +152,8 @@ module ClassyEnum
     #  @dog = Dog.new(:breed => :snoop)
     #  @dog.breed.is? :snoop # => true
     #  @dog.breed.is? 'snoop' # => true
-    #  @dog.breed.is? BreedSnoop # => true
     #  @dog.breed.is? :golden_retriever # => false
     def is?(obj)
-      # Instantiate object if it's a ClassyEnum child
-      obj = obj.new if obj.is_a?(Class) && obj.ancestors.include?(ClassyEnum::Base)
-
       obj.to_s == to_s
     end
 

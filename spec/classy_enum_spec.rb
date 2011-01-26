@@ -98,10 +98,6 @@ describe "A ClassyEnum instance" do
     @enum.is?('one').should be_true
   end
 
-  it "should return true for is_element?('one')" do
-    @enum.is?(TestEnumOne).should be_true
-  end
-
   it "should be a TestEnum" do
     @enum.should be_a(TestEnum)
   end
