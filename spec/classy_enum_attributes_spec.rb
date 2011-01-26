@@ -25,6 +25,10 @@ describe "A Dog" do
     @dog.breed.should respond_to('enum_classes')
   end
 
+  it "should know which member the enum is" do
+    @dog.breed.is?(:golden_retriever).should be_true
+  end
+
   it "should be valid with a valid option" do
     @dog.should be_valid
   end

@@ -22,7 +22,7 @@ class TestEnumTwo
   end
 end
 
-describe TestEnum do
+describe "A ClassyEnum Descendent" do
 
   TestEnum::OPTIONS.each do |option|
    it "should define a TestEnum#{option.to_s.capitalize} class" do
@@ -42,24 +42,6 @@ describe TestEnum do
     TestEnum.build(:invalid_option).class.should == TypeError
   end
 
-  context "with a collection of enums" do
-    before(:each) do
-      @one = TestEnum.build(:one)
-      @two = TestEnum.build(:two)
-      @three = TestEnum.build(:three)
-
-      @unordered = [@one, @three, @two]
-    end
-
-    it "should sort the enums" do
-      @unordered.sort.should == [@one, @two, @three]
-    end
-
-    it "should find the max enum based on its order" do
-      @unordered.max.should == @three
-    end
-  end
-
   it "should find an enum by symbol" do
     TestEnum.find(:one).class.should == TestEnumOne
   end
@@ -68,6 +50,37 @@ describe TestEnum do
     TestEnum.find("one").class.should == TestEnumOne
   end
 
+  it "should create an instance with a string" do
+    TestEnum.build("one").should be_a(TestEnumOne)
+  end
+end
+
+describe "A collection of ClassyEnums" do
+  before(:each) do
+    @one = TestEnum.build(:one)
+    @two = TestEnum.build(:two)
+    @three = TestEnum.build(:three)
+
+    @unordered = [@one, @three, @two]
+  end
+
+  it "should sort the enums" do
+    @unordered.sort.should == [@one, @two, @three]
+  end
+
+  it "should find the max enum based on its order" do
+    @unordered.max.should == @three
+  end
+end
+
+describe "A ClassyEnum element" do
+  it "should instantiate a member" do
+    TestEnumOne.new.should be_a(TestEnumOne)
+  end
+
+  it "should inherit the default class methods" do
+    TestEnumOne.test_class_method?.should be_false
+  end
 end
 
 describe "A ClassyEnum instance" do
@@ -77,8 +90,20 @@ describe "A ClassyEnum instance" do
     @enum.class.should == TestEnumOne
   end
 
-  it "should instantiate a member" do
-    TestEnumOne.new.should be_a(TestEnumOne)
+  it "should return true for is_element?(:one)" do
+    @enum.element?(:one).should be_true
+  end
+
+  it "should return true for is_element?('one')" do
+    @enum.element?('one').should be_true
+  end
+
+  it "should return true for is_element?('one')" do
+    @enum.element?(TestEnumOne).should be_true
+  end
+
+  it "should alias element? as is?" do
+    @enum.is?(:one).should be_true
   end
 
   it "should be a TestEnum" do
@@ -99,16 +124,6 @@ describe "A ClassyEnum instance" do
 
   it "should inherit the default instance methods" do
     @enum.test_instance_method?.should be_false
-  end
-
-  it "should inherit the default class methods" do
-    TestEnumOne.test_class_method?.should be_false
-  end
-
-  it "should create the same instance with a string or symbol" do
-    @enum_string = TestEnum.build("one")
-
-    @enum.class.should == @enum_string.class
   end
 end
 
