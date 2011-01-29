@@ -16,7 +16,7 @@ h2. Example Usage
 
 The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called @Alarm@ with an attribute called @priority@. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
 
-h2. 1. Generate the enum
+h3. Step 1) Generate the Enum
 
 The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
 
@@ -32,7 +32,7 @@ Rails 3.x
 rails g classy_enum Priority low medium high
 </pre>
 
-A new file will be created at app/enums/priority.rb that will look like:
+A new enum template file will be created at app/enums/priority.rb that will look like:
 
 <pre>
 class Priority < ClassyEnum::Base
@@ -49,11 +49,15 @@ class PriorityHigh < Priority
 end
 </pre>
 
-That is the default setup, but can be changed to fit your needs, like so...
+The @enum_classes@ macro will add all the ClassyEnum behavior, which is described further down in this document.
 
-Using the @enum_classes@ method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum class has a method called @send_email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
+h3. 2. Customize the Enum
 
-Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because ClassyEnum automatically creates a class for each member. The generator only creates these subclass definitions for convencience, but they can be deleted as shown in the following context.
+The generator creates a default setup, but each enum member can be changed to fit your needs.
+
+Using the @enum_classes@ method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
+
+I would like to add a method called @send_email?@ that all member subclasses respond to. By default this method will return false, but will be overridden for high priority alarms to return true.
 
 <pre>
 class Priority < ClassyEnum::Base
@@ -71,9 +75,11 @@ class PriorityHigh < Priority
 end
 </pre>
 
-h2. Define the model
+Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because ClassyEnum.enum_classes automatically creates a class for each member. The generator only creates these subclass definitions for convenience, but they can be deleted as shown in this example.
 
-Your model needs a text field that will store a string representing the enum member. An example model schema might look something like:
+h3. 3. Setup the ActiveRecord model
+
+My ActiveRecord Alarm model needs a text field that will store a string representing the enum member. An example model schema might look something like:
 
 <pre>
 create_table "alarms", :force => true do |t|
@@ -81,7 +87,7 @@ create_table "alarms", :force => true do |t|
 end
 </pre>
 
-Then in my ActiveRecord model, Alarm, I've added a line that calls @classy_enum_attr@ with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
+Then in my model I've added a line that calls @classy_enum_attr@ with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
 
 <pre>
 class Alarm < ActiveRecord::Base
@@ -105,6 +111,21 @@ With this setup, I can now do the following:
 @alarm.send_email? # => true
 </pre>
 
+The enum field works like any other model attribute. It can be mass-assigned using @update_attribute(s)@. 
+
+h2. Model Validation
+
+An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all, :allow_nil => true@ is automatically added to your model when you use @classy_enum_attr@. 
+
+If your enum only has members low, mediume, and high, then the following validation behavior would be expected:
+
+<pre>
+@alarm = Alarm.new(:priority => :really_high)
+@alarm.valid? # => false
+@alarm.priority = :high
+@alarm.valid? # => true
+</pre>
+
 h2. Formtastic Support
 
 To add ClassyEnum support to Formtastic, add the following to your formtastic.rb initializer (config/initializers/formtastic.rb):
@@ -114,10 +135,6 @@ Formtastic::SemanticFormHelper.builder = ClassyEnum::SemanticFormBuilder
 </pre>
 
 Then in your Formtastic view forms, use this syntax: @<%= f.input :priority, :as => :enum_select %>@
-
-h2. Notes
-
-An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all, :allow_nil => true@ is automatically added to your model when you use @classy_enum_attr@. 
 
 h2. Copyright
 
