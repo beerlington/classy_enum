@@ -16,7 +16,7 @@ h2. Example Usage
 
 The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called @Alarm@ with an attribute called @priority@. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
 
-h3. Step 1) Generate the Enum
+h3. 1. Generate the Enum
 
 The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
 
@@ -101,13 +101,13 @@ With this setup, I can now do the following:
 
 <pre>
 @alarm = Alarm.create(:priority => :medium)
-
 @alarm.priority  # => PriorityMedium
+@alarm.priority.is? :medium # => true
+@alarm.priority.to_s # => 'medium'
 
+# Should this alarm send an email?
 @alarm.send_email? # => false
-
 @alarm.priority = :high
-
 @alarm.send_email? # => true
 </pre>
 
