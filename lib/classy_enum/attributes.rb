@@ -14,7 +14,7 @@ module ClassyEnum
     #    classy_enum_attr :priority
     #  end
     #
-    #  # Associate an enum AlarmPriority with Alarm model's priority attribute
+    #  # Associate an enum Priority with Alarm model's alarm_priority attribute
     #  class Alarm < ActiveRecord::Base
     #    classy_enum_attr :priority, :alarm_priority
     #  end

@@ -16,66 +16,78 @@ h2. Example Usage
 
 The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called @Alarm@ with an attribute called @priority@. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
 
+h2. 1. Generate the enum
+
 The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
 
 Rails 2.3.x:
 
 <pre>
-script/generate classy_enum AlarmPriority low medium high
+script/generate classy_enum Priority low medium high
 </pre>
 
 Rails 3.x
 
 <pre>
-rails g classy_enum AlarmPriority low medium high
+rails g classy_enum Priority low medium high
 </pre>
 
-A new file will be created at app/enums/alarm_priority.rb that will look like:
+A new file will be created at app/enums/priority.rb that will look like:
 
 <pre>
-class AlarmPriority < ClassyEnum::Base
+class Priority < ClassyEnum::Base
   enum_classes :low, :medium, :high
 end
 
-class AlarmPriorityLow
+class PriorityLow < Priority
 end
 
-class AlarmPriorityMedium
+class PriorityMedium < Priority
 end
 
-class AlarmPriorityHigh
+class PriorityHigh < Priority
 end
 </pre>
 
 That is the default setup, but can be changed to fit your needs, like so...
 
-Using the @enum_classes@ method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum class has a method called @email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
+Using the @enum_classes@ method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it. In my example, each enum class has a method called @send_email?@. By default this method returns false, but is overridden for high priority alarms and returns true.
+
+Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because ClassyEnum automatically creates a class for each member. The generator only creates these subclass definitions for convencience, but they can be deleted as shown in the following context.
 
 <pre>
-class AlarmPriority < ClassyEnum::Base
+class Priority < ClassyEnum::Base
   enum_classes :low, :medium, :high
-  
-  def email?
+
+  def send_email?
     false
   end
 end
 
-class AlarmPriorityHigh
-  def email?
+class PriorityHigh < Priority
+  def send_email?
     true
   end
 end
 </pre>
 
-Then in my ActiveRecord model, Alarm, I've added a line that calls @classy_enum_attr@. The first argument is required, and is the name of the class defined above. The second argument is optional and specifies which Alarm attribute will be used as an enumerable. 
+h2. Define the model
 
-In this case, I am using the class AlarmPriority, but the name of my attribute is priority. By default, it will use the name of class as the attribute name. If I wanted to do @alarm.alarm_priority@, I would not have included the second argument.
+Your model needs a text field that will store a string representing the enum member. An example model schema might look something like:
+
+<pre>
+create_table "alarms", :force => true do |t|
+  t.string   "priority"
+end
+</pre>
+
+Then in my ActiveRecord model, Alarm, I've added a line that calls @classy_enum_attr@ with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
 
 <pre>
 class Alarm < ActiveRecord::Base
-  classy_enum_attr :alarm_priority, :priority
-    
-  delegate :email?, :to => :priority
+  classy_enum_attr :priority
+
+  delegate :send_email?, :to => :priority
 end
 </pre>
 
@@ -83,14 +95,14 @@ With this setup, I can now do the following:
 
 <pre>
 @alarm = Alarm.create(:priority => :medium)
-  
-@alarm.priority => AlarmPriorityMedium
-  
-@alarm.email? => false
-  
-@alarm.update_attribute(:priority, :high)
-  
-@alarm.email? => true
+
+@alarm.priority  # => PriorityMedium
+
+@alarm.send_email? # => false
+
+@alarm.priority = :high
+
+@alarm.send_email? # => true
 </pre>
 
 h2. Formtastic Support
@@ -109,4 +121,4 @@ An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all, :allo
 
 h2. Copyright
 
-Copyright (c) 2010 Peter Brown. See LICENSE for details.
+Copyright (c) 2011 Peter Brown. See LICENSE for details.
