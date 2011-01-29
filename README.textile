@@ -101,9 +101,11 @@ With this setup, I can now do the following:
 
 <pre>
 @alarm = Alarm.create(:priority => :medium)
+
 @alarm.priority  # => PriorityMedium
 @alarm.priority.is? :medium # => true
 @alarm.priority.to_s # => 'medium'
+@alarm.priority.name # => 'Medium'
 
 # Should this alarm send an email?
 @alarm.send_email? # => false
@@ -111,7 +113,20 @@ With this setup, I can now do the following:
 @alarm.send_email? # => true
 </pre>
 
-The enum field works like any other model attribute. It can be mass-assigned using @update_attribute(s)@. 
+The enum field works like any other model attribute. It can be mass-assigned using @update_attribute(s)@.
+
+h2. Special Cases
+
+What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in @classy_enum_attr@ to declare the attribute name. In this case, the model's attribute is called 'alarm_priority'.
+
+<pre>
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, :alarm_priority
+end
+
+@alarm = Alarm.create(:alarm_priority => :medium)
+@alarm.alarm_priority  # => PriorityMedium
+</pre>
 
 h2. Model Validation
 
@@ -124,6 +139,24 @@ If your enum only has members low, mediume, and high, then the following validat
 @alarm.valid? # => false
 @alarm.priority = :high
 @alarm.valid? # => true
+</pre>
+
+h2. Working with ClassyEnum outside of ActiveRecord
+
+While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
+
+Instantiate an enum member subclass PriorityLow
+<pre>
+# These statements are all equivalent
+low = Priority.build(:low)
+low = Priority.build('low)
+low = Priority.find(:low)
+low = PriorityLow.new
+</pre>
+
+Get a list of the valid enum options
+<pre>
+Priority.valid_options # => low, mediume, high
 </pre>
 
 h2. Formtastic Support
