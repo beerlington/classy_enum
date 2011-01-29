@@ -117,7 +117,7 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 
 h2. Special Cases
 
-What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in @classy_enum_attr@ to declare the attribute name. In this case, the model's attribute is called 'alarm_priority'.
+What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in @classy_enum_attr@ to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
 
 <pre>
 class Alarm < ActiveRecord::Base
@@ -145,7 +145,8 @@ h2. Working with ClassyEnum outside of ActiveRecord
 
 While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
 
-Instantiate an enum member subclass PriorityLow
+Instantiate an enum member subclass *PriorityLow*
+
 <pre>
 # These statements are all equivalent
 low = Priority.build(:low)
@@ -155,6 +156,7 @@ low = PriorityLow.new
 </pre>
 
 Get a list of the valid enum options
+
 <pre>
 Priority.valid_options # => low, mediume, high
 </pre>
