@@ -90,12 +90,24 @@ describe "A ClassyEnum instance" do
     @enum.class.should == TestEnumOne
   end
 
-  it "should return true for is_element?(:one)" do
+  it "should return true for is?(:one)" do
     @enum.is?(:one).should be_true
   end
 
-  it "should return true for is_element?('one')" do
+  it "should return true for is?('one')" do
     @enum.is?('one').should be_true
+  end
+
+  it "should return true for one?" do
+    @enum.one?.should be_true
+  end
+
+  it "should return false for two?" do
+    @enum.two?.should be_false
+  end
+
+  it "should raise a no method error for five?" do
+    lambda { @enum.five? }.should raise_error(NoMethodError)
   end
 
   it "should be a TestEnum" do
