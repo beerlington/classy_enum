@@ -48,6 +48,11 @@ module ClassyEnum
             @index = self.class.instance_variable_get('@index')
           end
 
+          # Define methods to test member type (ie member.option?)
+          options.each do |o|
+            self.send(:define_method, "#{o}?", lambda { o == option })
+          end
+
         end
 
         klass_name = "#{self}#{option.to_s.camelize}"

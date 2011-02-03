@@ -106,10 +106,6 @@ describe "A ClassyEnum instance" do
     @enum.two?.should be_false
   end
 
-  it "should raise a no method error for five?" do
-    lambda { @enum.five? }.should raise_error(NoMethodError)
-  end
-
   it "should be a TestEnum" do
     @enum.should be_a(TestEnum)
   end
