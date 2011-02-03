@@ -81,6 +81,10 @@ describe "A ClassyEnum element" do
   it "should inherit the default class methods" do
     TestEnumOne.test_class_method?.should be_false
   end
+
+  it "should compare different elements based on their index" do
+    TestEnumOne.new.should == TestEnumOne.new
+  end
 end
 
 describe "A ClassyEnum instance" do

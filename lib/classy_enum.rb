@@ -26,17 +26,15 @@ module ClassyEnum
     #  Priority.build(:low) or PriorityLow.new
     #
     def self.enum_classes(*options)
-      self.send(:attr_reader, :enum_classes)
-
       self.const_set("OPTIONS", options) unless self.const_defined? "OPTIONS"
 
       self.extend ClassMethods
+      self.send(:include, InstanceMethods)
+      self.send(:include, Comparable)
 
       options.each_with_index do |option, index|
 
         klass = Class.new(self) do
-          include InstanceMethods
-
           @index = index + 1
           @option = option
 

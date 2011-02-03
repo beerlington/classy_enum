@@ -7,7 +7,7 @@ module ClassyEnum
         enum_class = (options[:enum_class] || method).to_s.classify.constantize rescue Error.invalid_classy_enum_object(method)
         options[:collection] = enum_class.select_options
       else
-        Error.invalid_classy_enum_object unless enum_class.respond_to? :enum_classes
+        Error.invalid_classy_enum_object unless enum_class.is_a? ClassyEnum::Base
         options[:collection] = enum_class.class.superclass.select_options
         options[:selected] = enum_class.to_s
       end

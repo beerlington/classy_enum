@@ -21,10 +21,6 @@ describe "A Dog" do
     @dog.breed.class.should == BreedGoldenRetriever
   end
 
-  it "should respond to enum_classes" do
-    @dog.breed.should respond_to('enum_classes')
-  end
-
   it "should know which member the enum is" do
     @dog.breed.is?(:golden_retriever).should be_true
   end
@@ -64,7 +60,4 @@ describe "A Thing" do
     @thing.dog_breed.class.should == BreedSnoop
   end
 
-  it "should have a base class of Breed" do
-    @thing.dog_breed.should respond_to('enum_classes')
-  end
 end
