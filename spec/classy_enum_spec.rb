@@ -110,6 +110,14 @@ describe "A ClassyEnum instance" do
     @enum.should be_a(TestEnum)
   end
 
+  it "should have an index" do
+    @enum.index.should == 1
+  end
+
+  it "should index as to_i" do
+    @enum.to_i.should == 1
+  end
+
   it "should convert to a string" do
     @enum.to_s.should == "one"
   end
