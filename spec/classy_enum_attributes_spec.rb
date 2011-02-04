@@ -15,22 +15,48 @@ end
 
 describe "A Dog" do
 
-  before(:each) { @dog = Dog.new(:breed => :golden_retriever) }
+  context "with a valid breed option" do
+    before { @dog = Dog.new(:breed => :golden_retriever) }
 
-  it "should have an enumerable breed" do
-    @dog.breed.class.should == BreedGoldenRetriever
+    it "should have an enumerable breed" do
+      @dog.breed.class.should == BreedGoldenRetriever
+    end
+
+    it "should know which member the enum is" do
+      @dog.breed.is?(:golden_retriever).should be_true
+    end
+
+    it "should be valid with a valid option" do
+      @dog.should be_valid
+    end
   end
 
-  it "should know which member the enum is" do
-    @dog.breed.is?(:golden_retriever).should be_true
+  context "with a nil breed option" do
+    before { @dog = Dog.new(:breed => nil) }
+
+    it "should return nil for the breed" do
+      @dog.breed.should == ""
+    end
+
+    it "should be valid" do
+      @dog.should be_valid
+    end
   end
 
-  it "should be valid with a valid option" do
-    @dog.should be_valid
+  context "with a blank breed option" do
+    before { @dog = Dog.new(:breed => '') }
+
+    it "should return '' for the breed" do
+      @dog.breed.should == ""
+    end
+
+    it "should be valid" do
+      @dog.should be_valid
+    end
   end
 
   context "with an invalid breed option" do
-    before { @dog.breed = :golden_doodle }
+    before { @dog = Dog.new(:breed => :golden_doodle) }
 
     it "should not be valid with an invalid option" do
       @dog.should_not be_valid
