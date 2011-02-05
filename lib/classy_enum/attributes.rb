@@ -27,9 +27,7 @@ module ClassyEnum
       self.instance_eval do
 
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
-        validates_each [method] do |record, attr_name, value|
-          record.errors.add(attr_name, "must be one of #{klass.valid_options}") unless klass.all.include? value
-        end
+        validates_inclusion_of method, :in => klass.all, :message => "must be one of #{klass.valid_options}"
 
         # Define getter method that returns a ClassyEnum instance
         define_method method do
