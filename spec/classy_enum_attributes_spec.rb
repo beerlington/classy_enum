@@ -15,8 +15,13 @@ end
 
 describe "A Dog" do
 
-  context "with a valid breed option" do
-    before { @dog = Dog.new(:breed => :golden_retriever) }
+  context "with valid breed options" do
+    before do
+      @dog = Dog.new(
+        :breed => :golden_retriever,
+        :other_breed => :snoop
+      )
+    end
 
     it "should have an enumerable breed" do
       @dog.breed.class.should == BreedGoldenRetriever
@@ -31,32 +36,30 @@ describe "A Dog" do
     end
   end
 
-  context "with a nil breed option" do
-    before { @dog = Dog.new(:breed => nil) }
-
-    it "should return nil for the breed" do
-      @dog.breed.should == ""
-    end
-
-    it "should be valid" do
-      @dog.should be_valid
-    end
-  end
-
   context "with a blank breed option" do
-    before { @dog = Dog.new(:breed => '') }
+    before do
+      @dog = Dog.new(
+        :breed => nil,
+        :other_breed => :snoop
+      )
+    end
 
-    it "should return '' for the breed" do
+    it "should return "" for the breed" do
       @dog.breed.should == ""
     end
 
-    it "should be valid" do
-      @dog.should be_valid
+    it "should not be valid" do
+      @dog.should_not be_valid
     end
   end
 
-  context "with an invalid breed option" do
-    before { @dog = Dog.new(:breed => :golden_doodle) }
+  context "with invalid breed options" do
+    before do
+      @dog = Dog.new(
+        :breed => :fake_breed,
+        :other_breed => :sick_dog
+      )
+    end
 
     it "should not be valid with an invalid option" do
       @dog.should_not be_valid
