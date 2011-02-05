@@ -12,7 +12,7 @@ module ClassyEnum
         options[:selected] = enum_class.to_s
       end
 
-      options[:include_blank] = false
+      options[:include_blank] = options[:include_blank] || false
 
       select_input(method, options)
     end
