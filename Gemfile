@@ -2,6 +2,10 @@ source :rubygems
 
 gem 'rails', '~> 3.0'
 
+group :development do
+  gem 'jeweler', '1.4.0'
+end
+
 group :test do
   gem 'rspec', '~> 2.0'
   gem 'rspec-rails', '~> 2.0'
