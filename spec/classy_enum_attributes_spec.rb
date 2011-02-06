@@ -1,48 +1,32 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "A Dog Collection" do
-  before(:each) do
-    dog1 = Dog.new(:breed => :golden_retriever)
-    dog2 = Dog.new(:breed => :snoop)
-
-    @dogs = [dog1, dog2]
-  end
-
-  it "should sort by breed" do
-    @dogs.sort_by(&:breed).should == @dogs
-  end
-end
-
 describe "A Dog" do
 
-  before(:each) { @dog = Dog.new(:breed => :golden_retriever) }
+  context "with valid breed options" do
+    before { @dog = Dog.new(:breed => :golden_retriever) }
 
-  it "should have an enumerable breed" do
-    @dog.breed.class.should == BreedGoldenRetriever
+    it "should have a classy enum breed" do
+      @dog.breed.should be_a(BreedGoldenRetriever)
+    end
+
+    it "should be valid with a valid option" do
+      @dog.should be_valid
+    end
   end
 
-  it "should respond to enum_classes" do
-    @dog.breed.should respond_to('enum_classes')
+  it "should not be valid with a nil breed" do
+    Dog.new(:breed => nil).should_not be_valid
   end
 
-  it "should know which member the enum is" do
-    @dog.breed.is?(:golden_retriever).should be_true
+  it "should not be valid with a blank breed" do
+    Dog.new(:breed => "").should_not be_valid
   end
 
-  it "should be valid with a valid option" do
-    @dog.should be_valid
-  end
-
-  context "with an invalid breed option" do
-    before { @dog.breed = :golden_doodle }
+  context "with invalid breed options" do
+    before { @dog = Dog.new(:breed => :fake_breed) }
 
     it "should not be valid with an invalid option" do
       @dog.should_not be_valid
-    end
-
-    it "should have an error for the breed" do
-      @dog.valid?
-      @dog.errors.should include(:breed)
     end
 
     it "should have an error message containing the right options" do
@@ -53,18 +37,10 @@ describe "A Dog" do
 
 end
 
-class Thing < ActiveRecord::Base
-  classy_enum_attr :breed, :dog_breed
-end
+describe "A ClassyEnum that has a different field name than the enum" do
+  before { @dog = OtherDog.new(:other_breed => :snoop) }
 
-describe "A Thing" do
-  before(:each) { @thing = Thing.new(:dog_breed => :snoop) }
-
-  it "should have an enumerable dog breed as breed" do
-    @thing.dog_breed.class.should == BreedSnoop
-  end
-
-  it "should have a base class of Breed" do
-    @thing.dog_breed.should respond_to('enum_classes')
+  it "should have a classy enum breed" do
+    @dog.other_breed.should be_a(BreedSnoop)
   end
 end

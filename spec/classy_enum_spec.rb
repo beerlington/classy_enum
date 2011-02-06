@@ -81,6 +81,10 @@ describe "A ClassyEnum element" do
   it "should inherit the default class methods" do
     TestEnumOne.test_class_method?.should be_false
   end
+
+  it "should compare different elements based on their index" do
+    TestEnumOne.new.should == TestEnumOne.new
+  end
 end
 
 describe "A ClassyEnum instance" do
@@ -90,16 +94,32 @@ describe "A ClassyEnum instance" do
     @enum.class.should == TestEnumOne
   end
 
-  it "should return true for is_element?(:one)" do
+  it "should return true for is?(:one)" do
     @enum.is?(:one).should be_true
   end
 
-  it "should return true for is_element?('one')" do
+  it "should return true for is?('one')" do
     @enum.is?('one').should be_true
+  end
+
+  it "should return true for one?" do
+    @enum.one?.should be_true
+  end
+
+  it "should return false for two?" do
+    @enum.two?.should be_false
   end
 
   it "should be a TestEnum" do
     @enum.should be_a(TestEnum)
+  end
+
+  it "should have an index" do
+    @enum.index.should == 1
+  end
+
+  it "should index as to_i" do
+    @enum.to_i.should == 1
   end
 
   it "should convert to a string" do

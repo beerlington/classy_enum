@@ -15,12 +15,12 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 ActiveRecord::Schema.define(:version => 1) do
   create_table :dogs, :force => true do |t|
     t.string :breed
+  end
+
+  create_table :other_dogs, :force => true do |t|
     t.string :other_breed
   end
 
-  create_table :things, :force => true do |t|
-    t.string :dog_breed
-  end
 end
 
 class Breed < ClassyEnum::Base
@@ -29,6 +29,9 @@ end
 
 class Dog < ActiveRecord::Base
   classy_enum_attr :breed
+end
+
+class OtherDog < ActiveRecord::Base
   classy_enum_attr :breed, :other_breed
 end
 
