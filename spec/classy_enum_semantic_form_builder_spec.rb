@@ -79,7 +79,7 @@ describe 'using enum_select input' do
       @output = semantic_form_for(Dog.new(:breed => :snoop), :url => "/") do |builder|
         concat(builder.input(:id, :as => :enum_select))
       end
-    end.should raise_error("id is not a ClassyEnum object")
+    end.should raise_error("id is not a ClassyEnum object. Make sure you've added 'classy_enum_attr :id' to your model")
   end
 
   it "should raise an error if the attribute is not a ClassyEnum object and its value is nil" do
@@ -87,7 +87,7 @@ describe 'using enum_select input' do
       @output = semantic_form_for(Dog.new, :url => "/") do |builder|
         concat(builder.input(:id, :as => :enum_select))
       end
-    end.should raise_error("id is not a ClassyEnum object")
+    end.should raise_error("id is not a ClassyEnum object. Make sure you've added 'classy_enum_attr :id' to your model")
   end
 
 end
