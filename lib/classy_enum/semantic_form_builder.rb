@@ -20,7 +20,7 @@ module ClassyEnum
 
   module Error # :nodoc: all
     def self.invalid_classy_enum_object(method)
-      raise "#{method} is not a ClassyEnum object"
+      raise "#{method} is not a ClassyEnum object. Make sure you've added 'classy_enum_attr :#{method}' to your model"
     end
   end
 end
