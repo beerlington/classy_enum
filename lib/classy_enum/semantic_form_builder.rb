@@ -1,16 +1,12 @@
 module ClassyEnum
   class SemanticFormBuilder < Formtastic::SemanticFormBuilder # :nodoc: all
     def enum_select_input(method, options)
-      enum_class = object.send(method)
+      enum_class = object.class.instance_variable_get(:@classy_enums)[method]
 
-      if enum_class.nil?
-        enum_class = (options[:enum_class] || method).to_s.classify.constantize rescue Error.invalid_classy_enum_object(method)
-        options[:collection] = enum_class.select_options
-      else
-        Error.invalid_classy_enum_object(method) unless enum_class.is_a? ClassyEnum::Base
-        options[:collection] = enum_class.class.superclass.select_options
-        options[:selected] = enum_class.to_s
-      end
+      raise Error.invalid_classy_enum_object(method) if enum_class.nil?
+
+      options[:collection] = enum_class.select_options
+      options[:selected] = object.send(method).to_s
 
       options[:include_blank] = false
 

@@ -16,26 +16,23 @@ module ClassyEnum
     #
     #  # Associate an enum Priority with Alarm model's alarm_priority attribute
     #  class Alarm < ActiveRecord::Base
-    #    classy_enum_attr :priority, :alarm_priority
+    #    classy_enum_attr :alarm_priority, :enum => :priority
     #  end
-    def classy_enum_attr(*options)
-    	enum = options[0]
-    	attribute = enum
-    	allow_blank = false
-    	allow_nil = false
-    	
-    	options[1..-1].each do |o|
-    		if o.is_a? Symbol
-    			attribute = o	
-    		elsif o.is_a? Hash
-    			allow_blank = o[:allow_blank] || false
-    			allow_nil = o[:allow_nil] || false
-    		end
-    	end
-    	
+    def classy_enum_attr(*args)
+      options = args.extract_options!
+
+      attribute = args[0]
+      enum = options[:enum] || attribute
+      allow_blank = options[:allow_blank] || false
+      allow_nil = options[:allow_nil] || false
+
       klass = enum.to_s.camelize.constantize
 
       self.instance_eval do
+
+        # Store the enum class so it can be retrieved by Formtastic input builder
+        @classy_enums ||= {}
+        @classy_enums[attribute] = klass
 
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
         validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}",

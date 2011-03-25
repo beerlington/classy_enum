@@ -56,7 +56,7 @@ describe 'using enum_select input' do
     context "with an object with a different attribute name which requires the enum_class" do
       before(:each) do
         @output = semantic_form_for(OtherDog.new, :url => "/") do |builder|
-          concat(builder.input(:other_breed, :as => :enum_select, :enum_class => :breed))
+          concat(builder.input(:other_breed, :as => :enum_select))
         end
       end
 

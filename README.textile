@@ -4,13 +4,15 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 h2. Requirements
 
-*Rails:* Any version of Rails 2.3.x or Rails 3.x. (Older versions of Rails may work, but have not been tested)
+*Rails:* Any version of Rails 2.3.x or Rails 3.0.x. (Older versions of Rails may work, but have not been tested)
 
 *Ruby:* Ruby 1.8.7 and 1.9.2.
 
 h2. Installation
 
 The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum and can be installed with: @gem install classy_enum@
+
+You will also need to add @app/enums@ as an autoloadable path. This configuration will depend on which version of rails you are using.
 
 h2. Example Usage
 
@@ -121,7 +123,7 @@ What if your enum class name is not the same as your model's attribute name? No 
 
 <pre>
 class Alarm < ActiveRecord::Base
-  classy_enum_attr :priority, :alarm_priority
+  classy_enum_attr :alarm_priority, :enum => :priority
 end
 
 @alarm = Alarm.create(:alarm_priority => :medium)
@@ -130,9 +132,9 @@ end
 
 h2. Model Validation
 
-An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all, :allow_nil => true@ is automatically added to your model when you use @classy_enum_attr@. 
+An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all@ is automatically added to your model when you use @classy_enum_attr@. 
 
-If your enum only has members low, mediume, and high, then the following validation behavior would be expected:
+If your enum only has members low, medium, and high, then the following validation behavior would be expected:
 
 <pre>
 @alarm = Alarm.new(:priority => :really_high)
@@ -141,6 +143,16 @@ If your enum only has members low, mediume, and high, then the following validat
 @alarm.valid? # => true
 </pre>
 
+To allow nil or blank values, you can pass in :allow_nil and :allow_blank as options to classy_enum_attr, like so:
+
+<pre>
+def Alarm
+  classy_enum_attr :priority, :allow_nil => true
+end
+
+@alarm = Alarm.new(:priority => nil)
+@alarm.valid? # => true
+</pre>
 h2. Working with ClassyEnum outside of ActiveRecord
 
 While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
