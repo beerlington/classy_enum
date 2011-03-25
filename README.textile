@@ -4,13 +4,15 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 h2. Requirements
 
-*Rails:* Any version of Rails 2.3.x or Rails 3.x. (Older versions of Rails may work, but have not been tested)
+*Rails:* Any version of Rails 2.3.x or Rails 3.0.x. (Older versions of Rails may work, but have not been tested)
 
 *Ruby:* Ruby 1.8.7 and 1.9.2.
 
 h2. Installation
 
 The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum and can be installed with: @gem install classy_enum@
+
+You will also need to add @app/enums@ as an autoloadable path. This configuration will depend on which version of rails you are using.
 
 h2. Example Usage
 
@@ -121,7 +123,7 @@ What if your enum class name is not the same as your model's attribute name? No 
 
 <pre>
 class Alarm < ActiveRecord::Base
-  classy_enum_attr :priority, :alarm_priority
+  classy_enum_attr :alarm_priority, :enum => :priority
 end
 
 @alarm = Alarm.create(:alarm_priority => :medium)
