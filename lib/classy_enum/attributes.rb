@@ -28,7 +28,7 @@ module ClassyEnum
 
       self.instance_eval do
 
-        # Store the enum class
+        # Store the enum class so it can be retrieved by Formtastic input builder
         @classy_enums ||= {}
         @classy_enums[attribute] = klass
 
