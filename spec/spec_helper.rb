@@ -21,7 +21,11 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :other_breed
   end
 
-  create_table :breedless_dogs, :force => true do |t|
+  create_table :allow_blank_breed_dogs, :force => true do |t|
+    t.string :breed
+  end
+  
+  create_table :allow_nil_breed_dogs, :force => true do |t|
     t.string :breed
   end
 end
@@ -34,8 +38,12 @@ class Dog < ActiveRecord::Base
   classy_enum_attr :breed
 end
 
-class BreedlessDog < ActiveRecord::Base
+class AllowBlankBreedDog < ActiveRecord::Base
   classy_enum_attr :breed, :allow_blank => true
+end
+
+class AllowNilBreedDog < ActiveRecord::Base
+  classy_enum_attr :breed, :allow_nil => true
 end
 
 class OtherDog < ActiveRecord::Base

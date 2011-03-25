@@ -22,10 +22,15 @@ module ClassyEnum
     	enum = options[0]
     	attribute = enum
     	allow_blank = false
+    	allow_nil = false
     	
     	options[1..-1].each do |o|
-    		attribute = o if o.is_a? Symbol
-    		allow_blank = o[:allow_blank] if o.is_a? Hash
+    		if o.is_a? Symbol
+    			attribute = o	
+    		elsif o.is_a? Hash
+    			allow_blank = o[:allow_blank] || false
+    			allow_nil = o[:allow_nil] || false
+    		end
     	end
     	
       klass = enum.to_s.camelize.constantize
@@ -34,7 +39,7 @@ module ClassyEnum
 
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
         validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}",
-        																	:allow_blank => allow_blank
+        																	:allow_blank => allow_blank, :allow_nil => allow_nil
         																	
 
         # Define getter method that returns a ClassyEnum instance
@@ -44,7 +49,8 @@ module ClassyEnum
 
         # Define setter method that accepts either string or symbol for member
         define_method "#{attribute}=" do |value|
-          super(value.to_s)
+          value = value.to_s if value.is_a? Symbol
+          super(value)
         end
 
       end
