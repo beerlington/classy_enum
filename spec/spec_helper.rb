@@ -32,7 +32,7 @@ class Dog < ActiveRecord::Base
 end
 
 class OtherDog < ActiveRecord::Base
-  classy_enum_attr :breed, :other_breed
+  classy_enum_attr :other_breed, :enum => :breed
 end
 
 module FormtasticSpecHelper

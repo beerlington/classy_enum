@@ -16,15 +16,21 @@ module ClassyEnum
     #
     #  # Associate an enum Priority with Alarm model's alarm_priority attribute
     #  class Alarm < ActiveRecord::Base
-    #    classy_enum_attr :priority, :alarm_priority
+    #    classy_enum_attr :alarm_priority, :enum => :priority
     #  end
-    def classy_enum_attr(enum, attribute=nil)
+    def classy_enum_attr(*args)
+      options = args.extract_options!
 
-      attribute ||= enum
+      attribute = args[0]
+      enum = options[:enum] || attribute
 
       klass = enum.to_s.camelize.constantize
 
       self.instance_eval do
+
+        # Store the enum class
+        @classy_enums ||= {}
+        @classy_enums[attribute] = klass
 
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
         validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}"
