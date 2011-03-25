@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :other_breed
   end
 
+  create_table :breedless_dogs, :force => true do |t|
+    t.string :breed
+  end
 end
 
 class Breed < ClassyEnum::Base
@@ -29,6 +32,10 @@ end
 
 class Dog < ActiveRecord::Base
   classy_enum_attr :breed
+end
+
+class BreedlessDog < ActiveRecord::Base
+  classy_enum_attr :breed, :allow_blank => true
 end
 
 class OtherDog < ActiveRecord::Base

@@ -18,16 +18,24 @@ module ClassyEnum
     #  class Alarm < ActiveRecord::Base
     #    classy_enum_attr :priority, :alarm_priority
     #  end
-    def classy_enum_attr(enum, attribute=nil)
-
-      attribute ||= enum
-
+    def classy_enum_attr(*options)
+    	enum = options[0]
+    	attribute = enum
+    	allow_blank = false
+    	
+    	options[1..-1].each do |o|
+    		attribute = o if o.is_a? Symbol
+    		allow_blank = o[:allow_blank] if o.is_a? Hash
+    	end
+    	
       klass = enum.to_s.camelize.constantize
 
       self.instance_eval do
 
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
-        validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}"
+        validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}",
+        																	:allow_blank => allow_blank
+        																	
 
         # Define getter method that returns a ClassyEnum instance
         define_method attribute do
