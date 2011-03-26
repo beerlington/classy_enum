@@ -146,13 +146,14 @@ If your enum only has members low, medium, and high, then the following validati
 To allow nil or blank values, you can pass in :allow_nil and :allow_blank as options to classy_enum_attr, like so:
 
 <pre>
-def Alarm
+class Alarm < ActiveRecord::Base
   classy_enum_attr :priority, :allow_nil => true
 end
 
 @alarm = Alarm.new(:priority => nil)
 @alarm.valid? # => true
 </pre>
+
 h2. Working with ClassyEnum outside of ActiveRecord
 
 While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
@@ -182,6 +183,8 @@ Formtastic::SemanticFormHelper.builder = ClassyEnum::SemanticFormBuilder
 </pre>
 
 Then in your Formtastic view forms, use this syntax: @<%= f.input :priority, :as => :enum_select %>@
+
+Note: ClassyEnum respects the @:allow_blank@ and @:allow_nil@ options and will include a blank select option in these cases
 
 h2. Copyright
 
