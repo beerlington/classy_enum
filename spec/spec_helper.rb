@@ -12,6 +12,10 @@ require 'classy_enum'
 
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
+RSpec.configure do |config|
+  config.color_enabled = true
+end
+
 ActiveRecord::Schema.define(:version => 1) do
   create_table :dogs, :force => true do |t|
     t.string :breed
