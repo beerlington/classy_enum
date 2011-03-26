@@ -47,7 +47,7 @@ module ClassyEnum
 
         # Store the enum options so it can be later retrieved by Formtastic
         define_method "#{attribute}_options" do
-          {:enum => enum, :allow_blank => allow_blank, :allow_nil => allow_nil}
+          {:enum => enum, :allow_blank => allow_blank}
         end
 
       end

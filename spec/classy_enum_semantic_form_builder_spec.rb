@@ -45,23 +45,35 @@ describe 'using enum_select input' do
       end
     end
 
-    context 'with an object that allows blank or nil enums' do
-
-      [AllowBlankBreedDog.new, AllowBlankBreedDog.new].each do |dog|
-        let(:output) do
-          semantic_form_for(dog, :url => "/") do |builder|
-            concat(builder.input(:breed, :as => :enum_select))
-          end
+    context 'with an object that allows blank enums' do
+      let(:output) do
+        semantic_form_for(AllowBlankBreedDog.new, :url => "/") do |builder|
+          concat(builder.input(:breed, :as => :enum_select))
         end
+      end
 
-        it 'should produce an unselected option tag for Golden Retriever' do
-          output.should =~ Regexp.new(%q{<option value="golden_retriever">Golden Retriever})
+      it 'should produce an unselected option tag for Golden Retriever' do
+        output.should =~ Regexp.new(%q{<option value="golden_retriever">Golden Retriever})
+      end
+
+      it 'should produce a blank option tag' do
+        output.should =~ Regexp.new(%q{<option value=""><})
+      end
+    end
+
+    context 'with an object that allows nil enums' do
+      let(:output) do
+        semantic_form_for(AllowNilBreedDog.new, :url => "/") do |builder|
+          concat(builder.input(:breed, :as => :enum_select))
         end
+      end
 
-        it 'should produce a blank option tag' do
-          output.should=~ Regexp.new(%q{<option value=""><})
-        end
+      it 'should produce an unselected option tag for Golden Retriever' do
+        output.should =~ Regexp.new(%q{<option value="golden_retriever">Golden Retriever})
+      end
 
+      it 'should produce a blank option tag' do
+        output.should_not =~ Regexp.new(%q{<option value=""><})
       end
     end
 

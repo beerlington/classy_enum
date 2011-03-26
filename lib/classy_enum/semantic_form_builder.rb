@@ -8,7 +8,7 @@ module ClassyEnum
 
       options[:collection] = enum_class.select_options
       options[:selected] = object.send(method).to_s
-      options[:include_blank] = enum_options[:allow_blank] || enum_options[:allow_nil]
+      options[:include_blank] = enum_options[:allow_blank]
 
       select_input(method, options)
     end
