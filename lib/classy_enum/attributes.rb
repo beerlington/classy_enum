@@ -30,14 +30,9 @@ module ClassyEnum
 
       self.instance_eval do
 
-        # Store the enum class so it can be retrieved by Formtastic input builder
-        @classy_enums ||= {}
-        @classy_enums[attribute] = klass
-
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
         validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}",
-        																	:allow_blank => allow_blank, :allow_nil => allow_nil
-        																	
+                                          :allow_blank => allow_blank, :allow_nil => allow_nil
 
         # Define getter method that returns a ClassyEnum instance
         define_method attribute do
@@ -46,8 +41,13 @@ module ClassyEnum
 
         # Define setter method that accepts either string or symbol for member
         define_method "#{attribute}=" do |value|
-          value = value.to_s if value.is_a? Symbol
+          value = value.to_s unless value.nil?
           super(value)
+        end
+
+        # Store the enum options so it can be later retrieved by Formtastic
+        define_method "#{attribute}_options" do
+          {:enum => enum, :allow_blank => allow_blank, :allow_nil => allow_nil}
         end
 
       end

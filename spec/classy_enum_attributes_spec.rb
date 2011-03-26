@@ -12,6 +12,11 @@ describe "A Dog" do
     it "should be valid with a valid option" do
       @dog.should be_valid
     end
+
+    it "should have the right classy options for breed" do
+      options = {:enum => :breed, :allow_blank => false, :allow_nil => false}
+      @dog.breed_options.should == options
+    end
   end
 
   it "should not be valid with a nil breed" do
@@ -45,6 +50,11 @@ describe "A ClassyEnum that allows blanks" do
     it "should be valid with a valid option" do
       @dog.should be_valid
     end
+
+    it "should have the right classy options for breed" do
+      options = {:enum => :breed, :allow_blank => true, :allow_nil => false}
+      @dog.breed_options.should == options
+    end
   end
 
   it "should be valid with a nil breed" do
@@ -77,6 +87,11 @@ describe "A ClassyEnum that allows nils" do
 
     it "should be valid with a valid option" do
       @dog.should be_valid
+    end
+
+    it "should have the right classy options for breed" do
+      options = {:enum => :breed, :allow_blank => false, :allow_nil => true}
+      @dog.breed_options.should == options
     end
   end
 
