@@ -23,6 +23,8 @@ module ClassyEnum
 
       attribute = args[0]
       enum = options[:enum] || attribute
+      allow_blank = options[:allow_blank] || false
+      allow_nil = options[:allow_nil] || false
 
       klass = enum.to_s.camelize.constantize
 
@@ -33,7 +35,9 @@ module ClassyEnum
         @classy_enums[attribute] = klass
 
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
-        validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}"
+        validates_inclusion_of attribute, :in => klass.all, :message => "must be one of #{klass.valid_options}",
+        																	:allow_blank => allow_blank, :allow_nil => allow_nil
+        																	
 
         # Define getter method that returns a ClassyEnum instance
         define_method attribute do
@@ -42,7 +46,8 @@ module ClassyEnum
 
         # Define setter method that accepts either string or symbol for member
         define_method "#{attribute}=" do |value|
-          super(value.to_s)
+          value = value.to_s if value.is_a? Symbol
+          super(value)
         end
 
       end

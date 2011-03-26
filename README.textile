@@ -132,9 +132,9 @@ end
 
 h2. Model Validation
 
-An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all, :allow_nil => true@ is automatically added to your model when you use @classy_enum_attr@. 
+An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all@ is automatically added to your model when you use @classy_enum_attr@. 
 
-If your enum only has members low, mediume, and high, then the following validation behavior would be expected:
+If your enum only has members low, medium, and high, then the following validation behavior would be expected:
 
 <pre>
 @alarm = Alarm.new(:priority => :really_high)
@@ -143,6 +143,16 @@ If your enum only has members low, mediume, and high, then the following validat
 @alarm.valid? # => true
 </pre>
 
+To allow nil or blank values, you can pass in :allow_nil and :allow_blank as options to classy_enum_attr, like so:
+
+<pre>
+def Alarm
+  classy_enum_attr :priority, :allow_nil => true
+end
+
+@alarm = Alarm.new(:priority => nil)
+@alarm.valid? # => true
+</pre>
 h2. Working with ClassyEnum outside of ActiveRecord
 
 While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
