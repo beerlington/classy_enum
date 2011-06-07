@@ -20,3 +20,5 @@ module ClassyEnum
     end
   end
 end
+
+Formtastic::SemanticFormHelper.builder = ClassyEnum::SemanticFormBuilder
