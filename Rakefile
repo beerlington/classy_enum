@@ -1,25 +1,29 @@
+# encoding: utf-8
+
 require 'rubygems'
+require 'bundler'
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
 require 'rake'
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "classy_enum"
-    gem.summary = %Q{A class based enumerator utility for Ruby on Rails}
-    gem.description = %Q{A utility that adds class based enum functionality to ActiveRecord attributes}
-    gem.email = "github@lette.us"
-    gem.homepage = "http://github.com/beerlington/classy_enum"
-    gem.authors = ["Peter Brown"]
-    gem.add_development_dependency "rspec", "~> 2.0"
-    gem.add_development_dependency 'rspec-rails', '~> 2.0'
-    gem.add_development_dependency 'formtastic', '~> 1.1'
-    gem.add_development_dependency 'sqlite3-ruby'
-    gem.add_development_dependency "activerecord", ">= 2.3"
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
+require 'jeweler'
+Jeweler::Tasks.new do |gem|
+  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
+  gem.name = "classy_enum"
+  gem.summary = %Q{A class based enumerator utility for Ruby on Rails}
+  gem.description = %Q{A utility that adds class based enum functionality to ActiveRecord attributes}
+  gem.email = "github@lette.us"
+  gem.homepage = "http://github.com/beerlington/classy_enum"
+  gem.authors = ["Peter Brown"]
+  gem.license = "MIT"
+  # dependencies defined in Gemfile
 end
+Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
@@ -39,7 +43,8 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "thegem #{version}"
+  rdoc.title = "meee #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
