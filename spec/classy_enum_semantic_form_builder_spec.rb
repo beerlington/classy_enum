@@ -1,9 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'classy_enum/semantic_form_builder'
 
 describe 'using enum_select input' do
   include FormtasticSpecHelper
-
-  Formtastic::SemanticFormHelper.builder = ClassyEnum::SemanticFormBuilder
 
   # Reset output buffer
   before { @output_buffer = "" }

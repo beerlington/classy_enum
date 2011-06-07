@@ -171,7 +171,7 @@ low = PriorityLow.new
 Get a list of the valid enum options
 
 <pre>
-Priority.valid_options # => low, mediume, high
+Priority.valid_options # => low, medium, high
 </pre>
 
 h2. Formtastic Support
@@ -179,7 +179,7 @@ h2. Formtastic Support
 To add ClassyEnum support to Formtastic, add the following to your formtastic.rb initializer (config/initializers/formtastic.rb):
 
 <pre>
-Formtastic::SemanticFormHelper.builder = ClassyEnum::SemanticFormBuilder
+require 'classy_enum/semantic_form_builder'
 </pre>
 
 Then in your Formtastic view forms, use this syntax: @<%= f.input :priority, :as => :enum_select %>@
