@@ -102,7 +102,7 @@ PLATFORMS
 DEPENDENCIES
   formtastic (~> 1.2.4)
   jeweler (~> 1.6.2)
-  rails (~> 3.0)
+  rails (>= 2.3.0)
   rcov
   rspec-rails (~> 2.6.1)
   ruby-debug
