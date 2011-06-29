@@ -1,4 +1,4 @@
-module ActiveRecord #nodoc
+module ActiveRecord # :nodoc: all
   class PredicateBuilder
     def build_from_hash_with_classy_enum(attributes, default_table)
 

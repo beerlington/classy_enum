@@ -3,10 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 class ActiveDog < ActiveRecord::Base
   classy_enum_attr :breed
 
-  # validates :name,
-  #   :presence => true,
-  #   :uniqueness => { :scope => [:breed] }
-  validates_uniqueness_of :name, :scope => [:breed]
+  validates :name,
+    :presence => true,
+    :uniqueness => { :scope => [:breed] }
 
 end
 
