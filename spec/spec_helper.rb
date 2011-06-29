@@ -29,14 +29,20 @@ ActiveRecord::Schema.define(:version => 1) do
   create_table :allow_blank_breed_dogs, :force => true do |t|
     t.string :breed
   end
-  
+
   create_table :allow_nil_breed_dogs, :force => true do |t|
     t.string :breed
+  end
+
+  create_table :active_dogs, :force => true do |t|
+    t.string :breed
+    t.string :name
+    t.integer :age
   end
 end
 
 class Breed < ClassyEnum::Base
-  enum_classes :golden_retriever, :snoop
+  enum_classes :golden_retriever, :snoop, :husky
 end
 
 class Dog < ActiveRecord::Base
