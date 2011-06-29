@@ -3,7 +3,7 @@ module ActiveRecord # :nodoc: all
     def build_from_hash_with_classy_enum(attributes, default_table)
 
       # Convert classy enum values to strings
-      attributes.map do |column, value|
+      attributes.each do |column, value|
         attributes[column] = value.to_s if value.is_a? ClassyEnum::Base
       end
 
