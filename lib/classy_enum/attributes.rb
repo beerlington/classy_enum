@@ -56,5 +56,3 @@ module ClassyEnum
 
   end
 end
-
-ActiveRecord::Base.send :extend, ClassyEnum::Attributes

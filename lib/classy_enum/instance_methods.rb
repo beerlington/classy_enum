@@ -79,8 +79,20 @@ module ClassyEnum
       @index <=> other.index
     end
 
+    # Used by ActiveRecord::PredicateBuilder when building from a hash
+    def is_a?(klass)
+      return true if klass == ActiveRecord::Base
+      super(klass)
+    end
+
+    # Used by ActiveRecord::PredicateBuilder when building from a hash
+    def id
+      to_s
+    end
+
+  protected
+
     # Determine if the enum attribute is a particular member.
-    # Accepts a symbol or string representing a member
     #
     # ==== Example
     #  # Create an Enum with some elements
@@ -94,11 +106,17 @@ module ClassyEnum
     #  end
     #
     #  @dog = Dog.new(:breed => :snoop)
-    #  @dog.breed.is? :snoop # => true
-    #  @dog.breed.is? 'snoop' # => true
-    #  @dog.breed.is? :golden_retriever # => false
-    def is?(obj)
-      obj.to_s == to_s
+    #  @dog.breed.snoop? # => true
+    #  @dog.breed.golden_retriever? # => false
+    def attribute?(attribute)
+      to_s == attribute
+    end
+
+  private
+
+    # Used by attribute methods
+    def attributes
+      []
     end
 
   end
