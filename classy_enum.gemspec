@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{classy_enum}
-  s.version = "1.0.0"
+  s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Peter Brown}]
-  s.date = %q{2011-06-29}
+  s.date = %q{2011-07-25}
   s.description = %q{A utility that adds class based enum functionality to ActiveRecord attributes}
   s.email = %q{github@lette.us}
   s.extra_rdoc_files = [
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
+    ".rvmrc",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
@@ -27,7 +28,6 @@ Gem::Specification.new do |s|
     "classy_enum.gemspec",
     "init.rb",
     "lib/classy_enum.rb",
-    "lib/classy_enum/active_record.rb",
     "lib/classy_enum/attributes.rb",
     "lib/classy_enum/base.rb",
     "lib/classy_enum/class_methods.rb",
@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
     "lib/generators/classy_enum/templates/enum.rb",
     "spec/active_record_spec.rb",
     "spec/classy_enum_attributes_spec.rb",
+    "spec/classy_enum_migration_spec.rb",
     "spec/classy_enum_semantic_form_builder_spec.rb",
     "spec/classy_enum_spec.rb",
     "spec/spec_helper.rb"
@@ -57,7 +58,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_development_dependency(%q<formtastic>, ["~> 1.2.4"])
       s.add_development_dependency(%q<sqlite3-ruby>, [">= 0"])
-      s.add_development_dependency(%q<ruby-debug>, [">= 0"])
+      s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 3.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.2"])
@@ -65,7 +66,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_dependency(%q<formtastic>, ["~> 1.2.4"])
       s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
-      s.add_dependency(%q<ruby-debug>, [">= 0"])
+      s.add_dependency(%q<ruby-debug19>, [">= 0"])
     end
   else
     s.add_dependency(%q<rails>, ["~> 3.0.0"])
@@ -74,7 +75,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
     s.add_dependency(%q<formtastic>, ["~> 1.2.4"])
     s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
-    s.add_dependency(%q<ruby-debug>, [">= 0"])
+    s.add_dependency(%q<ruby-debug19>, [">= 0"])
   end
 end
 
