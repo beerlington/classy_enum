@@ -17,10 +17,10 @@ module ClassyEnum
     #  These child classes can be instantiated with either:
     #  Priority.build(:low) or PriorityLow.new
     #
-    def enum_classes(*options)
-      self.const_set("OPTIONS", options) unless self.const_defined? "OPTIONS"
+    def enum_classes(*enums)
+      self.const_set("OPTIONS", enums) unless self.const_defined? "OPTIONS"
 
-      options.each_with_index do |option, index|
+      enums.each_with_index do |option, index|
 
         klass = Class.new(self) do
           @index = index + 1
@@ -28,7 +28,7 @@ module ClassyEnum
 
           # Use ActiveModel::AttributeMethods to define attribute? methods
           attribute_method_suffix '?'
-          define_attribute_methods options
+          define_attribute_methods enums
 
           def initialize
             @to_s = self.class.instance_variable_get('@option').to_s
@@ -51,10 +51,13 @@ module ClassyEnum
     #  end
     #
     #  Priority.build(:low) # => PriorityLow.new
-    def build(option)
+    def build(option, owner = nil)
       return option if option.blank?
       return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self::OPTIONS.include? option.to_sym
-      Object.const_get("#{self}#{option.to_s.camelize}").new
+
+      object = Object.const_get("#{self}#{option.to_s.camelize}").new
+      object.instance_variable_set(:@owner,owner) unless owner.nil?
+      object
     end
 
     alias :find :build
@@ -98,6 +101,13 @@ module ClassyEnum
     #  Priority.valid_options # => "low, medium, high"
     def valid_options
       self::OPTIONS.map(&:to_s).join(', ')
+    end
+
+  private
+
+    # DSL setter method for reference to enum owner
+    def owner(owner)
+      define_method owner, lambda { @owner }
     end
 
   end

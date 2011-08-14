@@ -39,6 +39,10 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :name
     t.integer :age
   end
+
+  create_table :cats, :force => true do |t|
+    t.string :breed
+  end
 end
 
 class Breed < ClassyEnum::Base

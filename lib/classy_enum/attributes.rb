@@ -36,7 +36,7 @@ module ClassyEnum
 
         # Define getter method that returns a ClassyEnum instance
         define_method attribute do
-          klass.build(super())
+          klass.build(super(), self)
         end
 
         # Define setter method that accepts either string or symbol for member
