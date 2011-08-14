@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{classy_enum}
-  s.version = "1.1.0"
+  s.version = "1.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Peter Brown}]
-  s.date = %q{2011-07-25}
+  s.date = %q{2011-08-14}
   s.description = %q{A utility that adds class based enum functionality to ActiveRecord attributes}
   s.email = %q{github@lette.us}
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rvmrc",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
@@ -37,7 +38,7 @@ Gem::Specification.new do |s|
     "lib/generators/classy_enum/templates/enum.rb",
     "spec/active_record_spec.rb",
     "spec/classy_enum_attributes_spec.rb",
-    "spec/classy_enum_migration_spec.rb",
+    "spec/classy_enum_owner_reference_spec.rb",
     "spec/classy_enum_semantic_form_builder_spec.rb",
     "spec/classy_enum_spec.rb",
     "spec/spec_helper.rb"
@@ -45,7 +46,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/beerlington/classy_enum}
   s.licenses = [%q{MIT}]
   s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.5}
+  s.rubygems_version = %q{1.8.6}
   s.summary = %q{A class based enumerator utility for Ruby on Rails}
 
   if s.respond_to? :specification_version then
@@ -54,28 +55,22 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rails>, ["~> 3.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.2"])
-      s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_development_dependency(%q<formtastic>, ["~> 1.2.4"])
       s.add_development_dependency(%q<sqlite3-ruby>, [">= 0"])
-      s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 3.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.2"])
-      s.add_dependency(%q<rcov>, [">= 0"])
       s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_dependency(%q<formtastic>, ["~> 1.2.4"])
       s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
-      s.add_dependency(%q<ruby-debug19>, [">= 0"])
     end
   else
     s.add_dependency(%q<rails>, ["~> 3.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.2"])
-    s.add_dependency(%q<rcov>, [">= 0"])
     s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
     s.add_dependency(%q<formtastic>, ["~> 1.2.4"])
     s.add_dependency(%q<sqlite3-ruby>, [">= 0"])
-    s.add_dependency(%q<ruby-debug19>, [">= 0"])
   end
 end
 
