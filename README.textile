@@ -84,6 +84,7 @@ My ActiveRecord Alarm model needs a text field that will store a string represen
 <pre>
 create_table "alarms", :force => true do |t|
   t.string   "priority"
+  t.boolean  "enabled"
 end
 </pre>
 
@@ -114,6 +115,38 @@ With this setup, I can now do the following:
 </pre>
 
 The enum field works like any other model attribute. It can be mass-assigned using @update_attribute(s)@.
+
+h2. Back reference to owning object
+
+In some cases you may want an enum class to be able to reference the owning object (an instance of the active record model). Think of it as a @belongs_to@ relationship, where the enum can reference its owning object.
+
+In order to create the back reference, you must declare how you wish to refer to the owner using the @owner@ class method.
+
+For example:
+
+<pre>
+class Priority < ClassyEnum::Base
+  enum_classes :low, :medium, :high
+  owner :alarm
+end
+
+class PriorityHigh < Priority
+  def send_email?
+    alarm.enabled?
+  end
+end
+</pre>
+
+In the above example, high priority alarms are only emailed if the owning alarm is enabled.
+
+<pre>
+@alarm = Alarm.create(:priority => :high, :enabled => true)
+
+# Should this alarm send an email?
+@alarm.send_email? # => true
+@alarm.enabled = false
+@alarm.send_email? # => false
+</pre>
 
 h2. Special Cases
 
