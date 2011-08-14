@@ -3,20 +3,11 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "A Dog" do
 
   context "with valid breed options" do
-    before { @dog = Dog.new(:breed => :golden_retriever) }
+    subject { Dog.new(:breed => :golden_retriever) }
 
-    it "should have a classy enum breed" do
-      @dog.breed.should be_a(BreedGoldenRetriever)
-    end
-
-    it "should be valid with a valid option" do
-      @dog.should be_valid
-    end
-
-    it "should have the right classy options for breed" do
-      options = {:enum => :breed, :allow_blank => false}
-      @dog.breed_options.should == options
-    end
+    it { should be_valid }
+    its(:breed) { should be_a(BreedGoldenRetriever) }
+    its(:breed_options) { should eql({:enum => :breed, :allow_blank => false}) }
   end
 
   it "should not be valid with a nil breed" do
@@ -28,15 +19,13 @@ describe "A Dog" do
   end
 
   context "with invalid breed options" do
-    before { @dog = Dog.new(:breed => :fake_breed) }
+    let(:dog) { Dog.new(:breed => :fake_breed) }
+    subject { dog }
+    it { should_not be_valid }
 
-    it "should not be valid with an invalid option" do
-      @dog.should_not be_valid
-    end
-
-    it "should have an error message containing the right options" do
-      @dog.valid?
-      @dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
+    it 'should have an error message containing the right options' do
+      dog.valid?
+      dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
     end
   end
 
@@ -45,16 +34,10 @@ end
 describe "A ClassyEnum that allows blanks" do
 
   context "with valid breed options" do
-    before { @dog = AllowBlankBreedDog.new(:breed => :golden_retriever) }
+    subject { AllowBlankBreedDog.new(:breed => :golden_retriever) }
 
-    it "should be valid with a valid option" do
-      @dog.should be_valid
-    end
-
-    it "should have the right classy options for breed" do
-      options = {:enum => :breed, :allow_blank => true}
-      @dog.breed_options.should == options
-    end
+    it { should be_valid }
+    its(:breed_options) { should eql({:enum => :breed, :allow_blank => true}) }
   end
 
   it "should be valid with a nil breed" do
@@ -66,15 +49,13 @@ describe "A ClassyEnum that allows blanks" do
   end
 
   context "with invalid breed options" do
-    before { @dog = AllowBlankBreedDog.new(:breed => :fake_breed) }
+    let(:dog) { AllowBlankBreedDog.new(:breed => :fake_breed) }
+    subject { dog }
+    it { should_not be_valid }
 
-    it "should not be valid with an invalid option" do
-      @dog.should_not be_valid
-    end
-
-    it "should have an error message containing the right options" do
-      @dog.valid?
-      @dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
+    it 'should have an error message containing the right options' do
+      dog.valid?
+      dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
     end
   end
 
@@ -83,16 +64,10 @@ end
 describe "A ClassyEnum that allows nils" do
 
   context "with valid breed options" do
-    before { @dog = AllowNilBreedDog.new(:breed => :golden_retriever) }
+    subject { AllowNilBreedDog.new(:breed => :golden_retriever) }
 
-    it "should be valid with a valid option" do
-      @dog.should be_valid
-    end
-
-    it "should have the right classy options for breed" do
-      options = {:enum => :breed, :allow_blank => false}
-      @dog.breed_options.should == options
-    end
+    it { should be_valid }
+    its(:breed_options) { should eql({:enum => :breed, :allow_blank => false}) }
   end
 
   it "should be valid with a nil breed" do
@@ -104,24 +79,19 @@ describe "A ClassyEnum that allows nils" do
   end
 
   context "with invalid breed options" do
-    before { @dog = AllowNilBreedDog.new(:breed => :fake_breed) }
+    let(:dog) { AllowNilBreedDog.new(:breed => :fake_breed) }
+    subject { dog }
+    it { should_not be_valid }
 
-    it "should not be valid with an invalid option" do
-      @dog.should_not be_valid
-    end
-
-    it "should have an error message containing the right options" do
-      @dog.valid?
-      @dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
+    it 'should have an error message containing the right options' do
+      dog.valid?
+      dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
     end
   end
 
 end
 
 describe "A ClassyEnum that has a different field name than the enum" do
-  before { @dog = OtherDog.new(:other_breed => :snoop) }
-
-  it "should have a classy enum breed" do
-    @dog.other_breed.should be_a(BreedSnoop)
-  end
+  subject { OtherDog.new(:other_breed => :snoop) }
+  its(:other_breed) { should be_a(BreedSnoop) }
 end
