@@ -16,6 +16,12 @@ class Cat < ActiveRecord::Base
 end
 
 describe Cat do
-  subject { Cat.new(:breed => :abyssian, :color => 'black') }
-  its(:breed_color) { should eql('black Abyssian') }
+  let(:abyssian) { Cat.new(:breed => :abyssian, :color => 'black') }
+  let(:persian) { Cat.new(:breed => :persian, :color => 'white') }
+
+  it 'should delegate breed color to breed with an ownership reference' do
+    abyssian.breed_color { should eql('black Abyssian') }
+    persian.breed_color { should eql('white Persian') }
+
+  end
 end
