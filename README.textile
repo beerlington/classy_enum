@@ -104,7 +104,8 @@ With this setup, I can now do the following:
 @alarm = Alarm.create(:priority => :medium)
 
 @alarm.priority  # => PriorityMedium
-@alarm.priority.is? :medium # => true
+@alarm.priority.medium? # => true
+@alarm.priority.high? # => false
 @alarm.priority.to_s # => 'medium'
 @alarm.priority.name # => 'Medium'
 
