@@ -90,6 +90,13 @@ module ClassyEnum
       to_s
     end
 
+    # Overrides as_json to remove owner reference recursion issues
+    def as_json(options=nil)
+      json = super(options)
+      json.delete('owner')
+      json
+    end
+
   protected
 
     # Determine if the enum attribute is a particular member.
