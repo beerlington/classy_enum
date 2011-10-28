@@ -22,6 +22,11 @@ describe Cat do
   it 'should delegate breed color to breed with an ownership reference' do
     abyssian.breed_color { should eql('black Abyssian') }
     persian.breed_color { should eql('white Persian') }
-
   end
+
+  it 'should correctly serialize without the owner reference' do
+    abyssian.to_json.should == "{\"cat\":{\"breed\":{\"to_s\":\"abyssian\",\"index\":1}}}"
+    persian.to_json.should == "{\"cat\":{\"breed\":{\"to_s\":\"persian\",\"index\":4}}}"
+  end
+
 end
