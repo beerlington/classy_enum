@@ -166,7 +166,7 @@ class Alarm < ActiveRecord::Base
 end
 
 @alarm = Alarm.create(:priority => :high, :enabled => true)
-@alarm.to_json.should == "{\"alarm\":{\"priority\":{\"to_s\":\"high\",\"index\":3}}}"
+@alarm.to_json.should == "{\"alarm\":{\"priority\":{}}}"
 </pre>
 
 h2. Special Cases
