@@ -26,6 +26,8 @@ module ClassyEnum
           @index = index + 1
           @option = option
 
+          attr_accessor :owner, :serialize_as_json
+
           # Use ActiveModel::AttributeMethods to define attribute? methods
           attribute_method_suffix '?'
           define_attribute_methods enums
@@ -51,12 +53,13 @@ module ClassyEnum
     #  end
     #
     #  Priority.build(:low) # => PriorityLow.new
-    def build(option, owner = nil)
-      return option if option.blank?
-      return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self::OPTIONS.include? option.to_sym
+    def build(value, options={})
+      return value if value.blank?
+      return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self::OPTIONS.include? value.to_sym
 
-      object = Object.const_get("#{self}#{option.to_s.camelize}").new
-      object.instance_variable_set(:@owner,owner) unless owner.nil?
+      object = Object.const_get("#{self}#{value.to_s.camelize}").new
+      object.owner = options[:owner]
+      object.serialize_as_json = options[:serialize_as_json]
       object
     end
 

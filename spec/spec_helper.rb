@@ -43,6 +43,10 @@ ActiveRecord::Schema.define(:version => 1) do
   create_table :cats, :force => true do |t|
     t.string :breed
   end
+
+  create_table :other_cats, :force => true do |t|
+    t.string :breed
+  end
 end
 
 class Breed < ClassyEnum::Base

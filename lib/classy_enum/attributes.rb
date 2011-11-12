@@ -25,6 +25,7 @@ module ClassyEnum
       enum = options[:enum] || attribute
       allow_blank = options[:allow_blank] || false
       allow_nil = options[:allow_nil] || false
+      serialize_as_json = options[:serialize_as_json] || false
 
       klass = enum.to_s.camelize.constantize
 
@@ -36,7 +37,7 @@ module ClassyEnum
 
         # Define getter method that returns a ClassyEnum instance
         define_method attribute do
-          klass.build(super(), self)
+          klass.build(super(), :owner => self, :serialize_as_json => serialize_as_json)
         end
 
         # Define setter method that accepts either string or symbol for member
