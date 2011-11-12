@@ -12,7 +12,7 @@ module ClassyEnum
     #  @priority = PriorityMedium.new
     #  @priority.index # => 2
     def index
-      @index
+      self.class.instance_variable_get('@index')
     end
 
     alias :to_i :index
@@ -28,7 +28,7 @@ module ClassyEnum
     #  @priority = PriorityLow.new
     #  @priority.to_s # => 'low'
     def to_s
-      @to_s
+      self.class.instance_variable_get('@option').to_s
     end
 
     # Returns a Symbol corresponding to a string representation of element,
@@ -43,7 +43,7 @@ module ClassyEnum
     #  @priority = PriorityLow.new
     #  @priority.to_sym # => :low
     def to_sym
-      @to_s.to_sym
+      to_s.to_sym
     end
 
     # Returns string representing enum in Rails titleize format
@@ -57,7 +57,7 @@ module ClassyEnum
     #  @priority = Priority.build(:really_high)
     #  @priority.name # => "Really High"
     def name
-      @to_s.titleize
+      to_s.titleize
     end
 
     # Sort an array of elements based on the order they are defined
@@ -76,7 +76,7 @@ module ClassyEnum
     #  priorities.max # => @high
     #  priorities.min # => @low
     def <=> other
-      @index <=> other.index
+      index <=> other.index
     end
 
     # Used by ActiveRecord::PredicateBuilder when building from a hash

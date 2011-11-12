@@ -23,8 +23,7 @@ end
 
 describe Cat do
   let(:abyssian) { Cat.new(:breed => :abyssian, :color => 'black') }
-  let(:persian) { Cat.new(:breed => :persian, :color => 'white') }
-  let(:himilayan) { OtherCat.new(:breed => :persian, :color => 'white') }
+  let(:persian) { OtherCat.new(:breed => :persian, :color => 'white') }
 
   it 'should delegate breed color to breed with an ownership reference' do
     abyssian.breed_color { should eql('black Abyssian') }
@@ -33,11 +32,10 @@ describe Cat do
 
   it 'should correctly serialize without the owner reference' do
     abyssian.to_json.should == "{\"cat\":{\"breed\":\"abyssian\"}}"
-    persian.to_json.should == "{\"cat\":{\"breed\":\"persian\"}}"
   end
 
   it 'should convert the enum to a string when serializing' do
-    himilayan.to_json.should == "{\"other_cat\":{\"breed\":{\"to_s\":\"persian\",\"index\":4}}}"
+    persian.to_json.should == "{\"other_cat\":{\"breed\":{}}}"
   end
 
 end

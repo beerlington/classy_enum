@@ -149,6 +149,26 @@ In the above example, high priority alarms are only emailed if the owning alarm 
 @alarm.send_email? # => false
 </pre>
 
+h2. Serializing as JSON
+
+By default, the enum will be serialized as a string representing the value:
+
+<pre>
+@alarm = Alarm.create(:priority => :high, :enabled => true)
+@alarm.to_json.should == "{\"alarm\":{\"priority\":\"high\"}}"
+</pre>
+
+This behavior can be overridden by using the @:serialize_as_json => true@ option in your ActiveRecord model:
+
+<pre>
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, :serialize_as_json => true
+end
+
+@alarm = Alarm.create(:priority => :high, :enabled => true)
+@alarm.to_json.should == "{\"alarm\":{\"priority\":{\"to_s\":\"high\",\"index\":3}}}"
+</pre>
+
 h2. Special Cases
 
 What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in @classy_enum_attr@ to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.

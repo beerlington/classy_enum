@@ -26,7 +26,7 @@ module ClassyEnum
           @index = index + 1
           @option = option
 
-          attr_accessor :owner, :serialize_as_json, :to_s, :index
+          attr_accessor :owner, :serialize_as_json
 
           # Use ActiveModel::AttributeMethods to define attribute? methods
           attribute_method_suffix '?'
@@ -55,9 +55,6 @@ module ClassyEnum
       object = Object.const_get("#{self}#{value.to_s.camelize}").new
       object.owner = options[:owner]
       object.serialize_as_json = options[:serialize_as_json]
-      object.to_s = object.class.instance_variable_get('@option').to_s
-      object.index = object.class.instance_variable_get('@index')
-
       object
     end
 
