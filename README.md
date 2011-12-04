@@ -1,10 +1,10 @@
-h1. classy_enum "!https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master!":http://travis-ci.org/beerlington/classy_enum
+# classy_enum "!https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master!":http://travis-ci.org/beerlington/classy_enum
 
 ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
 
 !http://dl.dropbox.com/u/1934677/classy.jpg!
 
-h2. Rails & Ruby Versions Supported
+## Rails & Ruby Versions Supported
 
 *Rails:*
 
@@ -14,27 +14,27 @@ h2. Rails & Ruby Versions Supported
 
 *Ruby:* Ruby 1.8.7 and 1.9.2 both tested and supported
 
-h2. Installation
+## Installation
 
 The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum
 
-You will also need to add @app/enums@ as an autoloadable path. This configuration will depend on which version of rails you are using.
+You will also need to add `app/enums` as an autoloadable path. This configuration will depend on which version of rails you are using.
 
-h2. Example Usage
+## Example Usage
 
-The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called @Alarm@ with an attribute called @priority@. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
+The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
 
-h3. 1. Generate the Enum
+### 1. Generate the Enum
 
 The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
 
-<pre>
+```
 rails g classy_enum Priority low medium high
-</pre>
+```
 
 A new enum template file will be created at app/enums/priority.rb that will look like:
 
-<pre>
+```ruby
 class Priority < ClassyEnum::Base
   enum_classes :low, :medium, :high
 end
@@ -47,19 +47,19 @@ end
 
 class PriorityHigh < Priority
 end
-</pre>
+```
 
-The @enum_classes@ macro will add all the ClassyEnum behavior, which is described further down in this document.
+The `enum_classes` macro will add all the ClassyEnum behavior, which is described further down in this document.
 
-h3. 2. Customize the Enum
+### 2. Customize the Enum
 
 The generator creates a default setup, but each enum member can be changed to fit your needs.
 
-Using the @enum_classes@ method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
+Using the `enum_classes` method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
 
-I would like to add a method called @send_email?@ that all member subclasses respond to. By default this method will return false, but will be overridden for high priority alarms to return true.
+I would like to add a method called `send_email?` that all member subclasses respond to. By default this method will return false, but will be overridden for high priority alarms to return true.
 
-<pre>
+```ruby
 class Priority < ClassyEnum::Base
   enum_classes :low, :medium, :high
 
@@ -73,34 +73,34 @@ class PriorityHigh < Priority
     true
   end
 end
-</pre>
+```
 
 Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because ClassyEnum.enum_classes automatically creates a class for each member. The generator only creates these subclass definitions for convenience, but they can be deleted as shown in this example.
 
-h3. 3. Setup the ActiveRecord model
+### 3. Setup the ActiveRecord model
 
 My ActiveRecord Alarm model needs a text field that will store a string representing the enum member. An example model schema might look something like:
 
-<pre>
+```ruby
 create_table "alarms", :force => true do |t|
   t.string   "priority"
   t.boolean  "enabled"
 end
-</pre>
+```
 
-Then in my model I've added a line that calls @classy_enum_attr@ with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
+Then in my model I've added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
 
-<pre>
+```ruby
 class Alarm < ActiveRecord::Base
   classy_enum_attr :priority
 
   delegate :send_email?, :to => :priority
 end
-</pre>
+```
 
 With this setup, I can now do the following:
 
-<pre>
+```ruby
 @alarm = Alarm.create(:priority => :medium)
 
 @alarm.priority  # => PriorityMedium
@@ -113,19 +113,19 @@ With this setup, I can now do the following:
 @alarm.send_email? # => false
 @alarm.priority = :high
 @alarm.send_email? # => true
-</pre>
+```
 
-The enum field works like any other model attribute. It can be mass-assigned using @update_attribute(s)@.
+The enum field works like any other model attribute. It can be mass-assigned using `update_attribute(s)`.
 
-h2. Back reference to owning object
+## Back reference to owning object
 
-In some cases you may want an enum class to be able to reference the owning object (an instance of the active record model). Think of it as a @belongs_to@ relationship, where the enum can reference its owning object.
+In some cases you may want an enum class to be able to reference the owning object (an instance of the active record model). Think of it as a `belongs_to` relationship, where the enum can reference its owning object.
 
-In order to create the back reference, you must declare how you wish to refer to the owner using the @owner@ class method.
+In order to create the back reference, you must declare how you wish to refer to the owner using the `owner` class method.
 
 For example:
 
-<pre>
+```ruby
 class Priority < ClassyEnum::Base
   enum_classes :low, :medium, :high
   owner :alarm
@@ -136,108 +136,108 @@ class PriorityHigh < Priority
     alarm.enabled?
   end
 end
-</pre>
+```
 
 In the above example, high priority alarms are only emailed if the owning alarm is enabled.
 
-<pre>
+```ruby
 @alarm = Alarm.create(:priority => :high, :enabled => true)
 
 # Should this alarm send an email?
 @alarm.send_email? # => true
 @alarm.enabled = false
 @alarm.send_email? # => false
-</pre>
+```
 
-h2. Serializing as JSON
+## Serializing as JSON
 
 By default, the enum will be serialized as a string representing the value:
 
-<pre>
+```ruby
 @alarm = Alarm.create(:priority => :high, :enabled => true)
 @alarm.to_json.should == "{\"alarm\":{\"priority\":\"high\"}}"
-</pre>
+```
 
-This behavior can be overridden by using the @:serialize_as_json => true@ option in your ActiveRecord model:
+This behavior can be overridden by using the `:serialize_as_json => true` option in your ActiveRecord model:
 
-<pre>
+```ruby
 class Alarm < ActiveRecord::Base
   classy_enum_attr :priority, :serialize_as_json => true
 end
 
 @alarm = Alarm.create(:priority => :high, :enabled => true)
 @alarm.to_json.should == "{\"alarm\":{\"priority\":{}}}"
-</pre>
+```
 
-h2. Special Cases
+## Special Cases
 
-What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in @classy_enum_attr@ to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
+What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
 
-<pre>
+```ruby
 class Alarm < ActiveRecord::Base
   classy_enum_attr :alarm_priority, :enum => :priority
 end
 
 @alarm = Alarm.create(:alarm_priority => :medium)
 @alarm.alarm_priority  # => PriorityMedium
-</pre>
+```
 
-h2. Model Validation
+## Model Validation
 
-An ActiveRecord validator @validates_inclusion_of :field, :in => ENUM.all@ is automatically added to your model when you use @classy_enum_attr@. 
+An ActiveRecord validator `validates_inclusion_of :field, :in => ENUM.all` is automatically added to your model when you use `classy_enum_attr`. 
 
 If your enum only has members low, medium, and high, then the following validation behavior would be expected:
 
-<pre>
+```ruby
 @alarm = Alarm.new(:priority => :really_high)
 @alarm.valid? # => false
 @alarm.priority = :high
 @alarm.valid? # => true
-</pre>
+```
 
 To allow nil or blank values, you can pass in :allow_nil and :allow_blank as options to classy_enum_attr, like so:
 
-<pre>
+```ruby
 class Alarm < ActiveRecord::Base
   classy_enum_attr :priority, :allow_nil => true
 end
 
 @alarm = Alarm.new(:priority => nil)
 @alarm.valid? # => true
-</pre>
+```
 
-h2. Working with ClassyEnum outside of ActiveRecord
+## Working with ClassyEnum outside of ActiveRecord
 
 While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
 
 Instantiate an enum member subclass *PriorityLow*
 
-<pre>
+```ruby
 # These statements are all equivalent
 low = Priority.build(:low)
 low = Priority.build('low')
 low = Priority.find(:low)
 low = PriorityLow.new
-</pre>
+```
 
 Get a list of the valid enum options
 
-<pre>
+```ruby
 Priority.valid_options # => low, medium, high
-</pre>
+```
 
-h2. Formtastic Support
+## Formtastic Support
 
 To add ClassyEnum support to Formtastic, add the following to your formtastic.rb initializer (config/initializers/formtastic.rb):
 
-<pre>
+```ruby
 require 'classy_enum/semantic_form_builder'
-</pre>
+```
 
-Then in your Formtastic view forms, use this syntax: @<%= f.input :priority, :as => :enum_select %>@
+Then in your Formtastic view forms, use this syntax: `<%= f.input :priority, :as => :enum_select %>`
 
-Note: ClassyEnum respects the @:allow_blank@ and @:allow_nil@ options and will include a blank select option in these cases
+Note: ClassyEnum respects the `:allow_blank` and `:allow_nil` options and will include a blank select option in these cases
 
-h2. Copyright
+## Copyright
 
 Copyright (c) 2011 Peter Brown. See LICENSE for details.
