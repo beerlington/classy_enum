@@ -1,8 +1,10 @@
-# classy_enum "!https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master!":http://travis-ci.org/beerlington/classy_enum
+# classy_enum
+
+[![Build Status](https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master)](http://travis-ci.org/beerlington/classy_enum)
 
 ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
 
-!http://dl.dropbox.com/u/1934677/classy.jpg!
+![classy enum][http://dl.dropbox.com/u/1934677/classy.jpg]
 
 ## Rails & Ruby Versions Supported
 
@@ -10,13 +12,13 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
   * 3.1.0.rc: Mostly functional, known issue with using uniqueness validation with ClassyEnum attribute as a scope
   * 3.0.0 - 3.0.9: Fully tested in a production application, no known issues
-  * 2.3.x: If you need support for Rails 2.3.x, please install "version 0.9.1":https://rubygems.org/gems/classy_enum/versions/0.9.1
+  * 2.3.x: If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1)
 
 *Ruby:* Ruby 1.8.7 and 1.9.2 both tested and supported
 
 ## Installation
 
-The gem is hosted at "rubygems.org":https://rubygems.org/gems/classy_enum
+The gem is hosted at [rubygems.org](https://rubygems.org/gems/classy_enum)
 
 You will also need to add `app/enums` as an autoloadable path. This configuration will depend on which version of rails you are using.
 
@@ -75,7 +77,7 @@ class PriorityHigh < Priority
 end
 ```
 
-Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because ClassyEnum.enum_classes automatically creates a class for each member. The generator only creates these subclass definitions for convenience, but they can be deleted as shown in this example.
+Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because `ClassyEnum.enum_classes` automatically creates a class for each member. The generator only creates these subclass definitions for convenience, but they can be deleted as shown in this example.
 
 ### 3. Setup the ActiveRecord model
 
@@ -195,7 +197,7 @@ If your enum only has members low, medium, and high, then the following validati
 @alarm.valid? # => true
 ```
 
-To allow nil or blank values, you can pass in :allow_nil and :allow_blank as options to classy_enum_attr, like so:
+To allow nil or blank values, you can pass in `:allow_nil` and `:allow_blank` as options to `classy_enum_attr`:
 
 ```ruby
 class Alarm < ActiveRecord::Base
@@ -240,4 +242,4 @@ Note: ClassyEnum respects the `:allow_blank` and `:allow_nil` options and will i
 
 ## Copyright
 
-Copyright (c) 2011 Peter Brown. See LICENSE for details.
+Copyright (c) 2011 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
