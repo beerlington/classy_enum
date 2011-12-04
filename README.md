@@ -4,8 +4,6 @@
 
 ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
 
-![classy enum][http://dl.dropbox.com/u/1934677/classy.jpg]
-
 ## Rails & Ruby Versions Supported
 
 *Rails:*
