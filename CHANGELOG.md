@@ -107,10 +107,10 @@
 * Internal changes to how ActiveRecord is extended
 * More test coverage
 
-## Version 0.0.2
+## 0.0.2
 
 * Fixed initialized constant warning
 
-## Version 0.0.1
+## 0.0.1
 
 * Initial Release
