@@ -8,8 +8,8 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 *Rails:*
 
-  * 3.1.0.rc: Mostly functional, known issue with using uniqueness validation with ClassyEnum attribute as a scope
-  * 3.0.0 - 3.0.9: Fully tested in a production application, no known issues
+  * 3.0.x - 3.2.x: Fully tested in a production application. See below
+    for known issues.
   * 2.3.x: If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1)
 
 *Ruby:* Ruby 1.8.7, 1.9.2, and 1.9.3 are tested and supported
@@ -169,7 +169,7 @@ end
 @alarm.to_json.should == "{\"alarm\":{\"priority\":{}}}"
 ```
 
-## Special Cases
+## Special Cases and Known Issue
 
 What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
 
@@ -180,6 +180,22 @@ end
 
 @alarm = Alarm.create(:alarm_priority => :medium)
 @alarm.alarm_priority  # => PriorityMedium
+```
+
+There is an [issue](https://github.com/beerlington/classy_enum/issues/8)
+with Rails 3.1 and higher when using validates_uniqueness_of
+and a scope that is the enum field. This issue also occurs when using
+`composed_of` and is not a bug with ClassyEnum. As a workaround to this
+problem, you can use the reader suffix option when declaring your field:
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, :suffix => 'type'
+end
+
+alarm = Alarm.create(:priority => :high)
+alarm.priority # => 'high'
+alarm.priority_type # instance of PriorityHigh enum
 ```
 
 ## Model Validation
