@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Brown"]
-  s.date = "2012-01-11"
+  s.date = "2012-02-05"
   s.description = "A utility that adds class based enum functionality to ActiveRecord attributes"
   s.email = "github@lette.us"
   s.extra_rdoc_files = [
@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/beerlington/classy_enum"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.15"
   s.summary = "A class based enumerator utility for Ruby on Rails"
 
   if s.respond_to? :specification_version then
