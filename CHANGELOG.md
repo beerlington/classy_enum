@@ -1,5 +1,9 @@
 # ClassyEnum Changelog
 
+## 2.0.0
+
+* Enum class definitions are no longer defined implicity and must be explicitly subclassed from children of ClassyEnum::Base
+
 ## 1.3.2
 
 * Added support for Ruby 1.9.3

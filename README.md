@@ -49,13 +49,13 @@ class PriorityHigh < Priority
 end
 ```
 
-The `enum_classes` macro will add all the ClassyEnum behavior, which is described further down in this document.
+The `enum_classes` class macro will define the enum member order as well as additional ClassyEnum behavior, which is described further down in this document.
 
 ### 2. Customize the Enum
 
 The generator creates a default setup, but each enum member can be changed to fit your needs.
 
-Using the `enum_classes` method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
+I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
 
 I would like to add a method called `send_email?` that all member subclasses respond to. By default this method will return false, but will be overridden for high priority alarms to return true.
 
@@ -68,14 +68,18 @@ class Priority < ClassyEnum::Base
   end
 end
 
+class prioritylow < priority
+end
+
+class prioritymedium < priority
+end
+
 class PriorityHigh < Priority
   def send_email?
     true
   end
 end
 ```
-
-Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because `ClassyEnum.enum_classes` automatically creates a class for each member. The generator only creates these subclass definitions for convenience, but they can be deleted as shown in this example.
 
 ### 3. Setup the ActiveRecord model
 
@@ -129,6 +133,12 @@ For example:
 class Priority < ClassyEnum::Base
   enum_classes :low, :medium, :high
   owner :alarm
+end
+
+class prioritylow < priority
+end
+
+class prioritymedium < priority
 end
 
 class PriorityHigh < Priority
