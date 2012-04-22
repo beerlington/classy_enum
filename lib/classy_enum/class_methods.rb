@@ -18,24 +18,29 @@ module ClassyEnum
     #  Priority.build(:low) or PriorityLow.new
     #
     def enum_classes(*enums)
-      self.const_set("OPTIONS", enums) unless self.const_defined? "OPTIONS"
+      self.class_eval do
+        class_attribute :enum_options, :base_class
 
-      enums.each_with_index do |option, index|
+        self.enum_options = enums.map(&:to_sym)
+        self.base_class = self
 
-        klass = Class.new(self) do
-          @index = index + 1
-          @option = option
+        # # Use ActiveModel::AttributeMethods to define attribute? methods
+        attribute_method_suffix '?'
+        define_attribute_methods enums
+      end
+    end
 
-          attr_accessor :owner, :serialize_as_json
+    def inherited(klass)
+      return if self == ClassyEnum::Base
 
-          # Use ActiveModel::AttributeMethods to define attribute? methods
-          attribute_method_suffix '?'
-          define_attribute_methods enums
+      enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
+      index = self.enum_options.index(enum) + 1
 
-        end
+      klass.class_eval do
+        @index = index
+        @option = enum
 
-        klass_name = "#{self}#{option.to_s.camelize}"
-        Object.const_set(klass_name, klass) unless Object.const_defined? klass_name
+        attr_accessor :owner, :serialize_as_json
       end
     end
 
@@ -50,9 +55,9 @@ module ClassyEnum
     #  Priority.build(:low) # => PriorityLow.new
     def build(value, options={})
       return value if value.blank?
-      return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self::OPTIONS.include? value.to_sym
+      return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self.enum_options.include? value.to_sym
 
-      object = Object.const_get("#{self}#{value.to_s.camelize}").new
+      object = ("#{self}#{value.to_s.camelize}").constantize.new
       object.owner = options[:owner]
       object.serialize_as_json = options[:serialize_as_json]
       object
@@ -70,7 +75,7 @@ module ClassyEnum
     #
     #  Priority.all # => [PriorityLow.new, PriorityMedium.new, PriorityHigh.new]
     def all
-      self::OPTIONS.map {|e| build(e) }
+      self.enum_options.map {|e| build(e) }
     end
 
     # Returns a 2D array for Rails select helper options.
@@ -98,10 +103,10 @@ module ClassyEnum
     #
     #  Priority.valid_options # => "low, medium, high"
     def valid_options
-      self::OPTIONS.map(&:to_s).join(', ')
+      self.enum_options.map(&:to_s).join(', ')
     end
 
-  private
+    private
 
     # DSL setter method for reference to enum owner
     def owner(owner)

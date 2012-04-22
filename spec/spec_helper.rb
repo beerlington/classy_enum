@@ -53,6 +53,15 @@ class Breed < ClassyEnum::Base
   enum_classes :golden_retriever, :snoop, :husky
 end
 
+class BreedGoldenRetriever < Breed
+end
+
+class BreedSnoop < Breed
+end
+
+class BreedHusky < Breed
+end
+
 class Dog < ActiveRecord::Base
   classy_enum_attr :breed
 end
