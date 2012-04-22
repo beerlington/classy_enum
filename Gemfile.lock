@@ -104,6 +104,6 @@ PLATFORMS
 DEPENDENCIES
   jeweler (~> 1.6.2)
   json (~> 1.6.5)
-  rails (~> 3.2.0)
+  rails (>= 3.0.0)
   rspec-rails (~> 2.8.1)
   sqlite3

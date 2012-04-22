@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'rails', '~> 3.2.0'
+gem 'rails', '>= 3.0.0'
 
 group :development do
   gem "jeweler", "~> 1.6.2"
