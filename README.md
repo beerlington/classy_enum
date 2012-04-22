@@ -20,9 +20,22 @@ The gem is hosted at [rubygems.org](https://rubygems.org/gems/classy_enum)
 
 You will also need to add `app/enums` as an autoloadable path. This configuration will depend on which version of rails you are using.
 
+## Upgrading to 2.0
+
+Prior to 2.0, enum classes were implicity defined and were only required
+when overriding methods or properties. As of 2.0, all enum classes must
+explicity subclass a child of ClassyEnum::Base. If you used the
+generator, there are no changes to the existing structure.
+
+Built-in Formtastic support has been removed. See the note at the
+bottom of this readme for more information how how to enable it.
+
+validates_uniqueness_of will no longer work with Rails 3.0.x when using
+a scope that is the enum field.
+
 ## Example Usage
 
-The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
+The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested.
 
 ### 1. Generate the Enum
 
@@ -49,13 +62,13 @@ class PriorityHigh < Priority
 end
 ```
 
-The `enum_classes` macro will add all the ClassyEnum behavior, which is described further down in this document.
+The `enum_classes` class macro will define the enum member order as well as additional ClassyEnum behavior, which is described further down in this document.
 
 ### 2. Customize the Enum
 
 The generator creates a default setup, but each enum member can be changed to fit your needs.
 
-Using the `enum_classes` method, I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
+I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
 
 I would like to add a method called `send_email?` that all member subclasses respond to. By default this method will return false, but will be overridden for high priority alarms to return true.
 
@@ -68,14 +81,18 @@ class Priority < ClassyEnum::Base
   end
 end
 
+class prioritylow < priority
+end
+
+class prioritymedium < priority
+end
+
 class PriorityHigh < Priority
   def send_email?
     true
   end
 end
 ```
-
-Note: Defining the subclasses within your enum file is only required when you will be overriding behavior and/or properties. The member subclasses still exist without being defined here because `ClassyEnum.enum_classes` automatically creates a class for each member. The generator only creates these subclass definitions for convenience, but they can be deleted as shown in this example.
 
 ### 3. Setup the ActiveRecord model
 
@@ -131,6 +148,12 @@ class Priority < ClassyEnum::Base
   owner :alarm
 end
 
+class prioritylow < priority
+end
+
+class prioritymedium < priority
+end
+
 class PriorityHigh < Priority
   def send_email?
     alarm.enabled?
@@ -183,7 +206,7 @@ end
 ```
 
 There is an [issue](https://github.com/beerlington/classy_enum/issues/8)
-with Rails 3.1 and higher when using validates_uniqueness_of
+with Rails 3.0 and higher when using validates_uniqueness_of
 and a scope that is the enum field. This issue also occurs when using
 `composed_of` and is not a bug with ClassyEnum. As a workaround to this
 problem, you can use the reader suffix option when declaring your field:
@@ -244,11 +267,9 @@ Priority.valid_options # => low, medium, high
 
 ## Formtastic Support
 
-To add ClassyEnum support to Formtastic, add the following to your formtastic.rb initializer (config/initializers/formtastic.rb):
-
-```ruby
-require 'classy_enum/semantic_form_builder'
-```
+Built-in Formtastic support has been removed as of 2.0. It is still
+available but needs to be enabled manually. To enable support visit
+[the wiki](https://github.com/beerlington/classy_enum/wiki/Formtastic-Support)
 
 Then in your Formtastic view forms, use this syntax: `<%= f.input :priority, :as => :enum_select %>`
 
@@ -256,4 +277,4 @@ Note: ClassyEnum respects the `:allow_blank` and `:allow_nil` options and will i
 
 ## Copyright
 
-Copyright (c) 2011 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
+Copyright (c) 2012 [Peter Brown](https://github.com/beerlington). See LICENSE for details.

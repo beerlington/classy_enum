@@ -3,11 +3,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rubygems'
 require 'active_record'
-require 'active_support'
-require 'action_pack'
 require 'action_view'
 require 'action_controller'
-require 'formtastic'
 require 'rspec/rails'
 require 'classy_enum'
 
@@ -53,6 +50,15 @@ class Breed < ClassyEnum::Base
   enum_classes :golden_retriever, :snoop, :husky
 end
 
+class BreedGoldenRetriever < Breed
+end
+
+class BreedSnoop < Breed
+end
+
+class BreedHusky < Breed
+end
+
 class Dog < ActiveRecord::Base
   classy_enum_attr :breed
 end
@@ -68,31 +74,3 @@ end
 class OtherDog < ActiveRecord::Base
   classy_enum_attr :other_breed, :enum => :breed
 end
-
-module FormtasticSpecHelper
-  include ActionView::Context if defined?(ActionView::Context)
-  include ActionController::RecordIdentifier
-  include ActionView::Helpers::FormHelper
-  include ActionView::Helpers::FormTagHelper
-  include ActionView::Helpers::FormOptionsHelper
-  include Formtastic::SemanticFormHelper
-
-  def self.included(base)
-    base.class_eval do
-
-      attr_accessor :output_buffer
-
-      def protect_against_forgery?
-        false
-      end
-
-    end
-  end
-
-end
-
-module ActionView
-  class OutputBuffer < ActiveSupport::SafeBuffer
-  end
-end
-

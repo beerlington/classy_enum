@@ -12,7 +12,10 @@ class TestEnum < ClassyEnum::Base
   end
 end
 
-class TestEnumTwo
+class TestEnumOne < TestEnum
+end
+
+class TestEnumTwo < TestEnum
   def self.test_class_method?
     true
   end
@@ -22,20 +25,17 @@ class TestEnumTwo
   end
 end
 
-describe "A ClassyEnum Descendent" do
+class TestEnumThree < TestEnum
+end
 
-  TestEnum::OPTIONS.each do |option|
-   it "should define a TestEnum#{option.to_s.capitalize} class" do
-     Object.const_defined?("TestEnum#{option.to_s.capitalize}").should be_true
-   end
-  end
+describe "A ClassyEnum Descendent" do
 
   it "should return an array of enums" do
     TestEnum.all.map(&:class).should == [TestEnumOne, TestEnumTwo, TestEnumThree]
   end
 
   it "should return an array of enums for a select tag" do
-    TestEnum.select_options.should == TestEnum::OPTIONS.map {|o| [TestEnum.build(o).name, TestEnum.build(o).to_s] }
+    TestEnum.select_options.should == TestEnum.enum_options.map {|o| [TestEnum.build(o).name, TestEnum.build(o).to_s] }
   end
 
   it "should return a type error when adding an invalid option" do

@@ -9,6 +9,18 @@ class CatBreed < ClassyEnum::Base
   end
 end
 
+class CatBreedAbyssian < CatBreed
+end
+
+class CatBreedBengal < CatBreed
+end
+
+class CatBreedBirman < CatBreed
+end
+
+class CatBreedPersian < CatBreed
+end
+
 class Cat < ActiveRecord::Base
   classy_enum_attr :breed, :enum => :cat_breed
   attr_accessor :color

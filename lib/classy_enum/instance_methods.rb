@@ -79,17 +79,6 @@ module ClassyEnum
       index <=> other.index
     end
 
-    # Used by ActiveRecord::PredicateBuilder when building from a hash
-    def is_a?(klass)
-      return true if klass == ActiveRecord::Base
-      super(klass)
-    end
-
-    # Used by ActiveRecord::PredicateBuilder when building from a hash
-    def id
-      to_s
-    end
-
     # Overrides as_json to remove owner reference recursion issues
     def as_json(options=nil)
       return to_s unless serialize_as_json
