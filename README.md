@@ -27,8 +27,11 @@ when overriding methods or properties. As of 2.0, all enum classes must
 explicity subclass a child of ClassyEnum::Base. If you used the
 generator, there are no changes to the existing structure.
 
-Also, built-in Formtastic support has been removed. See the note at the
+Built-in Formtastic support has been removed. See the note at the
 bottom of this readme for more information how how to enable it.
+
+validates_uniqueness_of will no longer work with Rails 3.0.x when using
+a scope that is the enum field.
 
 ## Example Usage
 
@@ -203,7 +206,7 @@ end
 ```
 
 There is an [issue](https://github.com/beerlington/classy_enum/issues/8)
-with Rails 3.1 and higher when using validates_uniqueness_of
+with Rails 3.0 and higher when using validates_uniqueness_of
 and a scope that is the enum field. This issue also occurs when using
 `composed_of` and is not a bug with ClassyEnum. As a workaround to this
 problem, you can use the reader suffix option when declaring your field:
