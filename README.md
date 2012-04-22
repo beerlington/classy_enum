@@ -20,9 +20,16 @@ The gem is hosted at [rubygems.org](https://rubygems.org/gems/classy_enum)
 
 You will also need to add `app/enums` as an autoloadable path. This configuration will depend on which version of rails you are using.
 
+## Upgrading to 2.0
+
+Prior to 2.0, enum classes were implicity defined and were only required
+when overriding methods or properties. As of 2.0, all enum classes must
+explicity subclass a child of ClassyEnum::Base. If you used the
+generator, there are no changes to the existing structure.
+
 ## Example Usage
 
-The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested. 
+The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested.
 
 ### 1. Generate the Enum
 
