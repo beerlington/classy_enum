@@ -3,6 +3,7 @@
 ## 2.0.0
 
 * Enum class definitions are no longer defined implicity and must be explicitly subclassed from children of ClassyEnum::Base
+* Formtastic support is not longer built-in. See https://github.com/beerlington/classy_enum/wiki/Formtastic-Support
 
 ## 1.3.2
 

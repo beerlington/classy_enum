@@ -261,11 +261,9 @@ Priority.valid_options # => low, medium, high
 
 ## Formtastic Support
 
-To add ClassyEnum support to Formtastic, add the following to your formtastic.rb initializer (config/initializers/formtastic.rb):
-
-```ruby
-require 'classy_enum/semantic_form_builder'
-```
+Built-in Formtastic support has been removed as of 2.0. It is still
+available but needs to be enabled manually. To enable support visit
+[the wiki](https://github.com/beerlington/classy_enum/wiki/Formtastic-Support)
 
 Then in your Formtastic view forms, use this syntax: `<%= f.input :priority, :as => :enum_select %>`
 
@@ -273,4 +271,4 @@ Note: ClassyEnum respects the `:allow_blank` and `:allow_nil` options and will i
 
 ## Copyright
 
-Copyright (c) 2011 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
+Copyright (c) 2012 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
