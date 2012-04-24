@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "classy_enum"
-  s.version = "2.0.2"
+  s.version = "2.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Brown"]
-  s.date = "2012-04-22"
+  s.date = "2012-04-24"
   s.description = "A utility that adds class based enum functionality to ActiveRecord attributes"
   s.email = "github@lette.us"
   s.extra_rdoc_files = [
