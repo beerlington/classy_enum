@@ -1,5 +1,14 @@
 # ClassyEnum Changelog
 
+## 2.0.3
+
+* Fixes issue with validates_uniqueness_of when using an enum field as
+  the scope.
+
+## 2.0.1 & 2.0.2
+
+* Resolving gem release conflicts, no changes
+
 ## 2.0.0
 
 * Enum class definitions are no longer defined implicity and must be explicitly subclassed from children of ClassyEnum::Base

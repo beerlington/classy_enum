@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 1) do
 
   create_table :active_dogs, :force => true do |t|
     t.string :breed
+    t.string :color
     t.string :name
     t.integer :age
   end
