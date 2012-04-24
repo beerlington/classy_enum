@@ -77,10 +77,10 @@ class Priority < ClassyEnum::Base
   end
 end
 
-class prioritylow < priority
+class PriorityLow < priority
 end
 
-class prioritymedium < priority
+class PriorityMedium < priority
 end
 
 class PriorityHigh < Priority
@@ -144,10 +144,10 @@ class Priority < ClassyEnum::Base
   owner :alarm
 end
 
-class prioritylow < priority
+class PriorityLow < priority
 end
 
-class prioritymedium < priority
+class PriorityMedium < priority
 end
 
 class PriorityHigh < Priority
