@@ -33,6 +33,11 @@ module ClassyEnum
     def inherited(klass)
       return if self == ClassyEnum::Base
 
+      # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
+      Arel::Visitors::ToSql.class_eval do
+        define_method "visit_#{klass.name}", lambda {|value| quote(value.to_s) }
+      end
+
       enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
       index = self.enum_options.index(enum) + 1
 

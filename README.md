@@ -8,8 +8,7 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 *Rails:*
 
-  * 3.0.x - 3.2.x: Fully tested in a production application. See below
-    for known issues.
+  * 3.0.x - 3.2.x: Fully tested in a production application.
   * 2.3.x: If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1)
 
 *Ruby:* Ruby 1.8.7, 1.9.2, and 1.9.3 are tested and supported
@@ -29,9 +28,6 @@ generator, there are no changes to the existing structure.
 
 Built-in Formtastic support has been removed. See the note at the
 bottom of this readme for more information how how to enable it.
-
-validates_uniqueness_of will no longer work with Rails 3.0.x when using
-a scope that is the enum field.
 
 ## Example Usage
 
@@ -81,10 +77,10 @@ class Priority < ClassyEnum::Base
   end
 end
 
-class prioritylow < priority
+class PriorityLow < priority
 end
 
-class prioritymedium < priority
+class PriorityMedium < priority
 end
 
 class PriorityHigh < Priority
@@ -148,10 +144,10 @@ class Priority < ClassyEnum::Base
   owner :alarm
 end
 
-class prioritylow < priority
+class PriorityLow < priority
 end
 
-class prioritymedium < priority
+class PriorityMedium < priority
 end
 
 class PriorityHigh < Priority
@@ -192,7 +188,7 @@ end
 @alarm.to_json.should == "{\"alarm\":{\"priority\":{}}}"
 ```
 
-## Special Cases and Known Issue
+## Special Cases
 
 What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
 
@@ -205,11 +201,8 @@ end
 @alarm.alarm_priority  # => PriorityMedium
 ```
 
-There is an [issue](https://github.com/beerlington/classy_enum/issues/8)
-with Rails 3.0 and higher when using validates_uniqueness_of
-and a scope that is the enum field. This issue also occurs when using
-`composed_of` and is not a bug with ClassyEnum. As a workaround to this
-problem, you can use the reader suffix option when declaring your field:
+If you would like the default getter method to return a string, you can
+use the optional *:suffix* option for the enum getter:
 
 ```ruby
 class Alarm < ActiveRecord::Base
