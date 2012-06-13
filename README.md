@@ -132,11 +132,33 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 
 ## Back reference to owning object
 
-In some cases you may want an enum class to be able to reference the owning object (an instance of the active record model). Think of it as a `belongs_to` relationship, where the enum can reference its owning object.
+In some cases you may want an enum class to reference the owning object
+(an instance of the active record model). Think of it as a `belongs_to`
+relationship, where the enum can reference its owning object.
 
-In order to create the back reference, you must declare how you wish to refer to the owner using the `owner` class method.
+By default, the back reference can be called using `owner`.
+If you want to refer to the owner by a different name, you must explicitly declare
+the owner name in the classy_enum parent class using the `owner` class method.
 
-For example:
+Example using the default `owner` method:
+
+```ruby
+class Priority < ClassyEnum::Base
+  enum_classes :low, :medium, :high
+end
+
+...
+# low and medium subclasses omitted
+...
+
+class PriorityHigh < Priority
+  def send_email?
+    owner.enabled?
+  end
+end
+```
+
+Example where the owner reference is explicitly declared:
 
 ```ruby
 class Priority < ClassyEnum::Base
@@ -144,11 +166,9 @@ class Priority < ClassyEnum::Base
   owner :alarm
 end
 
-class PriorityLow < Priority
-end
-
-class PriorityMedium < Priority
-end
+...
+# low and medium subclasses omitted
+...
 
 class PriorityHigh < Priority
   def send_email?
@@ -157,7 +177,7 @@ class PriorityHigh < Priority
 end
 ```
 
-In the above example, high priority alarms are only emailed if the owning alarm is enabled.
+In the above examples, high priority alarms are only emailed if the owning alarm is enabled.
 
 ```ruby
 @alarm = Alarm.create(:priority => :high, :enabled => true)
