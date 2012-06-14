@@ -101,6 +101,9 @@ create_table "alarms", :force => true do |t|
 end
 ```
 
+Note: Alternatively, you may use an enum type if your database supports it. See
+[this issue](https://github.com/beerlington/classy_enum/issues/12) for more information.
+
 Then in my model I've added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
 
 ```ruby
