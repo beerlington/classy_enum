@@ -127,13 +127,5 @@ module ClassyEnum
     def attribute?(attribute)
       to_s == attribute
     end
-
-  private
-
-    # Used by attribute methods
-    def attributes
-      []
-    end
-
   end
 end
