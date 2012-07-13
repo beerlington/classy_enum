@@ -45,7 +45,6 @@ A new enum template file will be created at app/enums/priority.rb that will look
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
 end
 
 class PriorityLow < Priority
@@ -58,7 +57,7 @@ class PriorityHigh < Priority
 end
 ```
 
-The `enum_classes` class macro will define the enum member order as well as additional ClassyEnum behavior, which is described further down in this document.
+The class order will define the enum member order as well as additional ClassyEnum behavior, which is described further down in this document.
 
 ### 2. Customize the Enum
 
@@ -70,8 +69,6 @@ I would like to add a method called `send_email?` that all member subclasses res
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
-
   def send_email?
     false
   end
@@ -147,7 +144,6 @@ Example using the default `owner` method:
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
 end
 
 ...
@@ -165,7 +161,6 @@ Example where the owner reference is explicitly declared:
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
   owner :alarm
 end
 

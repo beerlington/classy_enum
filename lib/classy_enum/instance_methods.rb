@@ -6,8 +6,11 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
     #  end
+    #
+    # class PriorityLow < Priority; end
+    # class PriorityMedium < Priority; end
+    # class PriorityHigh < Priority; end
     #
     #  @priority = PriorityMedium.new
     #  @priority.index # => 2
@@ -22,8 +25,11 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
     #  end
+    #
+    # class PriorityLow < Priority; end
+    # class PriorityMedium < Priority; end
+    # class PriorityHigh < Priority; end
     #
     #  @priority = PriorityLow.new
     #  @priority.to_s # => 'low'
@@ -37,8 +43,11 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
     #  end
+    #
+    # class PriorityLow < Priority; end
+    # class PriorityMedium < Priority; end
+    # class PriorityHigh < Priority; end
     #
     #  @priority = PriorityLow.new
     #  @priority.to_sym # => :low
@@ -51,8 +60,12 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high, :really_high
     #  end
+    #
+    # class PriorityLow < Priority; end
+    # class PriorityMedium < Priority; end
+    # class PriorityHigh < Priority; end
+    # class PriorityReallyHigh < Priority; end
     #
     #  @priority = Priority.build(:really_high)
     #  @priority.name # => "Really High"
@@ -65,8 +78,11 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
     #  end
+    #
+    # class PriorityLow < Priority; end
+    # class PriorityMedium < Priority; end
+    # class PriorityHigh < Priority; end
     #
     #  @low = Priority.build(:low)
     #  @medium = Priority.build(:medium)
@@ -95,8 +111,10 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Breed < ClassyEnum::Base
-    #    enum_classes :golden_retriever, :snoop
     #  end
+    #
+    # class BreedGoldenRetriever < Priority; end
+    # class BreedSnoop < Priority; end
     #
     #  # Create an ActiveRecord class using the Breed enum
     #  class Dog < ActiveRecord::Base

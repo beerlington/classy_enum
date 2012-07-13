@@ -37,7 +37,9 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
+    #  end
+    #
+    #  class PriorityLow < Priority
     #  end
     #
     #  Priority.build(:low) # => PriorityLow.new
@@ -61,8 +63,11 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
     #  end
+    #
+    # class PriorityLow < Priority; end
+    # class PriorityMedium < Priority; end
+    # class PriorityHigh < Priority; end
     #
     #  Priority.all # => [PriorityLow.new, PriorityMedium.new, PriorityHigh.new]
     def all
@@ -80,8 +85,10 @@ module ClassyEnum
     # ==== Example
     #  # Create an Enum with some elements
     #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :really_high
     #  end
+    #
+    # class PriorityLow < Priority; end
+    # class PriorityReallyHigh < Priority; end
     #
     #  Priority.select_options # => [["Low", "low"], ["Really High", "really_high"]]
     def select_options
