@@ -1,8 +1,4 @@
-module ClassyEnum
-  autoload :Base, 'classy_enum/base'
-  autoload :InstanceMethods, 'classy_enum/instance_methods'
-  autoload :ClassMethods, 'classy_enum/class_methods'
-  autoload :Attributes, 'classy_enum/attributes'
-end
-
-ActiveRecord::Base.send :extend, ClassyEnum::Attributes
+require 'classy_enum/instance_methods'
+require 'classy_enum/class_methods'
+require 'classy_enum/base'
+require 'classy_enum/attributes'
