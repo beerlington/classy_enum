@@ -18,6 +18,8 @@ module ClassyEnum
     #  Priority.build(:low) or PriorityLow.new
     #
     def enum_classes(*enums)
+      ActiveSupport::Deprecation.warn('enum_classes is deprecated, and will be removed in ClassyEnum 3.0. It is no longer needed.', caller)
+
       self.class_eval do
         class_attribute :enum_options, :base_class
 
@@ -68,7 +70,10 @@ module ClassyEnum
       object
     end
 
-    alias :find :build
+    def find(value, options={})
+      ActiveSupport::Deprecation.warn("find is deprecated, and will be removed in ClassyEnum 3.0. Use build(:member) instead.", caller)
+      build(value, options)
+    end
 
     # Returns an array of all instantiated enums
     #
@@ -108,6 +113,7 @@ module ClassyEnum
     #
     #  Priority.valid_options # => "low, medium, high"
     def valid_options
+      ActiveSupport::Deprecation.warn("valid_options is deprecated, and will be removed in ClassyEnum 3.0. Use all.join(', ') instead.", caller)
       self.enum_options.map(&:to_s).join(', ')
     end
 

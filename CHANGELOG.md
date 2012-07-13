@@ -1,5 +1,11 @@
 # ClassyEnum Changelog
 
+## 2.1.0
+
+* Deprecating ClassyEnum::Base.enum_classes() (this is no longer needed)
+* Deprecating ClassyEnum::Base.valid_options()(use all.join(', ') instead)
+* Deprecating ClassEnum::Base.find() (use build() instead)
+
 ## 2.0.3
 
 * Fixes issue with validates_uniqueness_of when using an enum field as
