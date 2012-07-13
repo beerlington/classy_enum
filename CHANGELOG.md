@@ -1,5 +1,13 @@
 # ClassyEnum Changelog
 
+## 3.0.0
+
+* Removing ClassyEnum::Base.enum_classes in favor of using enum
+  inheritance to setup classes
+* Removing ClassEnum::Base.valid_options
+* Use require instead of autoload
+* Lots of code refactoring
+
 ## 2.1.0
 
 * Deprecating ClassyEnum::Base.enum_classes() (this is no longer needed)
