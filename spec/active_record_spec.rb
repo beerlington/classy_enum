@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 class Color < ClassyEnum::Base
-  enum_classes :white, :black
 end
 
 class ColorWhite < Color; end;

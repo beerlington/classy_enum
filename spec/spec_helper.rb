@@ -48,7 +48,6 @@ ActiveRecord::Schema.define(:version => 1) do
 end
 
 class Breed < ClassyEnum::Base
-  enum_classes :golden_retriever, :snoop, :husky
 end
 
 class BreedGoldenRetriever < Breed

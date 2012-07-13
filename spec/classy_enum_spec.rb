@@ -1,8 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 class TestEnum < ClassyEnum::Base
-  enum_classes :one, :two, :three
-
   def self.test_class_method?
     false
   end
@@ -66,17 +64,11 @@ describe "A collection of ClassyEnums" do
 end
 
 describe "A ClassyEnum element" do
-  it "should instantiate a member" do
-    TestEnumOne.new.should be_a(TestEnumOne)
-  end
+  subject { TestEnumOne }
 
-  it "should inherit the default class methods" do
-    TestEnumOne.test_class_method?.should be_false
-  end
-
-  it "should compare different elements based on their index" do
-    TestEnumOne.new.should == TestEnumOne.new
-  end
+  its(:new) { should be_a(TestEnumOne) }
+  its(:new) { should == TestEnumOne.new  }
+  it { should_not be_a_test_class_method }
 end
 
 describe "A ClassyEnum instance" do

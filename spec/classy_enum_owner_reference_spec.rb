@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 class CatBreed < ClassyEnum::Base
-  enum_classes :abyssian, :bengal, :birman, :persian
   owner :cat
 
   def breed_color

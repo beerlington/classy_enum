@@ -1,53 +1,34 @@
 module ClassyEnum
   module ClassMethods
-
-    # Macro for defining enum members within a ClassyEnum class.
-    # Accepts an array of symbols or strings which are converted to
-    # ClassyEnum members as descents of their parent class.
-    #
-    # ==== Example
-    #  # Define an enum called Priority with three child classes
-    #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
-    #  end
-    #
-    #  The child classes will be defined with the following constants:
-    #  PriorityLow, PriorityMedium, and PriorityHigh
-    #
-    #  These child classes can be instantiated with either:
-    #  Priority.build(:low) or PriorityLow.new
-    #
-    def enum_classes(*enums)
-      ActiveSupport::Deprecation.warn('enum_classes is deprecated, and will be removed in ClassyEnum 3.0. It is no longer needed.', caller)
-
-      self.class_eval do
-        class_attribute :enum_options, :base_class
-
-        self.enum_options = enums.map(&:to_sym)
-        self.base_class = self
-
-        # # Use ActiveModel::AttributeMethods to define attribute? methods
-        attribute_method_suffix '?'
-        define_attribute_methods enums
-      end
-    end
-
     def inherited(klass)
-      return if self == ClassyEnum::Base
+      if self == ClassyEnum::Base
+        klass.class_eval do
+          class_attribute :enum_options, :base_class
 
-      # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
-      Arel::Visitors::ToSql.class_eval do
-        define_method "visit_#{klass.name}", lambda {|value| quote(value.to_s) }
-      end
+          self.enum_options = []
+          self.base_class   = klass
 
-      enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
-      index = self.enum_options.index(enum) + 1
+          attribute_method_suffix '?'
+        end
+      else
 
-      klass.class_eval do
-        @index = index
-        @option = enum
+        # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
+        Arel::Visitors::ToSql.class_eval do
+          define_method "visit_#{klass.name}", lambda {|value| quote(value.to_s) }
+        end
 
-        attr_accessor :owner, :serialize_as_json
+        # Convert from MyEnumClassNumberTwo to :number_two
+        enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
+
+        enum_options << enum
+        define_attribute_method enum
+
+        klass.class_eval do
+          @index = enum_options.size
+          @option = enum
+
+          attr_accessor :owner, :serialize_as_json
+        end
       end
     end
 
@@ -113,7 +94,6 @@ module ClassyEnum
     #
     #  Priority.valid_options # => "low, medium, high"
     def valid_options
-      ActiveSupport::Deprecation.warn("valid_options is deprecated, and will be removed in ClassyEnum 3.0. Use all.join(', ') instead.", caller)
       self.enum_options.map(&:to_s).join(', ')
     end
 
