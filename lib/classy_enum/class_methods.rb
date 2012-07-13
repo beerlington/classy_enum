@@ -1,4 +1,6 @@
 module ClassyEnum
+  class SubclassNameError < Exception; end
+
   module ClassMethods
     def inherited(klass)
       if self == ClassyEnum::Base
@@ -19,6 +21,11 @@ module ClassyEnum
 
         # Convert from MyEnumClassNumberTwo to :number_two
         enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
+
+        # Ensure subclasses follow expected naming conventions
+        unless klass.name.start_with? base_class.name
+          raise SubclassNameError, "subclass name must start with #{base_class.name}"
+        end
 
         enum_options << enum
         define_attribute_method enum

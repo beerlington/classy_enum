@@ -95,3 +95,11 @@ describe "A ClassyEnum that overrides values" do
     TestEnumTwo.test_class_method?.should be_true
   end
 end
+
+describe 'A ClassEnum subclass that is improperly named' do
+  it 'should raise an error' do
+    lambda {
+      class WrongSublcassName < TestEnum; end
+    }.should raise_error(ClassyEnum::SubclassNameError)
+  end
+end
