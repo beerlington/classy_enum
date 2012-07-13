@@ -43,7 +43,7 @@ module ClassyEnum
     #  Priority.build(:low) # => PriorityLow.new
     def build(value, options={})
       return value if value.blank?
-      return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self.enum_options.include? value.to_sym
+      return TypeError.new("#{self} #{invalid_message}") unless enum_options.include? value.to_sym
 
       object = ("#{self}#{value.to_s.camelize}").constantize.new
       object.owner = options[:owner]
@@ -66,7 +66,12 @@ module ClassyEnum
     #
     #  Priority.all # => [PriorityLow.new, PriorityMedium.new, PriorityHigh.new]
     def all
-      self.enum_options.map {|e| build(e) }
+      enum_options.map {|e| build(e) }
+    end
+
+    # Returns a a message indicating which fields are valid
+    def invalid_message
+      "must be one of #{all.join(', ')}"
     end
 
     # Returns a 2D array for Rails select helper options.
@@ -82,22 +87,6 @@ module ClassyEnum
     def select_options
       all.map {|e| [e.name, e.to_s] }
     end
-
-    # Returns a comma separated list of valid enum options.
-    # Also used internally for ActiveRecord model validation error messages
-    #
-    # ==== Example
-    #  # Create an Enum with some elements
-    #  class Priority < ClassyEnum::Base
-    #    enum_classes :low, :medium, :high
-    #  end
-    #
-    #  Priority.valid_options # => "low, medium, high"
-    def valid_options
-      self.enum_options.map(&:to_s).join(', ')
-    end
-
-    private
 
     # DSL setter method for reference to enum owner
     def owner(owner)
