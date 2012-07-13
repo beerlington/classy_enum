@@ -33,7 +33,7 @@ describe "A ClassyEnum Descendent" do
   end
 
   it "should return an array of enums for a select tag" do
-    TestEnum.select_options.should == TestEnum.enum_options.map {|o| [TestEnum.build(o).name, TestEnum.build(o).to_s] }
+    TestEnum.select_options.should == TestEnum.all.map {|o| [o.name, o.to_s] }
   end
 
   it "should return a type error when adding an invalid option" do

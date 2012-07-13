@@ -4,15 +4,14 @@ module ClassyEnum
   module ClassMethods
     def inherited(klass)
       if self == ClassyEnum::Base
-        klass.class_eval do
-          class_attribute :enum_options, :base_class
-
-          self.enum_options = []
-          self.base_class   = klass
-
-          attribute_method_suffix '?'
-        end
+        klass.enum_options = []
+        klass.base_class   = klass
       else
+
+        # Ensure subclasses follow expected naming conventions
+        unless klass.name.start_with? base_class.name
+          raise SubclassNameError, "subclass name must start with #{base_class.name}"
+        end
 
         # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
         Arel::Visitors::ToSql.class_eval do
@@ -22,19 +21,12 @@ module ClassyEnum
         # Convert from MyEnumClassNumberTwo to :number_two
         enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
 
-        # Ensure subclasses follow expected naming conventions
-        unless klass.name.start_with? base_class.name
-          raise SubclassNameError, "subclass name must start with #{base_class.name}"
-        end
-
-        enum_options << enum
+        enum_options << klass
         define_attribute_method enum
 
         klass.class_eval do
           @index = enum_options.size
           @option = enum
-
-          attr_accessor :owner, :serialize_as_json
         end
       end
     end
@@ -52,9 +44,13 @@ module ClassyEnum
     #  Priority.build(:low) # => PriorityLow.new
     def build(value, options={})
       return value if value.blank?
-      return TypeError.new("#{self} #{invalid_message}") unless enum_options.include? value.to_sym
 
-      object = ("#{self}#{value.to_s.camelize}").constantize.new
+      # Return a TypeError if the build value is not a valid member
+      unless all.map(&:to_sym).include? value.to_sym
+        return TypeError.new("#{base_class} #{invalid_message}")
+      end
+
+      object = ("#{base_class}#{value.to_s.camelize}").constantize.new
       object.owner = options[:owner]
       object.serialize_as_json = options[:serialize_as_json]
       object
@@ -78,12 +74,7 @@ module ClassyEnum
     #
     #  Priority.all # => [PriorityLow.new, PriorityMedium.new, PriorityHigh.new]
     def all
-      enum_options.map {|e| build(e) }
-    end
-
-    # Returns a a message indicating which fields are valid
-    def invalid_message
-      "must be one of #{all.join(', ')}"
+      enum_options.map(&:new)
     end
 
     # Returns a 2D array for Rails select helper options.
@@ -100,6 +91,11 @@ module ClassyEnum
     #  Priority.select_options # => [["Low", "low"], ["Really High", "really_high"]]
     def select_options
       all.map {|e| [e.name, e.to_s] }
+    end
+
+    # Returns a a message indicating which fields are valid
+    def invalid_message
+      "must be one of #{all.join(', ')}"
     end
 
     # DSL setter method for reference to enum owner
