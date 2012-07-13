@@ -266,7 +266,6 @@ Instantiate an enum member subclass *PriorityLow*
 # These statements are all equivalent
 low = Priority.build(:low)
 low = Priority.build('low')
-low = Priority.find(:low)
 low = PriorityLow.new
 ```
 

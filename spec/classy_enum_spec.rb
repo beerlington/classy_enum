@@ -40,14 +40,6 @@ describe "A ClassyEnum Descendent" do
     TestEnum.build(:invalid_option).class.should == TypeError
   end
 
-  it "should find an enum by symbol" do
-    TestEnum.find(:one).class.should == TestEnumOne
-  end
-
-  it "should find an enum by string" do
-    TestEnum.find("one").class.should == TestEnumOne
-  end
-
   it "should create an instance with a string" do
     TestEnum.build("one").should be_a(TestEnumOne)
   end

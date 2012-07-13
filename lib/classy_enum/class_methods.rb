@@ -60,11 +60,6 @@ module ClassyEnum
       object
     end
 
-    def find(value, options={})
-      ActiveSupport::Deprecation.warn("find is deprecated, and will be removed in ClassyEnum 3.0. Use build(:member) instead.", caller)
-      build(value, options)
-    end
-
     # Returns an array of all instantiated enums
     #
     # ==== Example

@@ -4,7 +4,8 @@
 
 * Removing ClassyEnum::Base.enum_classes in favor of using enum
   inheritance to setup classes
-* Removing ClassEnum::Base.valid_options
+* Removing ClassyEnum::Base.valid_options
+* Removing ClassyEnum::Base.find
 * Use require instead of autoload
 * Lots of code refactoring
 
