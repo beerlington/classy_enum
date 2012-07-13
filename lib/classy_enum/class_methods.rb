@@ -22,7 +22,11 @@ module ClassyEnum
         enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
 
         enum_options << klass
-        define_attribute_method enum
+
+        # Define attribute methods like two?
+        base_class.class_eval do
+          define_method "#{enum}?", lambda { attribute?(enum.to_s) }
+        end
 
         klass.class_eval do
           @index = enum_options.size
