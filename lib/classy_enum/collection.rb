@@ -1,5 +1,16 @@
 module ClassyEnum
   module Collection
+    def inherited(klass)
+      if self == ClassyEnum::Base
+        klass.class_attribute :enum_options
+        klass.enum_options = []
+      else
+        enum_options << klass
+        klass.instance_variable_set('@index', enum_options.size)
+      end
+
+      super
+    end
 
     # Returns an array of all instantiated enums
     #

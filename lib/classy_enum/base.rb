@@ -6,14 +6,13 @@ module ClassyEnum
     include Conversion
     extend Collection
 
-    class_attribute :enum_options, :base_class
+    class_attribute :base_class
     attr_accessor :owner, :serialize_as_json
 
     class << self
       def inherited(klass)
         if self == ClassyEnum::Base
-          klass.enum_options = []
-          klass.base_class   = klass
+          klass.base_class = klass
         else
 
           # Ensure subclasses follow expected naming conventions
@@ -29,18 +28,17 @@ module ClassyEnum
           # Convert from MyEnumClassNumberTwo to :number_two
           enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
 
-          enum_options << klass
-
           # Define attribute methods like two?
           base_class.class_eval do
             define_method "#{enum}?", lambda { attribute?(enum.to_s) }
           end
 
           klass.class_eval do
-            @index = enum_options.size
             @option = enum
           end
         end
+
+        super
       end
 
       # Build a new ClassyEnum child instance
