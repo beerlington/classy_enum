@@ -77,24 +77,6 @@ module ClassyEnum
       end
     end
 
-    # Returns string representing enum in Rails titleize format
-    #
-    # ==== Example
-    #  # Create an Enum with some elements
-    #  class Priority < ClassyEnum::Base
-    #  end
-    #
-    # class PriorityLow < Priority; end
-    # class PriorityMedium < Priority; end
-    # class PriorityHigh < Priority; end
-    # class PriorityReallyHigh < Priority; end
-    #
-    #  @priority = Priority.build(:really_high)
-    #  @priority.name # => "Really High"
-    def name
-      to_s.titleize
-    end
-
     # Sort an array of elements based on the order they are defined
     #
     # ==== Example

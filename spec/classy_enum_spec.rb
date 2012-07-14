@@ -33,7 +33,7 @@ describe "A ClassyEnum Descendent" do
   end
 
   it "should return an array of enums for a select tag" do
-    TestEnum.select_options.should == TestEnum.all.map {|o| [o.name, o.to_s] }
+    TestEnum.select_options.should == TestEnum.all.map {|o| [o.to_s.titleize, o.to_s] }
   end
 
   it "should return a type error when adding an invalid option" do
@@ -74,7 +74,6 @@ describe "A ClassyEnum instance" do
   its(:to_i) { should eql(1) }
   its(:to_s) { should eql('one') }
   its(:to_sym) { should be(:one) }
-  its(:name) { should eql('One') }
   its(:test_instance_method?) { should be_false }
 end
 

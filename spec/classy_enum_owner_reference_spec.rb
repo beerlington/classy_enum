@@ -4,7 +4,7 @@ class CatBreed < ClassyEnum::Base
   owner :cat
 
   def breed_color
-    "#{cat.color} #{name}"
+    "#{cat.color} #{self}"
   end
 end
 
