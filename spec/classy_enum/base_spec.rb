@@ -28,7 +28,7 @@ describe ClassyEnum::Base do
   end
 
   context '.invalid_message' do
-    ClassyEnumBase.invalid_message.should == 'must be one of one, two'
+    ClassyEnumBase.invalid_message.should == 'must be one or two'
   end
 
   context '#new' do

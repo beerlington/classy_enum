@@ -17,8 +17,8 @@ module ClassyEnum
     #  class Breed < ClassyEnum::Base
     #  end
     #
-    # class BreedGoldenRetriever < Priority; end
-    # class BreedSnoop < Priority; end
+    # class Breed::GoldenRetriever < Breed; end
+    # class Breed::Snoop < Breed; end
     #
     #  # Create an ActiveRecord class using the Breed enum
     #  class Dog < ActiveRecord::Base

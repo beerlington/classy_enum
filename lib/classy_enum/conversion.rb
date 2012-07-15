@@ -9,11 +9,11 @@ module ClassyEnum
     #  class Priority < ClassyEnum::Base
     #  end
     #
-    # class PriorityLow < Priority; end
-    # class PriorityMedium < Priority; end
-    # class PriorityHigh < Priority; end
+    #  class Priority::Low < Priority; end
+    #  class Priority::Medium < Priority; end
+    #  class Priority::High < Priority; end
     #
-    #  @priority = PriorityMedium.new
+    #  @priority = Priority::Medium.new
     #  @priority.to_i # => 2
     def to_i
       self.class.instance_variable_get('@index')
@@ -28,11 +28,11 @@ module ClassyEnum
     #  class Priority < ClassyEnum::Base
     #  end
     #
-    # class PriorityLow < Priority; end
-    # class PriorityMedium < Priority; end
-    # class PriorityHigh < Priority; end
+    #  class Priority::Low < Priority; end
+    #  class Priority::Medium < Priority; end
+    #  class Priority::High < Priority; end
     #
-    #  @priority = PriorityLow.new
+    #  @priority = Priority::Low.new
     #  @priority.to_s # => 'low'
     def to_s
       self.class.instance_variable_get('@option').to_s
@@ -46,11 +46,11 @@ module ClassyEnum
     #  class Priority < ClassyEnum::Base
     #  end
     #
-    # class PriorityLow < Priority; end
-    # class PriorityMedium < Priority; end
-    # class PriorityHigh < Priority; end
+    #  class Priority::Low < Priority; end
+    #  class Priority::Medium < Priority; end
+    #  class Priority::High < Priority; end
     #
-    #  @priority = PriorityLow.new
+    #  @priority = Priority::Low.new
     #  @priority.to_sym # => :low
     def to_sym
       to_s.to_sym

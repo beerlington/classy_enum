@@ -44,10 +44,10 @@ module ClassyEnum
       #  class Priority < ClassyEnum::Base
       #  end
       #
-      #  class PriorityLow < Priority
+      #  class Priority::Low < Priority
       #  end
       #
-      #  Priority.build(:low) # => PriorityLow.new
+      #  Priority.build(:low) # => Priority::Low.new
       def build(value, options={})
         return value if value.blank?
 
@@ -63,11 +63,34 @@ module ClassyEnum
       end
 
       # Returns a a message indicating which fields are valid
+      #
+      # ==== Example
+      #  # Create an Enum with some elements
+      #  class Priority < ClassyEnum::Base
+      #  end
+      #
+      #  class Priority::Low < Priority; end
+      #  class Priority::Medium < Priority; end
+      #  class Priority::High < Priority; end
+      #
+      #  Priortiy.invalid_message # => must be low, medium, or high
       def invalid_message
-        "must be one of #{all.join(', ')}"
+        "must be #{all.to_sentence(:two_words_connector => ' or ', :last_word_connector => ', or ')}"
       end
 
-      # DSL setter method for reference to enum owner
+      # DSL setter method for overriding reference to enum owner (ActiveRecord model)
+      #
+      # ==== Example
+      #  # Create an Enum with some elements
+      #  class Priority < ClassyEnum::Base
+      #    owner :alarm
+      #  end
+      #
+      #  class Priority::High < Priority
+      #    def send_alarm?
+      #      alarm.enabled?
+      #    end
+      #  end
       def owner(owner)
         define_method owner, lambda { @owner }
       end

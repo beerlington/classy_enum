@@ -25,7 +25,7 @@ describe "A Dog" do
 
     it 'should have an error message containing the right options' do
       dog.valid?
-      dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
+      dog.errors[:breed].should include(Breed.invalid_message)
     end
   end
 
@@ -55,7 +55,7 @@ describe "A ClassyEnum that allows blanks" do
 
     it 'should have an error message containing the right options' do
       dog.valid?
-      dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
+      dog.errors[:breed].should include(Breed.invalid_message)
     end
   end
 
@@ -85,7 +85,7 @@ describe "A ClassyEnum that allows nils" do
 
     it 'should have an error message containing the right options' do
       dog.valid?
-      dog.errors[:breed].should include("must be one of #{Breed.all.map(&:to_sym).join(', ')}")
+      dog.errors[:breed].should include(Breed.invalid_message)
     end
   end
 

@@ -7,9 +7,9 @@ module ClassyEnum
     #  class Priority < ClassyEnum::Base
     #  end
     #
-    # class PriorityLow < Priority; end
-    # class PriorityMedium < Priority; end
-    # class PriorityHigh < Priority; end
+    #  class Priority::Low < Priority; end
+    #  class Priority::Medium < Priority; end
+    #  class Priority::High < Priority; end
     #
     #  @low = Priority.build(:low)
     #  @medium = Priority.build(:medium)
@@ -25,7 +25,6 @@ module ClassyEnum
     def self.included(klass)
       klass.extend ClassMethods
     end
-
 
     module ClassMethods
       def inherited(klass)
@@ -47,11 +46,11 @@ module ClassyEnum
       #  class Priority < ClassyEnum::Base
       #  end
       #
-      # class PriorityLow < Priority; end
-      # class PriorityMedium < Priority; end
-      # class PriorityHigh < Priority; end
+      #  class Priority::Low < Priority; end
+      #  class Priority::Medium < Priority; end
+      #  class Priority::High < Priority; end
       #
-      #  Priority.all # => [PriorityLow.new, PriorityMedium.new, PriorityHigh.new]
+      #  Priority.all # => [Priority::Low.new, Priority::Medium.new, Priority::High.new]
       def all
         enum_options.map(&:new)
       end
@@ -64,8 +63,8 @@ module ClassyEnum
       #  class Priority < ClassyEnum::Base
       #  end
       #
-      # class PriorityLow < Priority; end
-      # class PriorityReallyHigh < Priority; end
+      #  class Priority::Low < Priority; end
+      #  class Priority::ReallyHigh < Priority; end
       #
       #  Priority.select_options # => [["Low", "low"], ["Really High", "really_high"]]
       def select_options
