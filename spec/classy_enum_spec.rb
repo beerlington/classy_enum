@@ -68,8 +68,6 @@ describe "A ClassyEnum instance" do
 
   it { should be_a(TestEnum) }
   its(:class) { should eql(TestEnumOne) }
-  its(:one?) { should be_true }
-  its(:two?) { should be_false }
   its(:test_instance_method?) { should be_false }
 end
 
