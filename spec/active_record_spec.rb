@@ -3,9 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 class Color < ClassyEnum::Base
 end
 
-class ColorWhite < Color; end;
+class Color::White < Color; end;
 
-class ColorBlack < Color; end;
+class Color::Black < Color; end;
 
 class ActiveDog < ActiveRecord::Base
   classy_enum_attr :breed, :suffix => 'type'

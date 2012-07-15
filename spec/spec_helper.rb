@@ -50,13 +50,13 @@ end
 class Breed < ClassyEnum::Base
 end
 
-class BreedGoldenRetriever < Breed
+class Breed::GoldenRetriever < Breed
 end
 
-class BreedSnoop < Breed
+class Breed::Snoop < Breed
 end
 
-class BreedHusky < Breed
+class Breed::Husky < Breed
 end
 
 class Dog < ActiveRecord::Base

@@ -6,7 +6,7 @@ describe "A Dog" do
     subject { Dog.new(:breed => :golden_retriever) }
 
     it { should be_valid }
-    its(:breed) { should be_a(BreedGoldenRetriever) }
+    its(:breed) { should be_a(Breed::GoldenRetriever) }
     its(:breed_options) { should eql({:enum => :breed, :allow_blank => false}) }
   end
 
@@ -93,5 +93,5 @@ end
 
 describe "A ClassyEnum that has a different field name than the enum" do
   subject { OtherDog.new(:other_breed => :snoop) }
-  its(:other_breed) { should be_a(BreedSnoop) }
+  its(:other_breed) { should be_a(Breed::Snoop) }
 end

@@ -47,13 +47,13 @@ A new enum template file will be created at app/enums/priority.rb that will look
 class Priority < ClassyEnum::Base
 end
 
-class PriorityLow < Priority
+class Priority::Low < Priority
 end
 
-class PriorityMedium < Priority
+class Priority::Medium < Priority
 end
 
-class PriorityHigh < Priority
+class Priority::High < Priority
 end
 ```
 
@@ -74,13 +74,13 @@ class Priority < ClassyEnum::Base
   end
 end
 
-class PriorityLow < Priority
+class Priority::Low < Priority
 end
 
-class PriorityMedium < Priority
+class Priority::Medium < Priority
 end
 
-class PriorityHigh < Priority
+class Priority::High < Priority
   def send_email?
     true
   end
@@ -116,7 +116,7 @@ With this setup, I can now do the following:
 ```ruby
 @alarm = Alarm.create(:priority => :medium)
 
-@alarm.priority  # => PriorityMedium
+@alarm.priority  # => Priority::Medium
 @alarm.priority.medium? # => true
 @alarm.priority.high? # => false
 @alarm.priority.to_s # => 'medium'
@@ -150,7 +150,7 @@ end
 # low and medium subclasses omitted
 # ...
 
-class PriorityHigh < Priority
+class Priority::High < Priority
   def send_email?
     owner.enabled?
   end
@@ -168,7 +168,7 @@ end
 # low and medium subclasses omitted
 # ...
 
-class PriorityHigh < Priority
+class Priority::High < Priority
   def send_email?
     alarm.enabled?
   end
@@ -216,7 +216,7 @@ class Alarm < ActiveRecord::Base
 end
 
 @alarm = Alarm.create(:alarm_priority => :medium)
-@alarm.alarm_priority  # => PriorityMedium
+@alarm.alarm_priority  # => Priority::Medium
 ```
 
 If you would like the default getter method to return a string, you can
@@ -229,7 +229,7 @@ end
 
 alarm = Alarm.create(:priority => :high)
 alarm.priority # => 'high'
-alarm.priority_type # instance of PriorityHigh enum
+alarm.priority_type # instance of Priority::High enum
 ```
 
 ## Model Validation
@@ -260,13 +260,13 @@ end
 
 While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
 
-Instantiate an enum member subclass *PriorityLow*
+Instantiate an enum member subclass *Priority::Low*
 
 ```ruby
 # These statements are all equivalent
 low = Priority.build(:low)
 low = Priority.build('low')
-low = PriorityLow.new
+low = Priority::Low.new
 ```
 
 Get a list of the valid enum options

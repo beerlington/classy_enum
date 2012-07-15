@@ -17,17 +17,17 @@ module ClassyEnum
         else
 
           # Ensure subclasses follow expected naming conventions
-          unless klass.name.start_with? base_class.name
-            raise SubclassNameError, "subclass name must start with #{base_class.name}"
+          unless klass.name.start_with? "#{base_class.name}::"
+            raise SubclassNameError, "subclass must be namespaced with #{base_class.name}::"
           end
 
           # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
           Arel::Visitors::ToSql.class_eval do
-            define_method "visit_#{klass.name}", lambda {|value| quote(value.to_s) }
+            define_method "visit_#{klass.name.split('::').join('_')}", lambda {|value| quote(value.to_s) }
           end
 
-          # Convert from MyEnumClassNumberTwo to :number_two
-          enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
+          # Convert from MyEnumClass::NumberTwo to :number_two
+          enum = klass.name.split('::').last.underscore.to_sym
 
           Predicate.define_predicate_method(klass, enum)
 
@@ -56,7 +56,7 @@ module ClassyEnum
           return TypeError.new("#{base_class} #{invalid_message}")
         end
 
-        object = ("#{base_class}#{value.to_s.camelize}").constantize.new
+        object = ("#{base_class}::#{value.to_s.camelize}").constantize.new
         object.owner = options[:owner]
         object.serialize_as_json = options[:serialize_as_json]
         object
