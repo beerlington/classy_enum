@@ -20,13 +20,13 @@ describe ClassyEnum::Collection do
   its(:select_options) { should == [['One', 'one'],['Two', 'two'], ['Three', 'three']] }
 end
 
-# describe ClassyEnum::Collection, Comparable do
-#   let(:one) { ClassyEnumCollectionOne.new }
-#   let(:two) { ClassyEnumCollectionTwo.new }
-#   let(:three) { ClassyEnumCollectionThree.new }
+describe ClassyEnum::Collection, Comparable do
+  let(:one) { ClassyEnumCollectionOne.new }
+  let(:two) { ClassyEnumCollectionTwo.new }
+  let(:three) { ClassyEnumCollectionThree.new }
 
-#   subject { [one, three, two] }
-#   its(:sort) { should eql([one, two, three]) }
-#   its(:max) { should eql(three) }
-#   its(:min) { should eql(one) }
-# end
+  subject { [one, three, two] }
+  its(:sort) { should eql([one, two, three]) }
+  its(:max) { should eql(three) }
+  its(:min) { should eql(one) }
+end
