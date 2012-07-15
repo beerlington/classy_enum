@@ -28,14 +28,6 @@ end
 
 describe "A ClassyEnum Descendent" do
 
-  it "should return an array of enums" do
-    TestEnum.all.map(&:class).should == [TestEnumOne, TestEnumTwo, TestEnumThree]
-  end
-
-  it "should return an array of enums for a select tag" do
-    TestEnum.select_options.should == TestEnum.all.map {|o| [o.to_s.titleize, o.to_s] }
-  end
-
   it "should return a type error when adding an invalid option" do
     TestEnum.build(:invalid_option).class.should == TypeError
   end
