@@ -5,8 +5,7 @@ module ClassyEnum
     include Comparable
     include Conversion
     include Predicate
-
-    extend Collection
+    include Collection
 
     class_attribute :base_class
     attr_accessor :owner, :serialize_as_json
@@ -74,26 +73,5 @@ module ClassyEnum
       end
     end
 
-    # Sort an array of elements based on the order they are defined
-    #
-    # ==== Example
-    #  # Create an Enum with some elements
-    #  class Priority < ClassyEnum::Base
-    #  end
-    #
-    # class PriorityLow < Priority; end
-    # class PriorityMedium < Priority; end
-    # class PriorityHigh < Priority; end
-    #
-    #  @low = Priority.build(:low)
-    #  @medium = Priority.build(:medium)
-    #  @high = Priority.build(:high)
-    #  priorities = [@low, @high, @medium]
-    #  priorities.sort # => [@low, @medium, @high]
-    #  priorities.max # => @high
-    #  priorities.min # => @low
-    def <=> other
-      index <=> other.index
-    end
   end
 end
