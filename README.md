@@ -19,15 +19,9 @@ The gem is hosted at [rubygems.org](https://rubygems.org/gems/classy_enum)
 
 You will also need to add `app/enums` as an autoloadable path. This configuration will depend on which version of rails you are using.
 
-## Upgrading to 2.0
+## Upgrading?
 
-Prior to 2.0, enum classes were implicity defined and were only required
-when overriding methods or properties. As of 2.0, all enum classes must
-explicity subclass a child of ClassyEnum::Base. If you used the
-generator, there are no changes to the existing structure.
-
-Built-in Formtastic support has been removed. See the note at the
-bottom of this readme for more information how how to enable it.
+See the [wiki](https://github.com/beerlington/classy_enum/wiki/Upgrading) for notes about upgrading from previous versions.
 
 ## Example Usage
 
