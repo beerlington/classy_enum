@@ -1,5 +1,6 @@
 module ClassyEnum
   module Collection
+
     def inherited(klass)
       if self == ClassyEnum::Base
         klass.class_attribute :enum_options
