@@ -10,6 +10,11 @@
 * Use require instead of autoload
 * Lots of code refactoring
 
+## 2.2.0
+
+* Deprecating class names like ParentChild in favor of namespaced names
+  like Parent::Child
+
 ## 2.1.0
 
 * Deprecating ClassyEnum::Base.enum_classes() (this is no longer needed)
