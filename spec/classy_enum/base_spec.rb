@@ -48,6 +48,6 @@ end
 
 describe ClassyEnum::Base, 'Arel visitor' do
   specify do
-    Arel::Visitors::ToSql.instance_methods.should include(:visit_TestEnumOne, :visit_TestEnumTwo)
+    Arel::Visitors::ToSql.instance_methods.map(&:to_sym).should include(:visit_TestEnumOne, :visit_TestEnumTwo)
   end
 end
