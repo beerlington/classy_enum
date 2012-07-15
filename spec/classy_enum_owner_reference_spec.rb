@@ -40,13 +40,4 @@ describe Cat do
     abyssian.breed_color { should eql('black Abyssian') }
     persian.breed_color { should eql('white Persian') }
   end
-
-  it 'should correctly serialize without the owner reference' do
-    JSON.parse(abyssian.to_json)['cat']['breed'].should == 'abyssian'
-  end
-
-  it 'should convert the enum to a string when serializing' do
-    JSON.parse(persian.to_json)['other_cat']['breed'].should be_a(Hash)
-  end
-
 end

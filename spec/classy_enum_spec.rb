@@ -70,10 +70,6 @@ describe "A ClassyEnum instance" do
   its(:class) { should eql(TestEnumOne) }
   its(:one?) { should be_true }
   its(:two?) { should be_false }
-  its(:index) { should eql(1) }
-  its(:to_i) { should eql(1) }
-  its(:to_s) { should eql('one') }
-  its(:to_sym) { should be(:one) }
   its(:test_instance_method?) { should be_false }
 end
 
