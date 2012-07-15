@@ -128,7 +128,7 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 
 In some cases you may want an enum class to reference the owning object
 (an instance of the active record model). Think of it as a `belongs_to`
-relationship, where the enum can reference its owning object.
+relationship, where the enum belongs to the model.
 
 By default, the back reference can be called using `owner`.
 If you want to refer to the owner by a different name, you must explicitly declare
@@ -206,7 +206,7 @@ What if your enum class name is not the same as your model's attribute name? No 
 
 ```ruby
 class Alarm < ActiveRecord::Base
-  classy_enum_attr :alarm_priority, :enum => :priority
+  classy_enum_attr :alarm_priority, :enum => 'Priority'
 end
 
 @alarm = Alarm.create(:alarm_priority => :medium)

@@ -16,14 +16,14 @@ module ClassyEnum
     #
     #  # Associate an enum Priority with Alarm model's alarm_priority attribute
     #  class Alarm < ActiveRecord::Base
-    #    classy_enum_attr :alarm_priority, :enum => :priority
+    #    classy_enum_attr :alarm_priority, :enum => 'Priority'
     #  end
     def classy_enum_attr(*args)
       options = args.extract_options!
 
       attribute = args[0]
 
-      enum              = options[:enum] || attribute
+      enum              = (options[:enum] || attribute).to_s.camelize.constantize
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
       serialize_as_json = options[:serialize_as_json] || false
@@ -31,20 +31,18 @@ module ClassyEnum
       reader_method     = attribute.to_s
       reader_method += "_#{options[:suffix]}" if options.has_key?(:suffix)
 
-      klass = enum.to_s.camelize.constantize
-
-      valid_attributes = reader_method == attribute.to_s ? klass.all : klass.all.map(&:to_s)
+      valid_attributes = reader_method == attribute.to_s ? enum.all : enum.all.map(&:to_s)
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
         :in          => valid_attributes,
-        :message     => klass.invalid_message,
+        :message     => enum.invalid_message,
         :allow_blank => allow_blank,
         :allow_nil   => allow_nil
 
       # Define getter method that returns a ClassyEnum instance
       define_method reader_method do
-        klass.build(read_attribute(attribute), :owner => self, :serialize_as_json => serialize_as_json)
+        enum.build(read_attribute(attribute), :owner => self, :serialize_as_json => serialize_as_json)
       end
 
       # Define setter method that accepts either string or symbol for member

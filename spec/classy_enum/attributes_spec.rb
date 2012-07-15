@@ -7,7 +7,7 @@ describe "A Dog" do
 
     it { should be_valid }
     its(:breed) { should be_a(Breed::GoldenRetriever) }
-    its(:breed_options) { should eql({:enum => :breed, :allow_blank => false}) }
+    its(:breed_options) { should == {:enum => Breed, :allow_blank => false} }
   end
 
   it "should not be valid with a nil breed" do
@@ -37,7 +37,7 @@ describe "A ClassyEnum that allows blanks" do
     subject { AllowBlankBreedDog.new(:breed => :golden_retriever) }
 
     it { should be_valid }
-    its(:breed_options) { should eql({:enum => :breed, :allow_blank => true}) }
+    its(:breed_options) { should == {:enum => Breed, :allow_blank => true} }
   end
 
   it "should be valid with a nil breed" do
@@ -67,7 +67,7 @@ describe "A ClassyEnum that allows nils" do
     subject { AllowNilBreedDog.new(:breed => :golden_retriever) }
 
     it { should be_valid }
-    its(:breed_options) { should eql({:enum => :breed, :allow_blank => false}) }
+    its(:breed_options) { should == {:enum => Breed, :allow_blank => false} }
   end
 
   it "should be valid with a nil breed" do

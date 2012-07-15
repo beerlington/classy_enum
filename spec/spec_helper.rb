@@ -72,5 +72,5 @@ class AllowNilBreedDog < ActiveRecord::Base
 end
 
 class OtherDog < ActiveRecord::Base
-  classy_enum_attr :other_breed, :enum => :breed
+  classy_enum_attr :other_breed, :enum => 'Breed'
 end

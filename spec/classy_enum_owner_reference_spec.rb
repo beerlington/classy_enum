@@ -21,13 +21,13 @@ class CatBreed::Persian < CatBreed
 end
 
 class Cat < ActiveRecord::Base
-  classy_enum_attr :breed, :enum => :cat_breed
+  classy_enum_attr :breed, :enum => 'CatBreed'
   attr_accessor :color
   delegate :breed_color, :to => :breed
 end
 
 class OtherCat < ActiveRecord::Base
-  classy_enum_attr :breed, :enum => :cat_breed, :serialize_as_json => true
+  classy_enum_attr :breed, :enum => 'CatBreed', :serialize_as_json => true
   attr_accessor :color
   delegate :breed_color, :to => :breed
 end
