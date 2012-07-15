@@ -4,25 +4,25 @@ class ProjectTier < ClassyEnum::Base
   class_attribute :inherited_properties
 end
 
-class ProjectTierOne < ProjectTier
+class ProjectTier::One < ProjectTier
   self.inherited_properties = [1,2,3]
 end
 
-class ProjectTierTwo < ProjectTierOne
+class ProjectTier::Two < ProjectTier::One
   self.inherited_properties += [4,5,6]
 end
 
 describe 'Classy Enum inheritance' do
   it 'should inherit from the previous class' do
-    ProjectTierOne.inherited_properties.should == [1,2,3]
-    ProjectTierTwo.inherited_properties.should == [1,2,3,4,5,6]
+    ProjectTier::One.inherited_properties.should == [1,2,3]
+    ProjectTier::Two.inherited_properties.should == [1,2,3,4,5,6]
   end
 
   it 'should instantiate the subclass' do
-    ProjectTierTwo.build(:two).should == ProjectTierTwo.new
+    ProjectTier::Two.build(:two).should == ProjectTier::Two.new
   end
 
   it 'should have the right index' do
-    ProjectTierTwo.new.index.should == 2
+    ProjectTier::Two.new.index.should == 2
   end
 end

@@ -8,16 +8,16 @@ class CatBreed < ClassyEnum::Base
   end
 end
 
-class CatBreedAbyssian < CatBreed
+class CatBreed::Abyssian < CatBreed
 end
 
-class CatBreedBengal < CatBreed
+class CatBreed::Bengal < CatBreed
 end
 
-class CatBreedBirman < CatBreed
+class CatBreed::Birman < CatBreed
 end
 
-class CatBreedPersian < CatBreed
+class CatBreed::Persian < CatBreed
 end
 
 class Cat < ActiveRecord::Base

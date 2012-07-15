@@ -6,6 +6,7 @@
   inheritance to setup classes
 * Removing ClassyEnum::Base.valid_options
 * Removing ClassyEnum::Base.find
+* Enforce use of namespacing for subclasses (Parent::Child < Parent)
 * Use require instead of autoload
 * Lots of code refactoring
 
