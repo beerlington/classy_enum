@@ -40,7 +40,13 @@ module ClassyEnum
         define_method "visit_#{klass.name}", lambda {|value| quote(value.to_s) }
       end
 
-      enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
+      if klass.name.start_with? "#{base_class.name}::"
+        enum = klass.name.split('::').last.underscore.to_sym
+      else
+        ActiveSupport::Deprecation.warn("The enum class name #{klass} is deprecated. ClassyEnum 3.0 will require subclasses to use the parent class as a namespace. Change it to #{base_class}::#{klass.name.gsub(base_class.name, '')}", caller)
+        enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
+      end
+
       index = self.enum_options.index(enum) + 1
 
       klass.class_eval do
@@ -64,7 +70,14 @@ module ClassyEnum
       return value if value.blank?
       return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self.enum_options.include? value.to_sym
 
-      object = ("#{self}#{value.to_s.camelize}").constantize.new
+      # Temp hack until 3.0 to allow both namespaced and non-namespaced classes
+      begin
+        klass = "#{self}::#{value.to_s.camelize}".constantize
+      rescue NameError
+        klass = "#{self}#{value.to_s.camelize}".constantize
+      end
+
+      object = klass.new
       object.owner = options[:owner]
       object.serialize_as_json = options[:serialize_as_json]
       object
