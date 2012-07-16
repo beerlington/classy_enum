@@ -6,12 +6,12 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 ## Rails & Ruby Versions Supported
 
-*Rails:*
+*Rails:* 3.0.x - 3.2.x
 
-  * 3.0.x - 3.2.x: Fully tested in a production application.
-  * 2.3.x: If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1)
+*Ruby:* 1.8.7, 1.9.2 and 1.9.3
 
-*Ruby:* Ruby 1.8.7, 1.9.2, and 1.9.3 are tested and supported
+If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1).
+Note: This branch is no longer maintained and will not get bug fixes or new features.
 
 ## Installation
 
@@ -140,9 +140,7 @@ Example using the default `owner` method:
 class Priority < ClassyEnum::Base
 end
 
-# ...
 # low and medium subclasses omitted
-# ...
 
 class Priority::High < Priority
   def send_email?
@@ -158,9 +156,7 @@ class Priority < ClassyEnum::Base
   owner :alarm
 end
 
-# ...
 # low and medium subclasses omitted
-# ...
 
 class Priority::High < Priority
   def send_email?
@@ -261,12 +257,6 @@ Instantiate an enum member subclass *Priority::Low*
 low = Priority.build(:low)
 low = Priority.build('low')
 low = Priority::Low.new
-```
-
-Get a list of the valid enum options
-
-```ruby
-Priority.valid_options # => low, medium, high
 ```
 
 ## Formtastic Support
