@@ -114,7 +114,6 @@ With this setup, I can now do the following:
 @alarm.priority.medium? # => true
 @alarm.priority.high? # => false
 @alarm.priority.to_s # => 'medium'
-@alarm.priority.name # => 'Medium'
 
 # Should this alarm send an email?
 @alarm.send_email? # => false
