@@ -4,8 +4,7 @@ module ClassyEnum
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
     # This method is automatically added to all ActiveRecord models when the classy_enum gem
     # is installed. Accepts an argument for the enum class to be associated with
-    # the model. If the enum class name is different than the field name, then an optional
-    # field name can be passed. ActiveRecord validation is automatically added to ensure
+    # the model. ActiveRecord validation is automatically added to ensure
     # that a value is one of its pre-defined enum members.
     #
     # ==== Example
@@ -15,9 +14,16 @@ module ClassyEnum
     #  end
     #
     #  # Associate an enum Priority with Alarm model's alarm_priority attribute
-    #  class Alarm < ActiveRecord::Base
-    #    classy_enum_attr :alarm_priority, :enum => 'Priority'
-    #  end
+    #  classy_enum_attr :alarm_priority, :enum => 'Priority'
+    #
+    #  # Allow enum value to be nil
+    #  classy_enum_attr :priority, :allow_nil => true
+    #
+    #  # Allow enum value to be blank
+    #  classy_enum_attr :priority, :allow_blank => true
+    #
+    #  # Use a different name for the enum method, preserving ActiveRecord getter method
+    #  classy_enum_attr :priority, :suffix => '_type'
     def classy_enum_attr(*args)
       options = args.extract_options!
 
