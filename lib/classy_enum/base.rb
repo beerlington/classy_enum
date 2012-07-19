@@ -8,7 +8,7 @@ module ClassyEnum
     include Collection
 
     class_attribute :base_class
-    attr_accessor :owner, :serialize_as_json
+    attr_accessor :owner, :serialize_as_json, :allow_blank
 
     class << self
       def inherited(klass)
@@ -37,7 +37,8 @@ module ClassyEnum
         super
       end
 
-      # Build a new ClassyEnum child instance
+      # Used internally to build a new ClassyEnum child instance
+      # It is preferred that you use ChildClass.new instead
       #
       # ==== Example
       #  # Create an Enum with some elements
@@ -48,34 +49,18 @@ module ClassyEnum
       #  end
       #
       #  Priority.build(:low) # => Priority::Low.new
+      #  Priority.build(:invalid_option) # => :invalid_option
       def build(value, options={})
-        return value if value.blank?
+        return value if value.blank? && options[:allow_blank]
 
-        # Return a TypeError if the build value is not a valid member
-        unless all.map(&:to_sym).include? value.to_sym
-          return TypeError.new("#{base_class} #{invalid_message}")
-        end
+        # Return the value if it is not a valid member
+        return value unless all.map(&:to_s).include? value.to_s
 
-        object = ("#{base_class}::#{value.to_s.camelize}").constantize.new
+        object = "#{base_class}::#{value.to_s.camelize}".constantize.new
         object.owner = options[:owner]
         object.serialize_as_json = options[:serialize_as_json]
+        object.allow_blank = options[:allow_blank]
         object
-      end
-
-      # Returns a a message indicating which fields are valid
-      #
-      # ==== Example
-      #  # Create an Enum with some elements
-      #  class Priority < ClassyEnum::Base
-      #  end
-      #
-      #  class Priority::Low < Priority; end
-      #  class Priority::Medium < Priority; end
-      #  class Priority::High < Priority; end
-      #
-      #  Priortiy.invalid_message # => must be low, medium, or high
-      def invalid_message
-        "must be #{all.to_sentence(:two_words_connector => ' or ', :last_word_connector => ', or ')}"
       end
 
       # DSL setter method for overriding reference to enum owner (ActiveRecord model)

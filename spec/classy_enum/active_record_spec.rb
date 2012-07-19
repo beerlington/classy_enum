@@ -46,7 +46,7 @@ describe Dog do
     subject { Dog.new(:breed => :golden_retriever) }
     it { should be_valid }
     its(:breed) { should be_a(Breed::GoldenRetriever) }
-    its(:breed_options) { should == {:enum => Breed, :allow_blank => false} }
+    its('breed.allow_blank') { should be_false }
   end
 
   context "with invalid breed options" do
@@ -63,7 +63,7 @@ describe "A ClassyEnum that allows blanks" do
   context "with valid breed options" do
     subject { AllowBlankBreedDog.new(:breed => :golden_retriever) }
     it { should be_valid }
-    its(:breed_options) { should == {:enum => Breed, :allow_blank => true} }
+    its('breed.allow_blank') { should be_true }
   end
 
   context "with invalid breed options" do
@@ -80,7 +80,7 @@ describe "A ClassyEnum that allows nils" do
   context "with valid breed options" do
     subject { AllowNilBreedDog.new(:breed => :golden_retriever) }
     it { should be_valid }
-    its(:breed_options) { should == {:enum => Breed, :allow_blank => false} }
+    its('breed.allow_blank') { should be_true }
   end
 
   context "with invalid breed options" do

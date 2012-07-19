@@ -32,17 +32,22 @@ module ClassyEnum
       reader_method += "_#{options[:suffix]}" if options.has_key?(:suffix)
 
       valid_attributes = reader_method == attribute.to_s ? enum.all : enum.all.map(&:to_s)
+      error_message    = "must be #{enum.all.to_sentence(:two_words_connector => ' or ', :last_word_connector => ', or ')}"
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
         :in          => valid_attributes,
-        :message     => enum.invalid_message,
+        :message     => error_message,
         :allow_blank => allow_blank,
         :allow_nil   => allow_nil
 
       # Define getter method that returns a ClassyEnum instance
       define_method reader_method do
-        enum.build(read_attribute(attribute), :owner => self, :serialize_as_json => serialize_as_json)
+        enum.build(read_attribute(attribute),
+                   :owner             => self,
+                   :serialize_as_json => serialize_as_json,
+                   :allow_blank       => (allow_blank || allow_nil)
+                  )
       end
 
       # Define setter method that accepts either string or symbol for member
@@ -50,12 +55,6 @@ module ClassyEnum
         value = value.to_s unless value.nil?
         super(value)
       end
-
-      # Store the enum options so it can be later retrieved by Formtastic
-      define_method "#{attribute}_options" do
-        {:enum => enum, :allow_blank => allow_blank}
-      end
-
     end
 
   end

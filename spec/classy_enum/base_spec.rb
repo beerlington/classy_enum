@@ -12,8 +12,9 @@ end
 describe ClassyEnum::Base do
   context '.build' do
     context 'invalid option' do
-      subject { ClassyEnumBase.build(:invalid_option) }
-      its(:class) { should == TypeError }
+      it 'should return the option' do
+        ClassyEnumBase.build(:invalid_option).should == :invalid_option
+      end
     end
 
     context 'string option' do
@@ -25,10 +26,6 @@ describe ClassyEnum::Base do
       subject { ClassyEnumBase.build(:two) }
       it { should be_a(ClassyEnumBase::Two) }
     end
-  end
-
-  context '.invalid_message' do
-    ClassyEnumBase.invalid_message.should == 'must be one or two'
   end
 
   context '#new' do
