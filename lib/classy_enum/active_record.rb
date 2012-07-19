@@ -1,5 +1,5 @@
 module ClassyEnum
-  module Attributes
+  module ActiveRecord
 
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
     # This method is automatically added to all ActiveRecord models when the classy_enum gem
@@ -61,4 +61,4 @@ module ClassyEnum
   end
 end
 
-ActiveRecord::Base.send :extend, ClassyEnum::Attributes
+ActiveRecord::Base.send :extend, ClassyEnum::ActiveRecord
