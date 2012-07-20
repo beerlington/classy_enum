@@ -21,9 +21,6 @@ module ClassyEnum
     #
     #  # Allow enum value to be blank
     #  classy_enum_attr :priority, :allow_blank => true
-    #
-    #  # Use a different name for the enum method, preserving ActiveRecord getter method
-    #  classy_enum_attr :priority, :suffix => '_type'
     def classy_enum_attr(*args)
       options = args.extract_options!
 
@@ -34,21 +31,17 @@ module ClassyEnum
       allow_nil         = options[:allow_nil] || false
       serialize_as_json = options[:serialize_as_json] || false
 
-      reader_method     = attribute.to_s
-      reader_method += "_#{options[:suffix]}" if options.has_key?(:suffix)
-
-      valid_attributes = reader_method == attribute.to_s ? enum.all : enum.all.map(&:to_s)
       error_message    = "must be #{enum.all.to_sentence(:two_words_connector => ' or ', :last_word_connector => ', or ')}"
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
-        :in          => valid_attributes,
+        :in          => enum.all,
         :message     => error_message,
         :allow_blank => allow_blank,
         :allow_nil   => allow_nil
 
       # Define getter method that returns a ClassyEnum instance
-      define_method reader_method do
+      define_method attribute do
         enum.build(read_attribute(attribute),
                    :owner             => self,
                    :serialize_as_json => serialize_as_json,

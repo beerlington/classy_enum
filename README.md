@@ -197,7 +197,7 @@ end
 
 ## Special Cases
 
-What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
+What if your enum class name is not the same as your model's attribute name? No problem! Just use a second argument in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
 
 ```ruby
 class Alarm < ActiveRecord::Base
@@ -206,19 +206,6 @@ end
 
 @alarm = Alarm.create(:alarm_priority => :medium)
 @alarm.alarm_priority  # => Priority::Medium
-```
-
-If you would like the default getter method to return a string, you can
-use the optional *:suffix* option for the enum getter:
-
-```ruby
-class Alarm < ActiveRecord::Base
-  classy_enum_attr :priority, :suffix => 'type'
-end
-
-alarm = Alarm.create(:priority => :high)
-alarm.priority # => 'high'
-alarm.priority_type # instance of Priority::High enum
 ```
 
 ## Model Validation

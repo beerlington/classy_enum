@@ -7,6 +7,7 @@
 * Removing ClassyEnum::Base.valid_options
 * Removing ClassyEnum::Base.find
 * Removing ClassyEnum::Base#name
+* Removing :suffix option from classy_enum_attr
 * Enforce use of namespacing for subclasses (Parent::Child < Parent)
 * Use require instead of autoload
 * Lots of code refactoring
