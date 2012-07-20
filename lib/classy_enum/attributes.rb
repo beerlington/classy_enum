@@ -29,7 +29,11 @@ module ClassyEnum
       serialize_as_json = options[:serialize_as_json] || false
 
       reader_method = attribute.to_s
-      reader_method += "_#{options[:suffix]}" if options.has_key?(:suffix)
+
+      if options.has_key? :suffix
+        ActiveSupport::Deprecation.warn(':suffix option for classy_enum_attr is deprecated, and will be removed in ClassyEnum 3.0.', caller)
+        reader_method += "_#{options[:suffix]}"
+      end
 
       klass = enum.to_s.camelize.constantize
 

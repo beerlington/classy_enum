@@ -4,6 +4,8 @@
 
 * Deprecating ClassyEnum::Base#name (use to_s.titleize instead). `name` is
   too ambiguous and might get confused with Ruby's Class.name method.
+* Deprecating :suffix option from classy_enum_attr (this was a temporary
+  hack)
 
 ## 2.2.0
 
