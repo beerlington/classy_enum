@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency('rails', '>= 3.0')
 
-  gem.add_development_dependency('rspec-rails', '~> 2.10.0')
+  gem.add_development_dependency('rspec-rails', '~> 2.11.0')
   gem.add_development_dependency('sqlite3', '~> 1.3.6')
   gem.add_development_dependency('json', '~> 1.6.5')
 

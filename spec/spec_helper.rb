@@ -46,32 +46,3 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :breed
   end
 end
-
-class Breed < ClassyEnum::Base
-  enum_classes :golden_retriever, :snoop, :husky
-end
-
-class BreedGoldenRetriever < Breed
-end
-
-class BreedSnoop < Breed
-end
-
-class BreedHusky < Breed
-end
-
-class Dog < ActiveRecord::Base
-  classy_enum_attr :breed
-end
-
-class AllowBlankBreedDog < ActiveRecord::Base
-  classy_enum_attr :breed, :allow_blank => true
-end
-
-class AllowNilBreedDog < ActiveRecord::Base
-  classy_enum_attr :breed, :allow_nil => true
-end
-
-class OtherDog < ActiveRecord::Base
-  classy_enum_attr :other_breed, :enum => :breed
-end

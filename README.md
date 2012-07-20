@@ -6,12 +6,12 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 ## Rails & Ruby Versions Supported
 
-*Rails:*
+*Rails:* 3.0.x - 3.2.x
 
-  * 3.0.x - 3.2.x: Fully tested in a production application.
-  * 2.3.x: If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1)
+*Ruby:* 1.8.7, 1.9.2 and 1.9.3
 
-*Ruby:* Ruby 1.8.7, 1.9.2, and 1.9.3 are tested and supported
+If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1).
+Note: This branch is no longer maintained and will not get bug fixes or new features.
 
 ## Installation
 
@@ -19,15 +19,9 @@ The gem is hosted at [rubygems.org](https://rubygems.org/gems/classy_enum)
 
 You will also need to add `app/enums` as an autoloadable path. This configuration will depend on which version of rails you are using.
 
-## Upgrading to 2.0
+## Upgrading?
 
-Prior to 2.0, enum classes were implicity defined and were only required
-when overriding methods or properties. As of 2.0, all enum classes must
-explicity subclass a child of ClassyEnum::Base. If you used the
-generator, there are no changes to the existing structure.
-
-Built-in Formtastic support has been removed. See the note at the
-bottom of this readme for more information how how to enable it.
+See the [wiki](https://github.com/beerlington/classy_enum/wiki/Upgrading) for notes about upgrading from previous versions.
 
 ## Example Usage
 
@@ -45,20 +39,19 @@ A new enum template file will be created at app/enums/priority.rb that will look
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
 end
 
-class PriorityLow < Priority
+class Priority::Low < Priority
 end
 
-class PriorityMedium < Priority
+class Priority::Medium < Priority
 end
 
-class PriorityHigh < Priority
+class Priority::High < Priority
 end
 ```
 
-The `enum_classes` class macro will define the enum member order as well as additional ClassyEnum behavior, which is described further down in this document.
+The class order will define the enum member order as well as additional ClassyEnum behavior, which is described further down in this document.
 
 ### 2. Customize the Enum
 
@@ -70,20 +63,18 @@ I would like to add a method called `send_email?` that all member subclasses res
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
-
   def send_email?
     false
   end
 end
 
-class PriorityLow < Priority
+class Priority::Low < Priority
 end
 
-class PriorityMedium < Priority
+class Priority::Medium < Priority
 end
 
-class PriorityHigh < Priority
+class Priority::High < Priority
   def send_email?
     true
   end
@@ -119,11 +110,10 @@ With this setup, I can now do the following:
 ```ruby
 @alarm = Alarm.create(:priority => :medium)
 
-@alarm.priority  # => PriorityMedium
+@alarm.priority  # => Priority::Medium
 @alarm.priority.medium? # => true
 @alarm.priority.high? # => false
 @alarm.priority.to_s # => 'medium'
-@alarm.priority.name # => 'Medium'
 
 # Should this alarm send an email?
 @alarm.send_email? # => false
@@ -137,7 +127,7 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 
 In some cases you may want an enum class to reference the owning object
 (an instance of the active record model). Think of it as a `belongs_to`
-relationship, where the enum can reference its owning object.
+relationship, where the enum belongs to the model.
 
 By default, the back reference can be called using `owner`.
 If you want to refer to the owner by a different name, you must explicitly declare
@@ -147,14 +137,11 @@ Example using the default `owner` method:
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
 end
 
-...
 # low and medium subclasses omitted
-...
 
-class PriorityHigh < Priority
+class Priority::High < Priority
   def send_email?
     owner.enabled?
   end
@@ -165,15 +152,12 @@ Example where the owner reference is explicitly declared:
 
 ```ruby
 class Priority < ClassyEnum::Base
-  enum_classes :low, :medium, :high
   owner :alarm
 end
 
-...
 # low and medium subclasses omitted
-...
 
-class PriorityHigh < Priority
+class Priority::High < Priority
   def send_email?
     alarm.enabled?
   end
@@ -213,28 +197,15 @@ end
 
 ## Special Cases
 
-What if your enum class name is not the same as your model's attribute name? No problem! Just use a second arugment in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
+What if your enum class name is not the same as your model's attribute name? No problem! Just use a second argument in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
 
 ```ruby
 class Alarm < ActiveRecord::Base
-  classy_enum_attr :alarm_priority, :enum => :priority
+  classy_enum_attr :alarm_priority, :enum => 'Priority'
 end
 
 @alarm = Alarm.create(:alarm_priority => :medium)
-@alarm.alarm_priority  # => PriorityMedium
-```
-
-If you would like the default getter method to return a string, you can
-use the optional *:suffix* option for the enum getter:
-
-```ruby
-class Alarm < ActiveRecord::Base
-  classy_enum_attr :priority, :suffix => 'type'
-end
-
-alarm = Alarm.create(:priority => :high)
-alarm.priority # => 'high'
-alarm.priority_type # instance of PriorityHigh enum
+@alarm.alarm_priority  # => Priority::Medium
 ```
 
 ## Model Validation
@@ -265,20 +236,13 @@ end
 
 While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
 
-Instantiate an enum member subclass *PriorityLow*
+Instantiate an enum member subclass *Priority::Low*
 
 ```ruby
 # These statements are all equivalent
 low = Priority.build(:low)
 low = Priority.build('low')
-low = Priority.find(:low)
-low = PriorityLow.new
-```
-
-Get a list of the valid enum options
-
-```ruby
-Priority.valid_options # => low, medium, high
+low = Priority::Low.new
 ```
 
 ## Formtastic Support
