@@ -11,6 +11,11 @@
 * Use require instead of autoload
 * Lots of code refactoring
 
+## 2.3.0
+
+* Deprecating ClassyEnum::Base#name (use to_s.titleize instead). `name` is
+  too ambiguous and might get confused with Ruby's Class.name method.
+
 ## 2.2.0
 
 * Deprecating class names like ParentChild in favor of namespaced names
@@ -33,7 +38,7 @@
 
 ## 2.0.0
 
-* Enum class definitions are no longer defined implicity and must be explicitly subclassed from children of ClassyEnum::Base
+* Enum class definitions are no longer defined implicitly and must be explicitly subclassed from children of ClassyEnum::Base
 * Formtastic support is not longer built-in. See https://github.com/beerlington/classy_enum/wiki/Formtastic-Support
 * validates_uniqueness_of with an enum scope no longer works in Rails
   3.0.x (no changes for Rails 3.1 or 3.2)
