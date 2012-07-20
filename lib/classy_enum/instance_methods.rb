@@ -57,6 +57,7 @@ module ClassyEnum
     #  @priority = Priority.build(:really_high)
     #  @priority.name # => "Really High"
     def name
+      ActiveSupport::Deprecation.warn('name is deprecated, and will be removed in ClassyEnum 3.0. Replace calls with to_s.titleize.', caller)
       to_s.titleize
     end
 
