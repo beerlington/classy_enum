@@ -19,21 +19,19 @@ module ClassyEnum
     #
     def enum_classes(*enums)
       ActiveSupport::Deprecation.warn('enum_classes is deprecated, and will be removed in ClassyEnum 3.0. It is no longer needed.', caller)
-
-      self.class_eval do
-        class_attribute :enum_options, :base_class
-
-        self.enum_options = enums.map(&:to_sym)
-        self.base_class = self
-
-        # # Use ActiveModel::AttributeMethods to define attribute? methods
-        attribute_method_suffix '?'
-        define_attribute_methods enums
-      end
     end
 
     def inherited(klass)
-      return if self == ClassyEnum::Base
+      
+      if self == ClassyEnum::Base
+        klass.class_eval do
+          class_attribute :enum_options, :base_class
+
+          self.enum_options ||= []
+          self.base_class = self
+        end
+        return
+      end
 
       # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
       Arel::Visitors::ToSql.class_eval do
@@ -46,13 +44,18 @@ module ClassyEnum
         ActiveSupport::Deprecation.warn("The enum class name #{klass} is deprecated. ClassyEnum 3.0 will require subclasses to use the parent class as a namespace. Change it to #{base_class}::#{klass.name.gsub(base_class.name, '')}", caller)
         enum = klass.name.gsub(klass.base_class.name, '').underscore.to_sym
       end
-
+      
+      self.enum_options << enum
       index = self.enum_options.index(enum) + 1
+      
+      self.class_eval do
+        define_method "#{enum}?".to_sym, lambda { to_s == enum.to_s }
+      end
 
       klass.class_eval do
         @index = index
         @option = enum
-
+        
         attr_accessor :owner, :serialize_as_json
       end
     end
@@ -112,7 +115,7 @@ module ClassyEnum
     #
     #  Priority.select_options # => [["Low", "low"], ["Really High", "really_high"]]
     def select_options
-      all.map {|e| [e.name, e.to_s] }
+      all.map {|e| [e.to_s.titleize, e.to_s] }
     end
 
     # Returns a comma separated list of valid enum options.
