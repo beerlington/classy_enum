@@ -44,7 +44,7 @@ module ClassyEnum
         # Add ActiveRecord validation to ensure it won't be saved unless it's an option
         validates_inclusion_of attribute,
           :in => valid_attributes,
-          :message => "must be one of #{klass.valid_options}",
+          :message => "must be one of #{klass.all.join(', ')}",
           :allow_blank => allow_blank,
           :allow_nil => allow_nil
 

@@ -71,7 +71,7 @@ module ClassyEnum
     #  Priority.build(:low) # => PriorityLow.new
     def build(value, options={})
       return value if value.blank?
-      return TypeError.new("Valid #{self} options are #{self.valid_options}") unless self.enum_options.include? value.to_sym
+      return TypeError.new("Valid #{self} options are #{self.all.join(', ')}") unless self.enum_options.include? value.to_sym
 
       # Temp hack until 3.0 to allow both namespaced and non-namespaced classes
       begin
