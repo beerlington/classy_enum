@@ -1,5 +1,9 @@
 # ClassyEnum Changelog
 
+## 2.3.1
+
+* Better compatibility with 3.0 API
+
 ## 2.3.0
 
 * Deprecating ClassyEnum::Base#name (use to_s.titleize instead). `name` is
