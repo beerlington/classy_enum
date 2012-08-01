@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master)](http://travis-ci.org/beerlington/classy_enum)
 
-ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
+ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to attributes, currently for: ActiveRecord, Mongoid and MongoMapper. It should be easy to extend it for other ActiveModel compatible ORMs (or persistence mappers).
 
 ## Rails & Ruby Versions Supported
 
@@ -81,7 +81,7 @@ class Priority::High < Priority
 end
 ```
 
-### 3. Setup the ActiveRecord model
+### 3. ActiveRecord
 
 My ActiveRecord Alarm model needs a text field that will store a string representing the enum member. An example model schema might look something like:
 
@@ -105,6 +105,32 @@ class Alarm < ActiveRecord::Base
 end
 ```
 
+### 3. Mongoid
+
+```ruby
+class Alarm 
+  include Mongoid::Document
+
+  classy_enum_attr :priority
+
+  delegate :send_email?, :to => :priority
+end
+```
+
+### 3. MongoMapper
+
+```ruby
+class Alarm 
+  include MongoMapper::Document
+
+  classy_enum_attr :priority
+
+  delegate :send_email?, :to => :priority
+end
+```
+
+### 4. Usage
+
 With this setup, I can now do the following:
 
 ```ruby
@@ -126,8 +152,7 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 ## Back reference to owning object
 
 In some cases you may want an enum class to reference the owning object
-(an instance of the active record model). Think of it as a `belongs_to`
-relationship, where the enum belongs to the model.
+(an instance of the owner model).
 
 By default, the back reference can be called using `owner`.
 If you want to refer to the owner by a different name, you must explicitly declare
@@ -210,7 +235,7 @@ end
 
 ## Model Validation
 
-An ActiveRecord validator `validates_inclusion_of :field, :in => ENUM.all` is automatically added to your model when you use `classy_enum_attr`. 
+An ActiveModel validator `validates_inclusion_of :field, :in => ENUM.all` is automatically added to your model when you use `classy_enum_attr`. 
 
 If your enum only has members low, medium, and high, then the following validation behavior would be expected:
 
@@ -232,9 +257,9 @@ end
 @alarm.valid? # => true
 ```
 
-## Working with ClassyEnum outside of ActiveRecord
+## Working with ClassyEnum without persistence mapping
 
-While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
+While ClassyEnum was designed to be used directly with persistence mapping (such as an ORM), it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
 
 Instantiate an enum member subclass *Priority::Low*
 
