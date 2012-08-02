@@ -1,4 +1,25 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+# require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
+
+require 'mongoid'
+require 'moped'
+
+Mongoid.configure do |config|
+  config.connect_to('classy_enum') 
+end
+
+if RUBY_VERSION >= '1.9.2'
+  YAML::ENGINE.yamler = 'syck'
+end
+
+RSpec.configure do |config|
+  config.before(:each) do
+    Mongoid.purge!
+  end
+end
+
+
+
 
 class Breed < ClassyEnum::Base; end
 class Breed::GoldenRetriever < Breed; end
@@ -22,19 +43,27 @@ class CatBreed::Bengal < CatBreed; end
 class CatBreed::Birman < CatBreed; end
 class CatBreed::Persian < CatBreed; end
 
-class Dog < ActiveRecord::Base
+class Dog
+  include Mongoid::Document
+
   classy_enum_attr :breed
 end
 
-class AllowBlankBreedDog < ActiveRecord::Base
+class AllowBlankBreedDog
+  include Mongoid::Document
+
   classy_enum_attr :breed, :allow_blank => true
 end
 
-class AllowNilBreedDog < ActiveRecord::Base
+class AllowNilBreedDog
+  include Mongoid::Document
+
   classy_enum_attr :breed, :allow_nil => true
 end
 
-class OtherDog < ActiveRecord::Base
+class OtherDog
+  include Mongoid::Document
+
   classy_enum_attr :other_breed, :enum => 'Breed'
 end
 
@@ -95,7 +124,9 @@ describe "A ClassyEnum that has a different field name than the enum" do
   its(:other_breed) { should be_a(Breed::Snoop) }
 end
 
-class ActiveDog < ActiveRecord::Base
+class ActiveDog 
+  include Mongoid::Document
+
   classy_enum_attr :color
   validates_uniqueness_of :name, :scope => :color
   scope :goldens, where(:breed => 'golden_retriever')
@@ -133,13 +164,17 @@ describe ActiveDog do
 
 end
 
-class Cat < ActiveRecord::Base
+class Cat
+  include Mongoid::Document
+
   classy_enum_attr :breed, :enum => 'CatBreed'
   attr_accessor :color
   delegate :breed_color, :to => :breed
 end
 
-class OtherCat < ActiveRecord::Base
+class OtherCat
+  include Mongoid::Document
+
   classy_enum_attr :breed, :enum => 'CatBreed', :serialize_as_json => true
   attr_accessor :color
   delegate :breed_color, :to => :breed

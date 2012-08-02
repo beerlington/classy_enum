@@ -1,8 +1,8 @@
-# classy_enum
+# classy_enum-mongoid
 
 [![Build Status](https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master)](http://travis-ci.org/beerlington/classy_enum)
 
-ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
+ClassyEnum-Mongoid is a Ruby on Rails gem that adds class-based enumerator functionality to attributes for Mongoid 3.x. It builds on the gem ClassyEnum by @beerlington.
 
 ## Rails & Ruby Versions Supported
 
@@ -25,7 +25,7 @@ See the [wiki](https://github.com/beerlington/classy_enum/wiki/Upgrading) for no
 
 ## Example Usage
 
-The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an ActiveRecord model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested.
+The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have a Mongoid model called `Alarm` with an attribute called `priority`. Priority is stored as a string.
 
 ### 1. Generate the Enum
 
@@ -81,29 +81,19 @@ class Priority::High < Priority
 end
 ```
 
-### 3. Setup the ActiveRecord model
-
-My ActiveRecord Alarm model needs a text field that will store a string representing the enum member. An example model schema might look something like:
+### 3. Mongoid setup
 
 ```ruby
-create_table "alarms", :force => true do |t|
-  t.string   "priority"
-  t.boolean  "enabled"
-end
-```
+class Alarm 
+  include Mongoid::Document
 
-Note: Alternatively, you may use an enum type if your database supports it. See
-[this issue](https://github.com/beerlington/classy_enum/issues/12) for more information.
-
-Then in my model I've added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
-
-```ruby
-class Alarm < ActiveRecord::Base
   classy_enum_attr :priority
 
   delegate :send_email?, :to => :priority
 end
 ```
+
+### 4. Usage
 
 With this setup, I can now do the following:
 
@@ -126,8 +116,7 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 ## Back reference to owning object
 
 In some cases you may want an enum class to reference the owning object
-(an instance of the active record model). Think of it as a `belongs_to`
-relationship, where the enum belongs to the model.
+(an instance of the owner model).
 
 By default, the back reference can be called using `owner`.
 If you want to refer to the owner by a different name, you must explicitly declare
@@ -210,7 +199,7 @@ end
 
 ## Model Validation
 
-An ActiveRecord validator `validates_inclusion_of :field, :in => ENUM.all` is automatically added to your model when you use `classy_enum_attr`. 
+An ActiveModel validator `validates_inclusion_of :field, :in => ENUM.all` is automatically added to your model when you use `classy_enum_attr`. 
 
 If your enum only has members low, medium, and high, then the following validation behavior would be expected:
 
@@ -232,9 +221,9 @@ end
 @alarm.valid? # => true
 ```
 
-## Working with ClassyEnum outside of ActiveRecord
+## Working with ClassyEnum without persistence mapping
 
-While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
+While ClassyEnum was designed to be used directly with persistence mapping (such as an ORM), it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
 
 Instantiate an enum member subclass *Priority::Low*
 
