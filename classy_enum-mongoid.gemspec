@@ -10,14 +10,14 @@ Gem::Specification.new do |gem|
 
   gem.files         = `git ls-files`.split($\)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "classy_enum"
+  gem.name          = "classy_enum-mongoid"
   gem.require_paths = ["lib"]
   gem.version       = ClassyEnum::VERSION
 
   gem.add_dependency('rails', '>= 3.0')
 
   gem.add_development_dependency('rspec-rails', '~> 2.11.0')
-  gem.add_development_dependency('sqlite3', '~> 1.3.6')
-  gem.add_development_dependency('json', '~> 1.6.5')
-
+  gem.add_development_dependency('mongoid',     '~> 3')
+  gem.add_development_dependency('moped',       '~> 1.2')
+  gem.add_development_dependency('json',        '~> 1.6.5')
 end
