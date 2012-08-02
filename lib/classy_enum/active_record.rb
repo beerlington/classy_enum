@@ -55,4 +55,6 @@ module ClassyEnum
   end
 end
 
-ActiveRecord::Base.send :extend, ClassyEnum::ActiveRecord
+if defined?(ActiveRecord::Base)
+  ActiveRecord::Base.send :extend, ClassyEnum::ActiveRecord
+end
