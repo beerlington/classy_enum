@@ -1,4 +1,4 @@
-# classy_enum
+# ClassyEnum
 
 [![Build Status](https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master)](http://travis-ci.org/beerlington/classy_enum)
 
