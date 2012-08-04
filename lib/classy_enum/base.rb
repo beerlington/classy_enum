@@ -15,6 +15,7 @@ module ClassyEnum
         if self == ClassyEnum::Base
           klass.base_class = klass
         else
+          return unless klass.name
 
           # Ensure subclasses follow expected naming conventions
           unless klass.name.start_with? "#{base_class.name}::"

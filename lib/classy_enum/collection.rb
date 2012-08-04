@@ -1,5 +1,7 @@
 module ClassyEnum
   module Collection
+    extend ActiveSupport::Concern
+
     # Sort an array of elements based on the order they are defined
     #
     # ==== Example
@@ -20,10 +22,6 @@ module ClassyEnum
     #  priorities.min # => @low
     def <=> other
       index <=> other.index
-    end
-
-    def self.included(klass)
-      klass.extend ClassMethods
     end
 
     module ClassMethods

@@ -20,4 +20,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('sqlite3', '~> 1.3.6')
   gem.add_development_dependency('json', '~> 1.6.5')
 
+  gem.add_development_dependency("RubyInline", "~> 3.11.3")
 end

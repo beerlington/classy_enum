@@ -53,6 +53,26 @@ end
 
 The class order will define the enum member order as well as additional ClassyEnum behavior, which is described further down in this document.
 
+#### Macros
+
+The `#enum` and `#enums` macro methods can be made globally available by: `require classy_enum/macros'` 
+
+If you want to generate macro enums, specify the option `--macro`.
+
+```
+rails g classy_enum Priority low medium high --macro
+```
+
+The macros generates the same code (class structure) as shown above.
+
+```ruby
+enum :priority
+  enum :low
+  enum :medium
+  enum :high
+end
+```
+
 ### 2. Customize the Enum
 
 The generator creates a default setup, but each enum member can be changed to fit your needs.
@@ -77,6 +97,18 @@ end
 class Priority::High < Priority
   def send_email?
     true
+  end
+end
+```
+
+Similarly using macros:
+
+```ruby
+enum :priority
+  enum :High do
+    def send_email?
+      true
+    end
   end
 end
 ```
