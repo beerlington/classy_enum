@@ -4,14 +4,14 @@ require 'classy_enum/macros'
 
 describe 'ClassyEnum macros: #enum and #enums' do
   before :all do
-    enum :number, :no_context do
+    enum :number, :none do
       enum :one do
         def send_email?
           true
         end
       end
 
-      enums :two, :three
+      enums %w{two three}
     end
   end
 
@@ -41,9 +41,18 @@ describe 'ClassyEnum macros: #enum and #enums' do
   end
 end
 
-describe 'ClassyEnum macros: #enum and #enums' do
+describe 'ClassyEnum macros: #enum_for' do
   before :all do
-    enum_for :color, [:red, :blue], parent: :no_context
+    enum_for :color, [:red, :blue]
+
+    enum_for :state, %w{start done}
+  end
+
+  context 'state' do
+    describe 'state: start' do
+      subject { State.build(:start) }
+      it { should be_a(::State::Start) }
+    end    
   end
 
   context '.build' do
@@ -59,10 +68,8 @@ describe 'ClassyEnum macros: #enum and #enums' do
     end
 
     context 'symbol option' do
-      describe 'two' do
-        subject { Color.build(:blue) }
-        it { should be_a(::Color::Blue) }
-      end
+      subject { Color.build(:blue) }
+      it { should be_a(::Color::Blue) }
     end
   end
 end  
