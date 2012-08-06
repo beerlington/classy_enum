@@ -47,6 +47,10 @@ describe Dog do
     it { should be_valid }
     its(:breed) { should be_a(Breed::GoldenRetriever) }
     its('breed.allow_blank') { should be_false }
+
+    its('breed.valid_values') { should == [:golden_retriever, :snoop, :husky] }
+    specify { subject.breed.valid?(:snoop).should be_true }
+    specify { subject.breed.valid?(:snoop_dog).should be_false }
   end
 
   context "with invalid breed options" do

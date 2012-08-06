@@ -1,8 +1,15 @@
 def enum name, parent_class = nil, &block
-  clazz_name = name.to_s.camelize      
-  context = self.inspect == 'main' ? Object : self
-  parent_class ||= context unless context == Object
+  clazz_name = name.to_s.camelize 
+  if parent_class != :no_context
+    context = self.inspect == 'main' ? Object : self
+    parent_class ||= context unless context == Object
+  else
+    context = Object
+    parent_class = nil
+  end
   parent_class ||= ::ClassyEnum::Base
+
+  raise "Bad superclass: #{parent_class}" unless parent_class.kind_of?(Class)
 
   klass = Class.new(parent_class)  
   
@@ -31,7 +38,8 @@ def enum name, parent_class = nil, &block
       end
 
       # Convert from MyEnumClass::NumberTwo to :number_two
-      enum = name
+      enum = name.to_sym
+      valid_values << enum
 
       ClassyEnum::Predicate.define_predicate_method(klass, enum)
 
@@ -46,4 +54,10 @@ end
 
 def enums *names
   names.each {|name| enum name }
+end
+
+def enum_for name, list, options = {}
+  enum name, options[:parent] do
+    enums *list.flatten.compact
+  end
 end
