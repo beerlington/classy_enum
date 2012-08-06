@@ -68,9 +68,21 @@ The macros generates the same code (class structure) as shown above.
 ```ruby
 enum :priority
   enum :low
-  enum :medium
+  
+  enum :medium do
+    def send_email?
+      true
+    end  
+  end
+
   enum :high
 end
+```
+
+If you are simply defining an enum of values without functionality, simply use:
+
+```ruby
+enum_for :priority, [:low, :medium, :high]
 ```
 
 ### 2. Customize the Enum

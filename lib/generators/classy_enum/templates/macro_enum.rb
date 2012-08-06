@@ -5,3 +5,6 @@ enum :<%= class_name.underscore %>
   enum :<%= arg.underscore %>
 <%- end -%>
 end
+
+# alternative (use --simple)
+# enum_for :color, [:red, :blue]
