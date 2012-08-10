@@ -27,6 +27,9 @@ module ClassyEnum
     end
 
     module ClassMethods
+      include Enumerable
+      alias all to_a
+
       def inherited(klass)
         if self == ClassyEnum::Base
           klass.class_attribute :enum_options
@@ -39,7 +42,7 @@ module ClassyEnum
         super
       end
 
-      # Returns an array of all instantiated enums
+      # Iterates over instances of each enum in the collection
       #
       # ==== Example
       #  # Create an Enum with some elements
@@ -50,10 +53,41 @@ module ClassyEnum
       #  class Priority::Medium < Priority; end
       #  class Priority::High < Priority; end
       #
-      #  Priority.all # => [Priority::Low.new, Priority::Medium.new, Priority::High.new]
-      def all
-        enum_options.map(&:new)
+      #  Priority.each do |priority|
+      #    puts priority # => 'Low', 'Medium', 'High'
+      #  end
+      def each
+        enum_options.each {|e| yield e.new }
       end
+
+      # Finds an enum instance by symbol, string, or block.
+      #
+      # If a block is given, it passes each entry in enum to block, and returns
+      # the first enum for which block is not false. If no enum matches, it
+      # returns nil.
+      #
+      # ==== Example
+      #  # Create an Enum with some elements
+      #  class Priority < ClassyEnum::Base
+      #  end
+      #
+      #  class Priority::Low < Priority; end
+      #  class Priority::Medium < Priority; end
+      #  class Priority::High < Priority; end
+      #
+      #  Priority.find(:high) # => Priority::High.new
+      #  Priority.find('high') # => Priority::High.new
+      #  Priority.find {|e| e.to_sym == :high } # => Priority::High.new
+      def find(key=nil)
+        return super if block_given?
+
+        key = build(key)
+        return nil unless key.is_a?(ClassyEnum::Base)
+        super { |e| e == key }
+      end
+
+      alias detect find
+      alias [] find
 
       # Returns a 2D array for Rails select helper options.
       # Also used internally for Formtastic support
@@ -68,7 +102,7 @@ module ClassyEnum
       #
       #  Priority.select_options # => [["Low", "low"], ["Really High", "really_high"]]
       def select_options
-        all.map {|e| [e.to_s.titleize, e.to_s] }
+        map {|e| [e.to_s.titleize, e.to_s] }
       end
     end
 
