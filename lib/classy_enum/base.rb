@@ -5,6 +5,7 @@ module ClassyEnum
     include Comparable
     include Conversion
     include Predicate
+    include Translation
     include Collection
 
     class_attribute :base_class
