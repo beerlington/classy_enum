@@ -4,6 +4,16 @@
 
 ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
 
+* [Example Usage](https://github.com/beerlington/classy_enum#example-usage)
+* [Internationalization](https://github.com/beerlington/classy_enum#internationalization)
+* [Using Enum as a Collection](https://github.com/beerlington/classy_enum#using-enum-as-a-collection)
+* [Reference to Owning Object](https://github.com/beerlington/classy_enum#back-reference-to-owning-object)
+* [Serializing as JSON](https://github.com/beerlington/classy_enum#serializing-as-json)
+* [Special Cases](https://github.com/beerlington/classy_enum#special-cases)
+* [Built-in Model Validation](https://github.com/beerlington/classy_enum#model-validation)
+* [Using Enums Outside of ActiveRecord](https://github.com/beerlington/classy_enum#working-with-classyenum-outside-of-activerecord)
+* [Formtastic Support](https://github.com/beerlington/classy_enum#formtastic-support)
+
 ## Rails & Ruby Versions Supported
 
 *Rails:* 3.0.x - 3.2.x
@@ -122,6 +132,61 @@ With this setup, I can now do the following:
 ```
 
 The enum field works like any other model attribute. It can be mass-assigned using `update_attribute(s)`.
+
+## Internationalization
+
+ClassyEnum provides built-in support for translations using Ruby's I18n
+library. The translated values are provided via a `.text` method on each
+enum object. Translations are automatically applied when a key is found
+at `locale.classy_enum.enum_parent_class.enum_value`, or a default value
+is used that is equivalent to `to_s.titleize`.
+
+Given the following file *config/locales/es.yml*
+
+```yml
+es:
+  classy_enum:
+    priority:
+      low: 'Bajo'
+      medium: 'Medio'
+      high: 'Alto'
+```
+
+You can now do the following:
+
+```ruby
+@alarm.priority = :low
+@alarm.priority.text # => 'Low'
+
+I18n.locale = :es
+
+@alarm.priority.text # => 'Bajo'
+```
+
+## Using Enum as a Collection
+
+ClassyEnum::Base extends the [Enumerable module](http://ruby-doc.org/core-1.9.3/Enumerable.html)
+which provides it with several traversal and searching methods. This can
+be useful for situations where you are working with the collection,
+as opposed to the attributes on an ActiveRecord object.
+
+```ruby
+# Find the priority based on string or symbol:
+Priority.find(:low) # => Priority::Low.new
+Priority.find('medium') # => Priority::Medium.new
+
+# Find the lowest priority that can send email:
+Priority.find(&:send_email?) # => Priority::High.new
+
+# Find the priorities that are lower than Priority::High
+high_priority = Priority::High.new
+Priority.select {|p| p < high_priority } # => [Priority::Low.new, Priority::Medium.new]
+
+# Iterate over each priority:
+Priority.each do |priority|
+  puts priority.send_email?
+end
+```
 
 ## Back reference to owning object
 
