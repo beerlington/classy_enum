@@ -19,6 +19,10 @@ module ClassyEnum
     #  priorities.max # => @high
     #  priorities.min # => @low
     def <=> other
+      if other.is_a?(Symbol) || other.is_a?(String)
+        other = self.class.find(other)
+      end
+
       index <=> other.index
     end
 

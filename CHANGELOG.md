@@ -10,6 +10,11 @@
 * Introducing I18n support and providing a ClassyEnum::Base#text method
   that will automatically translate text values.
 * Translation support was added to ClassyEnum::Base.select_options.
+* Equality can now be determined using strings and symbols. The
+  following will return true:
+
+      Priority::Low.new == :low  # => true
+      Priority::Low.new == 'low' # => true
 
 ## 3.0.0
 

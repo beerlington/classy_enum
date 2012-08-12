@@ -26,6 +26,16 @@ describe ClassyEnum::Collection do
     end
   end
 
+  context '#<=> (equality)' do
+    its(:first) { should == ClassyEnumCollection::One.new }
+    its(:first) { should == :one }
+    its(:first) { should == 'one' }
+    its(:first) { should_not == :two }
+    its(:first) { should_not == :not_found }
+
+    its(:max) { should == :three }
+  end
+
   context '.find, .detect, []' do
     let(:expected_enum) { ClassyEnumCollection::Two.new }
 
