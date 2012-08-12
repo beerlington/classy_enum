@@ -83,11 +83,11 @@ module ClassyEnum
       #  Priority.find('high') # => Priority::High.new
       #  Priority.find {|e| e.to_sym == :high } # => Priority::High.new
       def find(key=nil)
-        return super if block_given?
-
-        key = build(key)
-        return nil unless key.is_a?(ClassyEnum::Base)
-        super { |e| e == key }
+        if block_given?
+          super
+        elsif map(&:to_s).include? key.to_s
+          super { |e| e.to_s == key.to_s }
+        end
       end
 
       alias detect find
