@@ -69,7 +69,7 @@ The generator creates a default setup, but each enum member can be changed to fi
 
 I have defined three priority levels: low, medium, and high. Each priority level can have different properties and methods associated with it.
 
-I would like to add a method called `send_email?` that all member subclasses respond to. By default this method will return false, but will be overridden for high priority alarms to return true.
+I would like to add a method called `#send_email?` that all member subclasses respond to. By default this method will return false, but will be overridden for high priority alarms to return true.
 
 ```ruby
 class Priority < ClassyEnum::Base
@@ -105,7 +105,7 @@ end
 Note: Alternatively, you may use an enum type if your database supports it. See
 [this issue](https://github.com/beerlington/classy_enum/issues/12) for more information.
 
-Then in my model I've added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the send_email? method to my Priority enum class.
+Then in my model I've added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the `#send_email?` method to my Priority enum class.
 
 ```ruby
 class Alarm < ActiveRecord::Base
@@ -131,15 +131,15 @@ With this setup, I can now do the following:
 @alarm.send_email? # => true
 ```
 
-The enum field works like any other model attribute. It can be mass-assigned using `update_attribute(s)`.
+The enum field works like any other model attribute. It can be mass-assigned using `#update_attributes`.
 
 ## Internationalization
 
 ClassyEnum provides built-in support for translations using Ruby's I18n
-library. The translated values are provided via a `.text` method on each
+library. The translated values are provided via a `#text` method on each
 enum object. Translations are automatically applied when a key is found
 at `locale.classy_enum.enum_parent_class.enum_value`, or a default value
-is used that is equivalent to `to_s.titleize`.
+is used that is equivalent to `#to_s.titleize`.
 
 Given the following file *config/locales/es.yml*
 
@@ -166,7 +166,7 @@ I18n.locale = :es
 ## Using Enum as a Collection
 
 ClassyEnum::Base extends the [Enumerable module](http://ruby-doc.org/core-1.9.3/Enumerable.html)
-which provides it with several traversal and searching methods. This can
+which provides several traversal and searching methods. This can
 be useful for situations where you are working with the collection,
 as opposed to the attributes on an ActiveRecord object.
 
@@ -194,11 +194,11 @@ In some cases you may want an enum class to reference the owning object
 (an instance of the active record model). Think of it as a `belongs_to`
 relationship, where the enum belongs to the model.
 
-By default, the back reference can be called using `owner`.
+By default, the back reference can be called using `#owner`.
 If you want to refer to the owner by a different name, you must explicitly declare
-the owner name in the classy_enum parent class using the `owner` class method.
+the owner name in the classy_enum parent class using the `.owner` class method.
 
-Example using the default `owner` method:
+Example using the default `#owner` method:
 
 ```ruby
 class Priority < ClassyEnum::Base
@@ -275,7 +275,7 @@ end
 
 ## Model Validation
 
-An ActiveRecord validator `validates_inclusion_of :field, :in => ENUM.all` is automatically added to your model when you use `classy_enum_attr`. 
+An ActiveRecord validator `validates_inclusion_of :field, :in => ENUM` is automatically added to your model when you use `classy_enum_attr`.
 
 If your enum only has members low, medium, and high, then the following validation behavior would be expected:
 
@@ -305,8 +305,8 @@ Instantiate an enum member subclass *Priority::Low*
 
 ```ruby
 # These statements are all equivalent
-low = Priority.build(:low)
-low = Priority.build('low')
+low = Priority.find(:low)
+low = Priority.find('low')
 low = Priority::Low.new
 ```
 
