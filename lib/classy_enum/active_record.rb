@@ -27,12 +27,9 @@ module ClassyEnum
       allow_nil         = options[:allow_nil] || false
       serialize_as_json = options[:serialize_as_json] || false
 
-      error_message    = "must be #{enum.all.to_sentence(:two_words_connector => ' or ', :last_word_connector => ', or ')}"
-
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
-        :in          => enum.all,
-        :message     => error_message,
+        :in          => enum,
         :allow_blank => allow_blank,
         :allow_nil   => allow_nil
 
