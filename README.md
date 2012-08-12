@@ -4,6 +4,8 @@
 
 ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
 
+## README Topics
+
 * [Example Usage](https://github.com/beerlington/classy_enum#example-usage)
 * [Internationalization](https://github.com/beerlington/classy_enum#internationalization)
 * [Using Enum as a Collection](https://github.com/beerlington/classy_enum#using-enum-as-a-collection)
@@ -26,8 +28,6 @@ Note: This branch is no longer maintained and will not get bug fixes or new feat
 ## Installation
 
 The gem is hosted at [rubygems.org](https://rubygems.org/gems/classy_enum)
-
-You will also need to add `app/enums` as an autoloadable path. This configuration will depend on which version of rails you are using.
 
 ## Upgrading?
 
