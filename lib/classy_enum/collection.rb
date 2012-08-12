@@ -106,7 +106,7 @@ module ClassyEnum
       #
       #  Priority.select_options # => [["Low", "low"], ["Really High", "really_high"]]
       def select_options
-        map {|e| [e.to_s.titleize, e.to_s] }
+        map {|e| [e.text, e.to_s] }
       end
     end
 

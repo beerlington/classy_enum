@@ -9,35 +9,49 @@ end
 class ClassyEnumTranslation::Two < ClassyEnumTranslation
 end
 
-class ClassyEnumTranslation::Three < ClassyEnumTranslation
-end
-
 describe ClassyEnum::Translation do
-  subject { ClassyEnumTranslation::One.new }
 
-  before { I18n.reload! }
+  before do
+    I18n.reload!
+    I18n.backend.store_translations :en, :classy_enum => {:classy_enum_translation => {:one => 'One!', :two => 'Two!' } }
+    I18n.backend.store_translations :es, :classy_enum => {:classy_enum_translation => {:one => 'Uno', :two => 'Dos' } }
+  end
 
   context '#text' do
+    subject { ClassyEnumTranslation::One.new }
+
     context 'default' do
+      before { I18n.reload! }
       its(:text) { should == 'One' }
     end
 
     context 'en' do
-      before do
-        I18n.locale = :en
-        I18n.backend.store_translations :en, :classy_enum => {:classy_enum_translation => {:one => 'One!' } }
-      end
-
+      before { I18n.locale = :en }
       its(:text) { should == 'One!' }
     end
 
     context 'es' do
-      before do
-        I18n.locale = :es
-        I18n.backend.store_translations :es, :classy_enum => {:classy_enum_translation => {:one => 'Uno' } }
-      end
-
+      before { I18n.locale = :es }
       its(:text) { should == 'Uno' }
+    end
+  end
+
+  context '.select_options' do
+    subject { ClassyEnumTranslation }
+
+    context 'default' do
+      before { I18n.reload! }
+      its(:select_options) { should == [["One", "one"], ["Two", "two"]] }
+    end
+
+    context 'en' do
+      before { I18n.locale = :en }
+      its(:select_options) { should == [["One!", "one"], ["Two!", "two"]] }
+    end
+
+    context 'es' do
+      before { I18n.locale = :es }
+      its(:select_options) { should == [["Uno", "one"], ["Dos", "two"]] }
     end
   end
 end
