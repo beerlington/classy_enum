@@ -28,14 +28,13 @@ module ClassyEnum
     #  class Priority < ClassyEnum::Base
     #  end
     #
-    #  class Priority::Low < Priority; end
-    #  class Priority::Medium < Priority; end
+    #  class Priority::Low < Priority; end #  class Priority::Medium < Priority; end
     #  class Priority::High < Priority; end
     #
     #  @priority = Priority::Low.new
     #  @priority.to_s # => 'low'
     def to_s
-      self.class.instance_variable_get('@option').to_s
+      option.to_s
     end
 
     # Returns a Symbol corresponding to a string representation of element,
@@ -63,6 +62,12 @@ module ClassyEnum
       json.delete('owner')
       json.delete('serialize_as_json')
       json
+    end
+
+    private
+
+    def option
+      self.class.instance_variable_get(:@option)
     end
 
   end

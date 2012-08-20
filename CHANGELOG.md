@@ -1,5 +1,12 @@
 # ClassyEnum Changelog
 
+## 3.1.1
+
+* Fixes a regression with Formtastic support. ClassyEnumm::Base.build now
+  returns a null object that decends from the base_class when the argument is
+  blank (nil, empty string, etc). This allows the ActiveRecord model's enum
+  attribute to respond to enum methods even if it is blank.
+
 ## 3.1.0
 
 * ClassyEnum::Base now extends Enumerable to provide enum collection

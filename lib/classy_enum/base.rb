@@ -13,6 +13,8 @@ module ClassyEnum
 
     class << self
       def inherited(klass)
+        return if klass.anonymous?
+
         if self == ClassyEnum::Base
           klass.base_class = klass
         else
@@ -59,7 +61,15 @@ module ClassyEnum
       def build(value, options={})
         object = find(value)
 
-        return value if object.nil? || (options[:allow_blank] && object.nil?)
+        if object.nil? || (options[:allow_blank] && object.nil?)
+          return value unless value.blank?
+
+          # Subclass the base class and make it behave like the value that it is
+          object = Class.new(base_class) {
+            instance_variable_set(:@option, value)
+            delegate :blank?, :nil?, :to => :option
+          }.new
+        end
 
         object.owner = options[:owner]
         object.serialize_as_json = options[:serialize_as_json]
