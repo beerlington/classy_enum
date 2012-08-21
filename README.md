@@ -13,7 +13,6 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 * [Serializing as JSON](https://github.com/beerlington/classy_enum#serializing-as-json)
 * [Special Cases](https://github.com/beerlington/classy_enum#special-cases)
 * [Built-in Model Validation](https://github.com/beerlington/classy_enum#model-validation)
-* [Using Enums Outside of ActiveRecord](https://github.com/beerlington/classy_enum#working-with-classyenum-outside-of-activerecord)
 * [Formtastic Support](https://github.com/beerlington/classy_enum#formtastic-support)
 
 ## Rails & Ruby Versions Supported
@@ -295,19 +294,6 @@ end
 
 @alarm = Alarm.new(:priority => nil)
 @alarm.valid? # => true
-```
-
-## Working with ClassyEnum outside of ActiveRecord
-
-While ClassyEnum was designed to be used directly with ActiveRecord, it can also be used outside of it. Here are some examples based on the enum class defined earlier in this document.
-
-Instantiate an enum member subclass *Priority::Low*
-
-```ruby
-# These statements are all equivalent
-low = Priority.find(:low)
-low = Priority.find('low')
-low = Priority::Low.new
 ```
 
 ## Formtastic Support
