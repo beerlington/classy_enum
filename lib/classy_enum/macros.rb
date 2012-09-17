@@ -16,16 +16,17 @@ def enum name, parent_class = nil, &block
   context.const_set clazz_name, klass
 
   klass = context.const_get(clazz_name)
-  unless context == Object
-    klass.class_eval do      
-      if parent_class == ClassyEnum::Base
-        klass.class_attribute :enum_options
-        klass.enum_options = []
-      else
-        enum_options << klass
-        klass.instance_variable_set('@index', enum_options.size)
-      end
+  puts "klass: #{klass} - #{clazz_name}"
 
+  unless context == Object
+    klass.class_eval do   
+      puts "klass: #{klass}"
+
+      if parent_class == ClassyEnum::Base
+        klass.base_class = klass
+        klass.send :include, ClassyEnum::ValidValues
+      end
+      return unless klass && klass.name
 
       # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
       # This is due to a bug in Rails where it uses the method result as opposed to the
@@ -38,8 +39,9 @@ def enum name, parent_class = nil, &block
       end
 
       # Convert from MyEnumClass::NumberTwo to :number_two
-      enum = name.to_sym
-      valid_values << enum
+      enum = klass.name.split('::').last.underscore.to_sym
+
+      klass.valid_values << enum
 
       ClassyEnum::Predicate.define_predicate_method(klass, enum)
 
