@@ -1,3 +1,4 @@
+require 'classy_enum/translation'
 require 'classy_enum/collection'
 require 'classy_enum/conversion'
 require 'classy_enum/predicate'

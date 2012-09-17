@@ -26,6 +26,20 @@ describe ClassyEnum::Base do
       subject { ClassyEnumBase.build(:two) }
       it { should be_a(ClassyEnumBase::Two) }
     end
+
+    context 'nil' do
+      subject { ClassyEnumBase.build(nil) }
+      it { should be_a(ClassyEnumBase) }
+      it { should be_nil }
+      it { should be_blank }
+    end
+
+    context 'empty string' do
+      subject { ClassyEnumBase.build('') }
+      it { should be_a(ClassyEnumBase) }
+      it { should_not be_nil }
+      it { should be_blank }
+    end
   end
 
   context '#new' do

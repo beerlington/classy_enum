@@ -5,6 +5,7 @@ module ClassyEnum
     include Comparable
     include Conversion
     include Predicate
+    include Translation
     include Collection
 
     class_attribute :base_class
@@ -20,6 +21,8 @@ module ClassyEnum
       end
 
       def inherited(klass)
+        return if klass.anonymous?
+
         if self == ClassyEnum::Base
           klass.base_class = klass
           klass.send :include, ClassyEnum::ValidValues
@@ -68,12 +71,18 @@ module ClassyEnum
       #  Priority.build(:low) # => Priority::Low.new
       #  Priority.build(:invalid_option) # => :invalid_option
       def build(value, options={})
-        return value if value.blank? && options[:allow_blank]
+        object = find(value)
 
-        # Return the value if it is not a valid member
-        return value unless all.map(&:to_s).include? value.to_s
+        if object.nil? || (options[:allow_blank] && object.nil?)
+          return value unless value.blank?
 
-        object = "#{base_class}::#{value.to_s.camelize}".constantize.new
+          # Subclass the base class and make it behave like the value that it is
+          object = Class.new(base_class) {
+            instance_variable_set(:@option, value)
+            delegate :blank?, :nil?, :to => :option
+          }.new
+        end
+
         object.owner = options[:owner]
         object.serialize_as_json = options[:serialize_as_json]
         object.allow_blank = options[:allow_blank]

@@ -1,5 +1,28 @@
 # ClassyEnum Changelog
 
+## 3.1.1
+
+* Fixes a regression with Formtastic support. ClassyEnumm::Base.build now
+  returns a null object that decends from the base_class when the argument is
+  blank (nil, empty string, etc). This allows the ActiveRecord model's enum
+  attribute to respond to enum methods even if it is blank.
+
+## 3.1.0
+
+* ClassyEnum::Base now extends Enumerable to provide enum collection
+  methods. All objects in the collection are instances of the enum
+  members. .find is overridden to provide custom find functionality.
+* ClassyEnum::Base.find has been reintroduced, with aliases of .detect
+  and [].
+* Introducing I18n support and providing a ClassyEnum::Base#text method
+  that will automatically translate text values.
+* Translation support was added to ClassyEnum::Base.select_options.
+* Equality can now be determined using strings and symbols. The
+  following will return true:
+
+      Priority::Low.new == :low  # => true
+      Priority::Low.new == 'low' # => true
+
 ## 3.0.0
 
 * Removing ClassyEnum::Base.enum_classes in favor of using enum
