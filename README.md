@@ -308,4 +308,4 @@ Note: ClassyEnum respects the `:allow_blank` and `:allow_nil` options and will i
 
 ## Copyright
 
-Copyright (c) 2012 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
+Copyright (c) 2010-2013 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
