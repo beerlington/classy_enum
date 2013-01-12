@@ -1,5 +1,13 @@
 # ClassyEnum Changelog
 
+## 3.1.2
+
+* Allow enum property to be assigned using enum class. Previously it
+  could only be assigned with an instance, string or symbol.
+
+      @alarm.priority = Priority::Medium
+      @alarm.priority.medium? # => true
+
 ## 3.1.1
 
 * Fixes a regression with Formtastic support. ClassyEnumm::Base.build now

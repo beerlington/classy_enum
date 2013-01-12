@@ -43,7 +43,7 @@ describe Dog do
   specify { Dog.new(:breed => '').should_not be_valid }
 
   context "with valid breed options" do
-    [:golden_retriever, 'golden_retriever', Breed::GoldenRetriever.new].each do |option|
+    [:golden_retriever, 'golden_retriever', Breed::GoldenRetriever.new, Breed::GoldenRetriever].each do |option|
       subject { Dog.new(:breed => option) }
       it { should be_valid }
       its(:breed) { should be_a(Breed::GoldenRetriever) }
