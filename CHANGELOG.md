@@ -1,5 +1,10 @@
 # ClassyEnum Changelog
 
+## 3.1.3
+
+* Fixes saving and reloading ActiveRecord models that assign enum using
+  class
+
 ## 3.1.2
 
 * Allow enum property to be assigned using enum class. Previously it

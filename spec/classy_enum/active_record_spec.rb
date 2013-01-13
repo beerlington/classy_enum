@@ -48,6 +48,12 @@ describe Dog do
       it { should be_valid }
       its(:breed) { should be_a(Breed::GoldenRetriever) }
       its('breed.allow_blank') { should be_false }
+
+      it 'stores the enum as a valid string representation' do
+        subject.save!
+        subject.reload
+        subject.breed.should be_a(Breed::GoldenRetriever)
+      end
     end
   end
 

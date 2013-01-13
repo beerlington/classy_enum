@@ -45,7 +45,7 @@ module ClassyEnum
       # Define setter method that accepts string, symbol, instance or class for member
       define_method "#{attribute}=" do |value|
         if value.class == Class && value < ClassyEnum::Base
-          value = value.new
+          value = value.new.to_s
         elsif value.present?
           value = value.to_s
         end
