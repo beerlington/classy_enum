@@ -12,17 +12,27 @@ module ClassyEnum
     attr_accessor :owner, :serialize_as_json, :allow_blank
 
     class << self
+      def valid? value
+        valid_values.include? value.to_sym
+      end
+
+      def valid_values
+        @valid_values ||= []
+      end
+
       def inherited(klass)
         return if klass.anonymous?
 
         if self == ClassyEnum::Base
           klass.base_class = klass
+          klass.send :include, ClassyEnum::ValidValues
         else
+          return unless klass.name
 
           # Ensure subclasses follow expected naming conventions
           unless klass.name.start_with? "#{base_class.name}::"
             raise SubclassNameError, "subclass must be namespaced with #{base_class.name}::"
-          end
+          end          
 
           # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
           # This is due to a bug in Rails where it uses the method result as opposed to the
@@ -36,6 +46,8 @@ module ClassyEnum
 
           # Convert from MyEnumClass::NumberTwo to :number_two
           enum = klass.name.split('::').last.underscore.to_sym
+
+          base_class.valid_values << enum
 
           Predicate.define_predicate_method(klass, enum)
 
@@ -94,6 +106,5 @@ module ClassyEnum
         define_method owner, lambda { @owner }
       end
     end
-
   end
 end
