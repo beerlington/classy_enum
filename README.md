@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master)](http://travis-ci.org/beerlington/classy_enum)
 [![Gem Version](https://badge.fury.io/rb/classy_enum.png)](http://badge.fury.io/rb/classy_enum)
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/beerlington/classy_enum)
+[![Code Climate](https://codeclimate.com/github/beerlington/classy_enum.png)](https://codeclimate.com/github/beerlington/classy_enum)
 
 ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to ActiveRecord attributes.
 
