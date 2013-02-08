@@ -20,7 +20,7 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 ## Rails & Ruby Versions Supported
 
-*Rails:* 3.0.x - 3.2.x
+*Rails:* 3.0.x - 4.0.0.beta
 
 *Ruby:* 1.8.7, 1.9.2 and 1.9.3
 
