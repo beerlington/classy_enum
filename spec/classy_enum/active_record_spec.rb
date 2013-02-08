@@ -162,9 +162,15 @@ class DefaultValueDog < Dog
 end
 
 describe DefaultValueDog do
-  subject(:dog) { DefaultValueDog.new }
-
   its(:breed) { should == :snoop }
+end
+
+class DynamicDefaultValueDog < Dog
+  classy_enum_attr :breed, :default => lambda { |enum| enum.max }
+end
+
+describe DynamicDefaultValueDog do
+  its(:breed) { should == :husky }
 end
 
 describe Dog, 'with invalid default value' do

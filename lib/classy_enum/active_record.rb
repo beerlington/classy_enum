@@ -33,8 +33,14 @@ module ClassyEnum
       serialize_as_json = options[:serialize_as_json] || false
       default           = options[:default]
 
-      if default.present? && !enum.include?(default)
-        raise InvalidDefault, "must be one of [#{enum.to_a.join(',')}]"
+      if default.present?
+        if default.is_a? Proc
+          default = default.call(enum)
+        end
+
+        unless enum.include? default
+          raise InvalidDefault, "must be one of [#{enum.to_a.join(',')}]"
+        end
       end
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
