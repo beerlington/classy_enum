@@ -64,6 +64,22 @@ module ClassyEnum
         enum_options.each {|e| yield e.new }
       end
 
+      # Returns the last enum instance in the collection
+      #
+      # ==== Example
+      #  # Create an Enum with some elements
+      #  class Priority < ClassyEnum::Base
+      #  end
+      #
+      #  class Priority::Low < Priority; end
+      #  class Priority::Medium < Priority; end
+      #  class Priority::High < Priority; end
+      #
+      #  Priority.last # => Priority::High
+      def last
+        to_a.last
+      end
+
       # Finds an enum instance by symbol, string, or block.
       #
       # If a block is given, it passes each entry in enum to block, and returns

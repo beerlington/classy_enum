@@ -1,5 +1,26 @@
 # ClassyEnum Changelog
 
+## 3.2.0
+
+* Default values can now be specified within an ActiveRecord model
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, :default => 'medium'
+end
+
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, :default => lambda {|enum| enum.last }
+end
+```
+
+* Adding ClassyEnum::Base#last. It's not part of the enumerable module
+  but it makes sense in this case.
+
+```ruby
+Priority.last # => Priority::High
+```
+
 ## 3.1.3
 
 * Fixes saving and reloading ActiveRecord models that assign enum using
@@ -10,8 +31,10 @@
 * Allow enum property to be assigned using enum class. Previously it
   could only be assigned with an instance, string or symbol.
 
-      @alarm.priority = Priority::Medium
-      @alarm.priority.medium? # => true
+```ruby
+@alarm.priority = Priority::Medium
+@alarm.priority.medium? # => true
+```
 
 ## 3.1.1
 
@@ -33,8 +56,10 @@
 * Equality can now be determined using strings and symbols. The
   following will return true:
 
-      Priority::Low.new == :low  # => true
-      Priority::Low.new == 'low' # => true
+```ruby
+Priority::Low.new == :low  # => true
+Priority::Low.new == 'low' # => true
+```
 
 ## 3.0.0
 
@@ -62,9 +87,9 @@
 
 ## 2.1.0
 
-* Deprecating ClassyEnum::Base.enum_classes() (this is no longer needed)
-* Deprecating ClassyEnum::Base.valid_options()(use all.join(', ') instead)
-* Deprecating ClassEnum::Base.find() (use build() instead)
+* Deprecating ClassyEnum::Base.enum_classes (this is no longer needed)
+* Deprecating ClassyEnum::Base.valid_options (use all.join(', ') instead)
+* Deprecating ClassEnum::Base.find (use build() instead)
 
 ## 2.0.3
 

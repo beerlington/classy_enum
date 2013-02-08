@@ -13,36 +13,3 @@ ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":me
 RSpec.configure do |config|
   config.color_enabled = true
 end
-
-ActiveRecord::Schema.define(:version => 1) do
-  create_table :dogs, :force => true do |t|
-    t.string :breed
-  end
-
-  create_table :other_dogs, :force => true do |t|
-    t.string :other_breed
-  end
-
-  create_table :allow_blank_breed_dogs, :force => true do |t|
-    t.string :breed
-  end
-
-  create_table :allow_nil_breed_dogs, :force => true do |t|
-    t.string :breed
-  end
-
-  create_table :active_dogs, :force => true do |t|
-    t.string :breed
-    t.string :color
-    t.string :name
-    t.integer :age
-  end
-
-  create_table :cats, :force => true do |t|
-    t.string :breed
-  end
-
-  create_table :other_cats, :force => true do |t|
-    t.string :breed
-  end
-end
