@@ -33,7 +33,7 @@ module ClassyEnum
       serialize_as_json = options[:serialize_as_json] || false
       default           = options[:default]
 
-      if default.present? && !default.in?(enum)
+      if default.present? && !enum.include?(default)
         raise InvalidDefault, "must be one of [#{enum.to_a.join(',')}]"
       end
 

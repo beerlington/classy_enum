@@ -170,7 +170,7 @@ end
 describe Dog, 'with invalid default value' do
   it 'raises error with invalid default' do
     expect {
-      Class.new(Dog) { classy_enum_attr :breed, default: :nope }
+      Class.new(Dog) { classy_enum_attr :breed, :default => :nope }
     }.to raise_error(ClassyEnum::InvalidDefault)
   end
 end
