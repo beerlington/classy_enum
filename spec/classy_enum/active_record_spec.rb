@@ -158,7 +158,7 @@ describe ActiveDog do
 end
 
 class DefaultValueDog < Dog
-  classy_enum_attr :breed, default: :snoop
+  classy_enum_attr :breed, :default => :snoop
 end
 
 describe DefaultValueDog do
