@@ -8,14 +8,15 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 ## README Topics
 
-* [Example Usage](https://github.com/beerlington/classy_enum#example-usage)
-* [Internationalization](https://github.com/beerlington/classy_enum#internationalization)
-* [Using Enum as a Collection](https://github.com/beerlington/classy_enum#using-enum-as-a-collection)
-* [Reference to Owning Object](https://github.com/beerlington/classy_enum#back-reference-to-owning-object)
-* [Serializing as JSON](https://github.com/beerlington/classy_enum#serializing-as-json)
-* [Special Cases](https://github.com/beerlington/classy_enum#special-cases)
-* [Built-in Model Validation](https://github.com/beerlington/classy_enum#model-validation)
-* [Formtastic Support](https://github.com/beerlington/classy_enum#formtastic-support)
+* [Example Usage](#example-usage)
+* [Internationalization](#internationalization)
+* [Using Enum as a Collection](#using-enum-as-a-collection)
+* [Default Enum Value](#default-enum-value)
+* [Reference to Owning Object](#back-reference-to-owning-object)
+* [Serializing as JSON](#serializing-as-json)
+* [Special Cases](#special-cases)
+* [Built-in Model Validation](#model-validation)
+* [Formtastic Support](#formtastic-support)
 
 ## Rails & Ruby Versions Supported
 
@@ -187,6 +188,22 @@ Priority.select {|p| p < high_priority } # => [Priority::Low.new, Priority::Medi
 Priority.each do |priority|
   puts priority.send_email?
 end
+```
+
+## Default Enum Value
+
+As with any ActiveRecord attribute, default values can be specified in
+the database table and will propagate to new instances. However, there
+may be times when you can't or don't want to set the default value in
+the database. For these occasions, a default value can be specified like
+so:
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, :default => 'medium'
+end
+
+Alarm.new.priority # => Priority::Medium
 ```
 
 ## Back reference to owning object

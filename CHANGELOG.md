@@ -1,5 +1,13 @@
 # ClassyEnum Changelog
 
+## 3.2.0
+
+* Default values can now be specified within an ActiveRecord model
+
+      class Alarm < ActiveRecord::Base
+        classy_enum_attr :priority, :default => 'medium'
+      end
+
 ## 3.1.3
 
 * Fixes saving and reloading ActiveRecord models that assign enum using

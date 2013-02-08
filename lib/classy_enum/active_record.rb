@@ -23,6 +23,9 @@ module ClassyEnum
     #
     #  # Allow enum value to be blank
     #  classy_enum_attr :priority, :allow_blank => true
+    #
+    #  # Specifying a default enum value
+    #  classy_enum_attr :priority, :default => 'low'
     def classy_enum_attr(attribute, options={})
       enum              = (options[:enum] || attribute).to_s.camelize.constantize
       allow_blank       = options[:allow_blank] || false
