@@ -206,6 +206,18 @@ end
 Alarm.new.priority # => Priority::Medium
 ```
 
+You may also use a Proc object to set the default value. The enum class
+is yielded to the block and can be used to determine the default at
+runtime.
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, :default => lambda {|enum| enum.max }
+end
+
+Alarm.new.priority # => Priority::High
+```
+
 ## Back reference to owning object
 
 In some cases you may want an enum class to reference the owning object

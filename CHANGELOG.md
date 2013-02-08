@@ -8,6 +8,16 @@
         classy_enum_attr :priority, :default => 'medium'
       end
 
+      class Alarm < ActiveRecord::Base
+        classy_enum_attr :priority, :default => lambda {|enum| enum.last
+}
+      end
+
+* Adding ClassyEnum::Base#last. It's not part of the enumerable module
+  but it makes sense in this case.
+
+      Priority.last # => Priority::High
+
 ## 3.1.3
 
 * Fixes saving and reloading ActiveRecord models that assign enum using
