@@ -157,6 +157,24 @@ describe ActiveDog do
 
 end
 
+class DefaultValueDog < Dog
+  classy_enum_attr :breed, default: :snoop
+end
+
+describe DefaultValueDog do
+  subject(:dog) { DefaultValueDog.new }
+
+  its(:breed) { should == :snoop }
+end
+
+describe Dog, 'with invalid default value' do
+  it 'raises error with invalid default' do
+    expect {
+      Class.new(Dog) { classy_enum_attr :breed, default: :nope }
+    }.to raise_error(ClassyEnum::InvalidDefault)
+  end
+end
+
 class Cat < ActiveRecord::Base
 end
 

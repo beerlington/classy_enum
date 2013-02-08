@@ -1,4 +1,6 @@
 module ClassyEnum
+  class InvalidDefault < StandardError; end
+
   module ActiveRecord
 
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
@@ -26,6 +28,11 @@ module ClassyEnum
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
       serialize_as_json = options[:serialize_as_json] || false
+      default           = options[:default]
+
+      if default.present? && !default.in?(enum)
+        raise InvalidDefault, "must be one of [#{enum.to_a.join(',')}]"
+      end
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
@@ -35,7 +42,9 @@ module ClassyEnum
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
-        enum.build(read_attribute(attribute),
+        value = read_attribute(attribute) || default
+
+        enum.build(value,
                    :owner             => self,
                    :serialize_as_json => serialize_as_json,
                    :allow_blank       => (allow_blank || allow_nil)
