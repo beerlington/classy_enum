@@ -26,6 +26,12 @@ describe ClassyEnum::Collection do
     end
   end
 
+  context '.last' do
+    its(:last) { should == ClassyEnumCollection::Three.new }
+    its(:last) { should == :three }
+    its(:last) { should_not == :one }
+  end
+
   context '#<=> (equality)' do
     its(:first) { should == ClassyEnumCollection::One.new }
     its(:first) { should == :one }
