@@ -14,8 +14,8 @@ end
 
 describe 'Classy Enum inheritance' do
   it 'should inherit from the previous class' do
-    ProjectTier::One.inherited_properties.should == [1,2,3]
-    ProjectTier::Two.inherited_properties.should == [1,2,3,4,5,6]
+    ProjectTier::One.inherited_properties.should eql([1,2,3])
+    ProjectTier::Two.inherited_properties.should eql([1,2,3,4,5,6])
   end
 
   it 'should instantiate the subclass' do

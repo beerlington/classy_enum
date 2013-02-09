@@ -67,6 +67,7 @@ module ClassyEnum
           # Subclass the base class and make it behave like the value that it is
           object = Class.new(base_class) {
             instance_variable_set(:@option, value)
+            instance_variable_set(:@index, 0)
             delegate :blank?, :nil?, :to => :option
           }.new
         end
