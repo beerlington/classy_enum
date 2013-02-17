@@ -1,5 +1,5 @@
 module ClassyEnum
-  class SubclassNameError < Exception; end
+  class SubclassNameError < StandardError; end
 
   class Base
     include Comparable
