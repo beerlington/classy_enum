@@ -1,5 +1,5 @@
 module ClassyEnum
-  class SubclassNameError < Exception; end
+  class SubclassNameError < StandardError; end
 
   class Base
     include Comparable
@@ -62,13 +62,11 @@ module ClassyEnum
         object = find(value)
 
         if object.nil? || (options[:allow_blank] && object.nil?)
-          return value unless value.blank?
-
-          # Subclass the base class and make it behave like the value that it is
-          object = Class.new(base_class) {
-            instance_variable_set(:@option, value)
-            delegate :blank?, :nil?, :to => :option
-          }.new
+          if value.blank?
+            object = build_null_object(value)
+          else
+            return value
+          end
         end
 
         object.owner = options[:owner]
@@ -92,6 +90,17 @@ module ClassyEnum
       #  end
       def owner(owner)
         define_method owner, lambda { @owner }
+      end
+
+      private
+
+      # Subclass the base class and make it behave like the value that it is
+      def build_null_object(value)
+        Class.new(base_class) {
+          @option = value
+          @index = 0
+          delegate :blank?, :nil?, :to => :option
+        }.new
       end
     end
 
