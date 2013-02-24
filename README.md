@@ -23,7 +23,7 @@ ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality
 
 *Rails:* 3.0.x - 4.0.0.beta
 
-*Ruby:* 1.8.7, 1.9.2 and 1.9.3
+*Ruby:* 1.8.7, 1.9.2, 1.9.3 and 2.0.0
 
 If you need support for Rails 2.3.x, please install [version 0.9.1](https://rubygems.org/gems/classy_enum/versions/0.9.1).
 Note: This branch is no longer maintained and will not get bug fixes or new features.
