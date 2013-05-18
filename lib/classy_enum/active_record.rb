@@ -66,6 +66,8 @@ module ClassyEnum
           value = value.new.to_s
         elsif value.present?
           value = value.to_s
+        elsif !(allow_blank || allow_nil)
+          value = default
         end
 
         super(value)

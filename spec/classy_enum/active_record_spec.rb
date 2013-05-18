@@ -11,6 +11,7 @@ ActiveRecord::Schema.define(:version => 1) do
 
   create_table :cats, :force => true do |t|
     t.string :breed
+    t.string :other_breed, :default => 'bengal'
   end
 end
 
@@ -186,6 +187,7 @@ end
 
 class DefaultCat < Cat
   classy_enum_attr :breed, :enum => 'CatBreed'
+  classy_enum_attr :other_breed, :enum => 'CatBreed', :default => 'persian'
   attr_accessor :color
   delegate :breed_color, :to => :breed
 end
@@ -203,5 +205,11 @@ describe DefaultCat do
   it 'should delegate breed color to breed with an ownership reference' do
     abyssian.breed_color { should eql('black Abyssian') }
     persian.breed_color { should eql('white Persian') }
+  end
+
+  it 'uses the db default if explictly set to nil and does not allow nil' do
+    abyssian.update_attributes!(:other_breed => nil)
+    DefaultCat.where(:other_breed => nil).count.should be_zero
+    DefaultCat.first.other_breed.should == 'persian'
   end
 end
