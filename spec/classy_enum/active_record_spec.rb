@@ -11,7 +11,8 @@ ActiveRecord::Schema.define(:version => 1) do
 
   create_table :cats, :force => true do |t|
     t.string :breed
-    t.string :other_breed, :default => 'bengal'
+    t.string :other_breed
+    t.string :another_breed
   end
 end
 
@@ -194,6 +195,8 @@ end
 
 class OtherCat < Cat
   classy_enum_attr :breed, :enum => 'CatBreed', :serialize_as_json => true
+  classy_enum_attr :other_breed, :enum => 'CatBreed', :default => 'persian', :allow_nil => true
+  classy_enum_attr :another_breed, :enum => 'CatBreed', :default => 'persian', :allow_blank => true
   attr_accessor :color
   delegate :breed_color, :to => :breed
 end
@@ -207,9 +210,28 @@ describe DefaultCat do
     persian.breed_color { should eql('white Persian') }
   end
 
-  it 'uses the db default if explictly set to nil and does not allow nil' do
+  it 'uses the default if explictly set to nil and does not allow nil' do
     abyssian.update_attributes!(:other_breed => nil)
     DefaultCat.where(:other_breed => nil).count.should be_zero
-    DefaultCat.first.other_breed.should == 'persian'
+    DefaultCat.last.other_breed.should == 'persian'
+  end
+
+  it 'uses the default if explictly set to blank and does not allow blank' do
+    abyssian.update_attributes!(:other_breed => '')
+    DefaultCat.where(:other_breed => '').count.should be_zero
+    DefaultCat.last.other_breed.should == 'persian'
+  end
+
+  it 'allows nil even with a default' do
+    persian.update_attributes!(:other_breed => nil)
+    OtherCat.where(:other_breed => nil).count.should eql(1)
+    OtherCat.last.other_breed.should be_nil
+  end
+
+  it 'allows blank even with a default' do
+    persian.update_attributes!(:another_breed => '')
+    OtherCat.where(:another_breed => '').count.should eql(1)
+    OtherCat.last.another_breed.should be_blank
+    OtherCat.last.another_breed.should_not be_nil
   end
 end

@@ -51,7 +51,8 @@ module ClassyEnum
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
-        value = read_attribute(attribute) || default
+        value = read_attribute(attribute)
+        value ||= default unless allow_nil
 
         enum.build(value,
                    :owner             => self,
