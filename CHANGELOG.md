@@ -1,5 +1,11 @@
 # ClassyEnum Changelog
 
+## 3.2.1
+
+* Better support for using `default` and `allow_*` options together
+* Fixes bug when using `default` option and explicitly setting value to
+  nil if `allow_nil: true` option is not used.
+
 ## 3.2.0
 
 * Default values can now be specified within an ActiveRecord model
