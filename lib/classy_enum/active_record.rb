@@ -1,6 +1,32 @@
 module ClassyEnum
   class InvalidDefault < StandardError; end
 
+  def self._normalize_value(value, default=nil, allow_blank=false) # :nodoc:
+    if value.class == Class && value < ClassyEnum::Base
+      value = value.new.to_s
+    elsif value.present?
+      value = value.to_s
+    elsif value.blank? && allow_blank
+      value
+    else
+      default
+    end
+  end
+
+  def self._normalize_default(value, enum_class) # :nodoc:
+    if value.present?
+      if value.is_a? Proc
+        value = value.call(enum_class)
+      end
+
+      unless enum_class.include? value
+        raise InvalidDefault, "must be one of [#{enum_class.to_a.join(',')}]"
+      end
+    end
+
+    value
+  end
+
   module ActiveRecord
 
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
@@ -31,17 +57,7 @@ module ClassyEnum
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
       serialize_as_json = options[:serialize_as_json] || false
-      default           = options[:default]
-
-      if default.present?
-        if default.is_a? Proc
-          default = default.call(enum)
-        end
-
-        unless enum.include? default
-          raise InvalidDefault, "must be one of [#{enum.to_a.join(',')}]"
-        end
-      end
+      default           = ClassyEnum._normalize_default(options[:default], enum)
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
@@ -63,14 +79,7 @@ module ClassyEnum
 
       # Define setter method that accepts string, symbol, instance or class for member
       define_method "#{attribute}=" do |value|
-        if value.class == Class && value < ClassyEnum::Base
-          value = value.new.to_s
-        elsif value.present?
-          value = value.to_s
-        elsif !(allow_blank || allow_nil)
-          value = default
-        end
-
+        value = ClassyEnum._normalize_value(value, default, (allow_nil || allow_blank))
         super(value)
       end
     end
