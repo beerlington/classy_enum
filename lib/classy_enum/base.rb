@@ -29,8 +29,14 @@ module ClassyEnum
           # database value for validation scopes. A fix will be released in Rails 4, but
           # this will remain until Rails 3.x is no longer prevalent.
           if defined?(Arel::Visitors::ToSql)
+            visitor_method = "visit_#{klass.name.split('::').join('_')}"
+
             Arel::Visitors::ToSql.class_eval do
-              define_method "visit_#{klass.name.split('::').join('_')}", lambda {|value| quote(value.to_s) }
+              define_method visitor_method, lambda {|value| quote(value.to_s) }
+            end
+
+            Arel::Visitors::DepthFirst.class_eval do
+              define_method visitor_method, lambda {|value| terminal(value.to_s) }
             end
           end
 

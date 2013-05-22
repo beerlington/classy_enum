@@ -124,7 +124,7 @@ end
 class ActiveDog < Dog
   classy_enum_attr :color
   validates_uniqueness_of :name, :scope => :color
-  scope :goldens, lambda { where(:breed => 'golden_retriever') }
+  scope :goldens, lambda { where(:breed => Breed.build('golden_retriever')) }
 end
 
 describe ActiveDog do
@@ -154,6 +154,10 @@ describe ActiveDog do
     it 'should have a working scope' do
       ActiveDog.goldens.should include(golden)
       ActiveDog.goldens.should_not include(husky)
+    end
+
+    it 'should have a working scope with count' do
+      ActiveDog.goldens.size.should == 1
     end
   end
 
