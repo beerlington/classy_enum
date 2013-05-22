@@ -5,6 +5,8 @@
 * Better support for using `default` and `allow_*` options together
 * Fixes bug when using `default` option and explicitly setting value to
   nil if `allow_nil: true` option is not used.
+* Fixes bug when chaining `count` onto scope that uses enum object in
+  query condition.
 
 ## 3.2.0
 
