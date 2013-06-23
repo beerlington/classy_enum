@@ -1,5 +1,3 @@
-require 'generators/rspec'
-
 module Rspec
   module Generators
     class ClassyEnumGenerator < Rails::Generators::NamedBase
