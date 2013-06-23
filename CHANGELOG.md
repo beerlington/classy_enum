@@ -1,5 +1,10 @@
 # ClassyEnum Changelog
 
+## 3.3.0
+
+* Extends the existing generator to create boilerplate spec files in
+  spec/enums/ if the test framework is Rspec.
+
 ## 3.2.1
 
 * Better support for using `default` and `allow_*` options together
