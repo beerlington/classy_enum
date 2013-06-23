@@ -2,8 +2,9 @@
 
 ## 3.3.0
 
-* Extends the existing generator to create boilerplate spec files in
-  spec/enums/ if the test framework is Rspec.
+* Extends the existing generator to create boilerplate spec/test files.
+  For Rspec, these files are placed in spec/enums/, for TestUnit, they
+  are placed in test/unit/enums/
 
 ## 3.2.1
 
