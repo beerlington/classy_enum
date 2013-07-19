@@ -226,6 +226,11 @@ describe DefaultCat do
     persian.breed_color { should eql('white Persian') }
   end
 
+  it 'persists the default, when set to nil' do
+    cat = DefaultCat.create(:breed => :abyssian)
+    expect(DefaultCat.where(:other_breed => 'persian')).to include(cat)
+  end
+
   it 'uses the default if explictly set to nil and does not allow nil' do
     abyssian.update_attributes!(:other_breed => nil)
     DefaultCat.where(:other_breed => nil).count.should be_zero
