@@ -7,6 +7,7 @@ Gem::Specification.new do |gem|
   gem.description   = "A utility that adds class based enum functionality to ActiveRecord attributes"
   gem.summary       = "A class based enumerator utility for Ruby on Rails"
   gem.homepage      = "http://github.com/beerlington/classy_enum"
+  gem.license       = "MIT"
 
   gem.files         = `git ls-files`.split($\)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
