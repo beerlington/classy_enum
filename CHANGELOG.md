@@ -1,5 +1,9 @@
 # ClassyEnum Changelog
 
+## 3.3.1
+
+* No changes, just adding license to gemspec
+
 ## 3.3.0
 
 * Extends the existing generator to create boilerplate spec/test files.
