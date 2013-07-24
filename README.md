@@ -165,6 +165,13 @@ as opposed to the attributes on an Active Record object.
 Priority.find(:low) # => Priority::Low.new
 Priority.find('medium') # => Priority::Medium.new
 
+# Test if a priority is valid:
+Priority.include?(:low) # => true
+Priority.include?(:lower) # => false
+
+# List priorities base strings:
+Priority.map { |p| p.to_s } # => ["low", "medium", "high"]
+
 # Find the lowest priority that can send email:
 Priority.find(&:send_email?) # => Priority::High.new
 
