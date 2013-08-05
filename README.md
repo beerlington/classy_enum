@@ -32,7 +32,14 @@ The most common use for ClassyEnum is to replace database lookup tables where th
 The fastest way to get up and running with ClassyEnum is to use the built-in Rails generator like so:
 
 ```
-rails g classy_enum Priority low medium high
+rails generate classy_enum Priority low medium high
+```
+
+NOTE: You may destroy/revoke an enum by using the `rails destroy`
+command:
+
+```
+rails destroy classy_enum Priority
 ```
 
 A new enum template file will be created at app/enums/priority.rb that will look like:

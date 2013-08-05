@@ -9,7 +9,6 @@ module Rspec
       source_root File.expand_path("../templates", __FILE__)
 
       def copy_files # :nodoc:
-        empty_directory 'spec/enums'
         template "enum_spec.rb", "spec/enums/#{file_name}_spec.rb"
       end
     end

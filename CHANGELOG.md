@@ -2,7 +2,9 @@
 
 ## 3.3.1
 
-* No changes, just adding license to gemspec
+* Fixes `rails destroy classy_enum MyEnum` so it does not remove enums
+  directory and inadvertently remove all enum classes.
+* Adding license to gemspec
 
 ## 3.3.0
 
