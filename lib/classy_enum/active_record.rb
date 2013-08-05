@@ -67,8 +67,7 @@ module ClassyEnum
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
-        value = read_attribute(attribute)
-        enum.build(value,
+        enum.build(read_attribute(attribute),
                    :owner             => self,
                    :serialize_as_json => serialize_as_json,
                    :allow_blank       => (allow_blank || allow_nil)
