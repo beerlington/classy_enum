@@ -9,8 +9,7 @@ module TestUnit
       source_root File.expand_path("../templates", __FILE__)
 
       def copy_files # :nodoc:
-        empty_directory 'test/unit/enums'
-        template "enum_test.rb", "test/unit/enums/#{file_name}_test.rb"
+        template "enum_test.rb", "test/enums/#{file_name}_test.rb"
       end
     end
   end
