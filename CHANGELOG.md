@@ -1,5 +1,10 @@
 # ClassyEnum Changelog
 
+## 3.3.2
+
+* Fixes `rails destroy classy_enum MyEnum` for test unit
+* Fixes edge case support for Arel 4.0.1 internal change
+
 ## 3.3.1
 
 * Fixes `rails destroy classy_enum MyEnum` so it does not remove enums
