@@ -32,11 +32,17 @@ module ClassyEnum
             visitor_method = "visit_#{klass.name.split('::').join('_')}"
 
             Arel::Visitors::ToSql.class_eval do
-              define_method visitor_method, lambda {|value| quote(value.to_s) }
+              define_method visitor_method, lambda {|*values|
+                values[0] = values[0].to_s
+                quoted(*values)
+              }
             end
 
             Arel::Visitors::DepthFirst.class_eval do
-              define_method visitor_method, lambda {|value| terminal(value.to_s) }
+              define_method visitor_method, lambda {|*values|
+                values[0] = values[0].to_s
+                terminal(*values)
+              }
             end
           end
 
