@@ -34,7 +34,11 @@ module ClassyEnum
             Arel::Visitors::ToSql.class_eval do
               define_method visitor_method, lambda {|*values|
                 values[0] = values[0].to_s
-                quoted(*values)
+                begin
+                  quoted(*values)
+                rescue NoMethodError
+                  quote(*values)
+                end
               }
             end
 
