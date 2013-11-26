@@ -130,6 +130,19 @@ With this setup, I can now do the following:
 
 The enum field works like any other model attribute. It can be mass-assigned using `#update_attributes`.
 
+#### What if your enum class name is not the same as your model's attribute name?
+
+Just provide an optional `enum` argument to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :alarm_priority, enum: 'Priority'
+end
+
+@alarm = Alarm.create(alarm_priority: :medium)
+@alarm.alarm_priority  # => Priority::Medium
+```
+
 ## Internationalization
 
 ClassyEnum provides built-in support for translations using Ruby's I18n
@@ -290,19 +303,6 @@ end
 
 @alarm = Alarm.create(priority: :high, enabled: true)
 @alarm.to_json.should == "{\"alarm\":{\"priority\":{}}}"
-```
-
-## Special Cases
-
-What if your enum class name is not the same as your model's attribute name? No problem! Just use a second argument in `classy_enum_attr` to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
-
-```ruby
-class Alarm < ActiveRecord::Base
-  classy_enum_attr :alarm_priority, enum: 'Priority'
-end
-
-@alarm = Alarm.create(alarm_priority: :medium)
-@alarm.alarm_priority  # => Priority::Medium
 ```
 
 ## Model Validation
