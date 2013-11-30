@@ -25,7 +25,9 @@ See the [wiki](https://github.com/beerlington/classy_enum/wiki/Upgrading) for no
 
 ## Getting Started & Example Usage
 
-The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". In this example, I have an Active Record model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested.
+The most common use for ClassyEnum is to replace database lookup tables where the content and behavior is mostly static and has multiple "types". Please see the Wiki for a short discussion on use cases [comparing ClassyEnum to other gems](https://github.com/beerlington/classy_enum/wiki/ClassyEnum-vs-other-gems).
+
+In this example, I have an Active Record model called `Alarm` with an attribute called `priority`. Priority is stored as a string (VARCHAR) type in the database and is converted to an enum value when requested.
 
 ### 1. Generate the Enum
 
