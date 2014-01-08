@@ -78,7 +78,10 @@ describe DefaultDog do
   context "with invalid breed options" do
     subject { DefaultDog.new(:breed => :fake_breed) }
     it { should_not be_valid }
-    it { should have(1).error_on(:breed) }
+    it 'has an error on :breed' do
+      subject.valid?
+      subject.errors[:breed].size.should eql(1)
+    end
   end
 end
 
@@ -95,7 +98,10 @@ describe "A ClassyEnum that allows blanks" do
   context "with invalid breed options" do
     subject { AllowBlankBreedDog.new(:breed => :fake_breed) }
     it { should_not be_valid }
-    it { should have(1).error_on(:breed) }
+    it 'has an error on :breed' do
+      subject.valid?
+      subject.errors[:breed].size.should eql(1)
+    end
   end
 end
 
@@ -112,7 +118,10 @@ describe "A ClassyEnum that allows nils" do
   context "with invalid breed options" do
     subject { AllowNilBreedDog.new(:breed => :fake_breed) }
     it { should_not be_valid }
-    it { should have(1).error_on(:breed) }
+    it 'has an error on :breed' do
+      subject.valid?
+      subject.errors[:breed].size.should eql(1)
+    end
   end
 end
 
@@ -137,7 +146,10 @@ describe ActiveDog do
         ActiveDog.create!(:name => 'Kitteh', :breed => :husky, :color => :black)
       end
 
-      it { should have(1).error_on(:name) }
+      it 'has an error on :name' do
+        subject.valid?
+        subject.errors[:name].size.should eql(1)
+      end
     end
   end
 

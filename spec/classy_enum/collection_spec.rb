@@ -71,6 +71,18 @@ describe ClassyEnum::Collection do
       enum.select(&:odd?).should == [ClassyEnumCollection::One.new, ClassyEnumCollection::Three.new]
     end
   end
+
+  context '#enum_options' do
+    let(:options) { double }
+
+    before do
+      subject.enum_options = options
+    end
+
+    it 'returns class enum_options' do
+      subject.new.enum_options.should == options
+    end
+  end
 end
 
 describe ClassyEnum::Collection, Comparable do

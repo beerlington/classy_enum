@@ -26,6 +26,10 @@ module ClassyEnum
       index <=> other.index
     end
 
+    def enum_options
+      self.class.enum_options
+    end
+
     def self.included(klass)
       klass.extend ClassMethods
     end
@@ -36,7 +40,15 @@ module ClassyEnum
 
       def inherited(klass)
         if self == ClassyEnum::Base
-          klass.class_attribute :enum_options
+          klass.class_eval do
+            def self.enum_options
+              @enum_options ||= superclass.enum_options
+            end
+
+            def self.enum_options=(options)
+              @enum_options = options
+            end
+          end
           klass.enum_options = []
         else
           enum_options << klass

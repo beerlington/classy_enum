@@ -15,9 +15,9 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ClassyEnum::VERSION
 
-  gem.add_dependency('rails', '>= 3.0')
+  gem.add_dependency('activerecord', '>= 3.0')
 
-  gem.add_development_dependency('rspec-rails', '>= 2.11')
+  gem.add_development_dependency('rspec', '>= 2.11')
   gem.add_development_dependency('sqlite3', '>= 1.3')
   gem.add_development_dependency('json', '>= 1.6')
   gem.add_development_dependency('debugger')

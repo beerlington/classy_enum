@@ -55,6 +55,16 @@ describe ClassyEnum::Base do
       }.should raise_error(ClassyEnum::SubclassNameError)
     end
   end
+
+  context '#base_class' do
+    let(:base_class) { double }
+
+    it 'returns class base_class' do
+      enum = ClassyEnumBase.build(:two)
+      enum.class.base_class = base_class
+      enum.base_class.should == base_class
+    end
+  end
 end
 
 describe ClassyEnum::Base, 'Arel visitor' do

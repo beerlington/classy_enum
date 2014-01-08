@@ -8,10 +8,21 @@ module ClassyEnum
     include Translation
     include Collection
 
-    class_attribute :base_class
     attr_accessor :owner, :serialize_as_json, :allow_blank
 
+    def base_class
+      self.class.base_class
+    end
+
     class << self
+      def base_class
+        @base_class ||= superclass.base_class
+      end
+
+      def base_class=(klass)
+        @base_class = klass
+      end
+
       def inherited(klass)
         return if klass.anonymous?
 
