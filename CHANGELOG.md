@@ -1,5 +1,9 @@
 # ClassyEnum Changelog
 
+## 3.4.0
+
+* Removes full Rails gem dependency in favor of ActiveRecord
+
 ## 3.3.2
 
 * Fixes `rails destroy classy_enum MyEnum` for test unit
