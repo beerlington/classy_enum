@@ -3,6 +3,7 @@
 ## 3.4.0
 
 * Removes full Rails gem dependency in favor of ActiveRecord
+* Adds `scopes` option to automatically define ActiveRecord scopes
 
 ## 3.3.2
 

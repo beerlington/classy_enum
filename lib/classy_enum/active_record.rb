@@ -1,5 +1,6 @@
 module ClassyEnum
   class InvalidDefault < StandardError; end
+  class InvalidScopes < StandardError; end
 
   def self._normalize_value(value, default=nil, allow_blank=false) # :nodoc:
     if value.class == Class && value < ClassyEnum::Base
@@ -25,6 +26,23 @@ module ClassyEnum
     end
 
     value
+  end
+
+  def self._define_scopes(scopes, enum_class, klass, attribute) # :nodoc:
+    enum_class.each do |member|
+      case scopes
+      when TrueClass
+        attr = member
+      when Hash
+        attr = scopes.fetch(member.to_sym, member)
+      else
+        raise InvalidScopes, "must be either true or a Hash of key/value pairs"
+      end
+
+      if attr
+        klass.scope attr.to_sym, lambda { klass.where(attribute => member.to_s) }
+      end
+    end
   end
 
   module ActiveRecord
@@ -57,6 +75,7 @@ module ClassyEnum
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
       serialize_as_json = options[:serialize_as_json] || false
+      scopes            = options[:scopes] || false
       default           = ClassyEnum._normalize_default(options[:default], enum)
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
@@ -64,6 +83,10 @@ module ClassyEnum
         :in          => enum,
         :allow_blank => allow_blank,
         :allow_nil   => allow_nil
+
+      if scopes
+        ClassyEnum._define_scopes(scopes, enum, self, attribute)
+      end
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do

@@ -7,6 +7,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :color
     t.string :name
     t.integer :age
+    t.string :type
   end
 
   create_table :cats, :force => true do |t|
@@ -41,7 +42,14 @@ class CatBreed::Persian < CatBreed; end
 class Dog < ActiveRecord::Base; end
 
 class DefaultDog < Dog
-  classy_enum_attr :breed
+  classy_enum_attr :breed, scopes: true
+end
+
+class PluralScopedDog < Dog
+  classy_enum_attr :breed, scopes: {
+    :golden_retriever => :golden_retrievers,
+    :husky            => false
+  }
 end
 
 class AllowBlankBreedDog < Dog
@@ -75,12 +83,52 @@ describe DefaultDog do
     end
   end
 
+  context 'scopes' do
+    before do
+      DefaultDog.destroy_all
+      DefaultDog.create!(:breed => :golden_retriever)
+      DefaultDog.create!(:breed => :golden_retriever)
+      DefaultDog.create!(:breed => :snoop)
+    end
+
+    it 'defines ActiveRecord scopes' do
+      DefaultDog.golden_retriever.should have(2).golden_retrievers
+      DefaultDog.golden_retriever.map { |d| d.breed.to_sym }.should eql([:golden_retriever, :golden_retriever])
+
+      DefaultDog.snoop.should have(1).snoop_dog
+      DefaultDog.snoop.map { |d| d.breed.to_sym }.should eql([:snoop])
+    end
+  end
+
   context "with invalid breed options" do
     subject { DefaultDog.new(:breed => :fake_breed) }
     it { should_not be_valid }
     it 'has an error on :breed' do
       subject.valid?
       subject.errors[:breed].size.should eql(1)
+    end
+  end
+end
+
+describe "A ClassyEnum that overrides scope names" do
+  context 'scopes' do
+    before do
+      PluralScopedDog.create!(:breed => :golden_retriever)
+      PluralScopedDog.create!(:breed => :golden_retriever)
+      PluralScopedDog.create!(:breed => :snoop)
+    end
+
+    it 'defines ActiveRecord scopes' do
+      PluralScopedDog.golden_retrievers.should have(2).golden_retrievers
+      PluralScopedDog.golden_retrievers.map { |d| d.breed.to_sym }.should eql([:golden_retriever, :golden_retriever])
+
+      PluralScopedDog.snoop.should have(1).snoop_dog
+      PluralScopedDog.snoop.map { |d| d.breed.to_sym }.should eql([:snoop])
+
+      expect { PluralScopedDog.husky }.to raise_error(NoMethodError)
+
+      dog = PluralScopedDog.golden_retrievers.build
+      dog.breed.should be_a(Breed::GoldenRetriever)
     end
   end
 end
@@ -93,6 +141,12 @@ describe "A ClassyEnum that allows blanks" do
     subject { AllowBlankBreedDog.new(:breed => :golden_retriever) }
     it { should be_valid }
     its('breed.allow_blank') { should be_true }
+  end
+
+  context 'without scopes' do
+    it 'raises a no method error' do
+      expect { AllowBlankBreedDog.golden_retriever }.to raise_error(NoMethodError)
+    end
   end
 
   context "with invalid breed options" do
@@ -191,11 +245,17 @@ describe DynamicDefaultValueDog do
   its(:breed) { should == :husky }
 end
 
-describe Dog, 'with invalid default value' do
+describe Dog, 'exceptions' do
   it 'raises error with invalid default' do
     expect {
       Class.new(Dog) { classy_enum_attr :breed, :default => :nope }
     }.to raise_error(ClassyEnum::InvalidDefault)
+  end
+
+  it 'raises error with invalid scopes' do
+    expect {
+      Class.new(Dog) { classy_enum_attr :breed, scopes: :blerp }
+    }.to raise_error(ClassyEnum::InvalidScopes)
   end
 end
 

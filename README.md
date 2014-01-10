@@ -235,6 +235,68 @@ end
 Alarm.new.priority # => Priority::High
 ```
 
+## ActiveRecord Scopes
+
+By default, ClassyEnum does *not* provide ActiveRecord scopes to
+correspond with the enum members, but you may easily add them using the
+`scopes` option.
+
+To add a scope for each enum member, use `scopes: true`:
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, scopes: true
+end
+```
+
+This provides the following functionality:
+
+```ruby
+Alarm.low    # => Alarm.where(priority: 'low')
+Alarm.medium # => Alarm.where(priority: 'medium')
+Alarm.high   # => Alarm.where(priority: 'high')
+```
+
+You can also override the name of the scope(s) by providing a hash
+instead. This is useful in cases where the enum member name does not
+make sense as a scope name, or the member is a reserved keyword, such as
+"new":
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, scopes: {
+    low:    :lows,
+    medium: :mediums,
+    high:   :highs,
+  }
+end
+```
+
+This provides the following functionality:
+
+```ruby
+Alarm.lows    # => Alarm.where(priority: 'low')
+Alarm.mediums # => Alarm.where(priority: 'medium')
+Alarm.highs   # => Alarm.where(priority: 'high')
+```
+
+You can also disable scopes by supplying "false" for the hash value. All
+other scopes will be defined using default member names.
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, scopes: { low: false }
+end
+```
+
+Which has the following behavior:
+
+```ruby
+Alarm.low    # => NoMethodError
+Alarm.medium # => Alarm.where(priority: 'medium')
+Alarm.high   # => Alarm.where(priority: 'high')
+```
+
 ## Back Reference to Owning Object
 
 In some cases you may want an enum class to reference the owning object
