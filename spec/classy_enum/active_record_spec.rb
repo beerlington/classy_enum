@@ -233,13 +233,13 @@ describe DefaultCat do
 
   it 'uses the default if explictly set to nil and does not allow nil' do
     abyssian.update_attributes!(:other_breed => nil)
-    DefaultCat.where(:other_breed => nil).count.should be_zero
+    DefaultCat.where(:other_breed => 'persian').should include(abyssian)
     DefaultCat.last.other_breed.should == 'persian'
   end
 
   it 'uses the default if explictly set to blank and does not allow blank' do
     abyssian.update_attributes!(:other_breed => '')
-    DefaultCat.where(:other_breed => '').count.should be_zero
+    DefaultCat.where(:other_breed => 'persian').should include(abyssian)
     DefaultCat.last.other_breed.should == 'persian'
   end
 

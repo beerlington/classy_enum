@@ -87,8 +87,8 @@ module ClassyEnum
         after_initialize do
           value = read_attribute(attribute)
 
-          if (value.blank? && !allow_blank) && (value.nil? && !allow_nil)
-            send("#{attribute}=", value)
+          if (value.blank? && !(allow_blank || allow_nil)) || (value.nil? && !allow_nil)
+            send("#{attribute}=", default)
           end
         end
       end
