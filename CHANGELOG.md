@@ -1,5 +1,10 @@
 # ClassyEnum Changelog
 
+## 3.5.0
+
+* Fixes long standing issue with default values not being persisted to
+  the database. See issue #37.
+
 ## 3.4.0
 
 * Removes full Rails gem dependency in favor of ActiveRecord

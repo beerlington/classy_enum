@@ -67,10 +67,7 @@ module ClassyEnum
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
-        value = read_attribute(attribute)
-        value ||= default unless allow_nil
-
-        enum.build(value,
+        enum.build(read_attribute(attribute),
                    :owner             => self,
                    :serialize_as_json => serialize_as_json,
                    :allow_blank       => (allow_blank || allow_nil)
@@ -82,6 +79,20 @@ module ClassyEnum
         value = ClassyEnum._normalize_value(value, default, (allow_nil || allow_blank))
         super(value)
       end
+
+      # Initialize the object with the default value if it is present
+      # because this will let you store the default value in the
+      # database and make it searchable.
+      if default.present?
+        after_initialize do
+          value = read_attribute(attribute)
+
+          if (value.blank? && !(allow_blank || allow_nil)) || (value.nil? && !allow_nil)
+            send("#{attribute}=", default)
+          end
+        end
+      end
+
     end
 
   end
