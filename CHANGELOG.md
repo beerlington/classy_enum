@@ -4,7 +4,24 @@
 
 * Fixes long standing issue with default values not being persisted to
   the database. See issue #37.
-* Updates classy_enum_attr method to accept class_name as an argument
+* Updates `classy_enum_attr` method to accept class_name as an argument as
+  an alias for `enum`. This is to bring the API closer to how
+  ActiveRecord overrides class names on associations.
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, enum: 'AlarmPriority'
+end
+```
+
+is now equivalent to:
+
+```ruby
+class Alarm < ActiveRecord::Base
+  classy_enum_attr :priority, class_name: 'AlarmPriority'
+end
+```
+
 
 ## 3.4.0
 
