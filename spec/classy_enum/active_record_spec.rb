@@ -53,7 +53,7 @@ class AllowNilBreedDog < Dog
 end
 
 class OtherDog < Dog
-  classy_enum_attr :other_breed, :enum => 'Breed'
+  classy_enum_attr :other_breed, :class_name => 'Breed'
 end
 
 describe DefaultDog do
