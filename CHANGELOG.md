@@ -1,6 +1,6 @@
 # ClassyEnum Changelog
 
-## 3.5.0
+## 3.5.0 (Unreleased)
 
 * Fixes long standing issue with default values not being persisted to
   the database. See issue #37.
