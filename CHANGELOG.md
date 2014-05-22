@@ -4,6 +4,7 @@
 
 * Fixes long standing issue with default values not being persisted to
   the database. See issue #37.
+* Updates classy_enum_attr method to accept class_name as an argument
 
 ## 3.4.0
 
