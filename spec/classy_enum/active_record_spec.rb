@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-ActiveRecord::Schema.define(:version => 1) do
+ActiveRecord::Schema.define(:version => 2) do
   create_table :dogs, :force => true do |t|
     t.string :breed
     t.string :other_breed
@@ -13,6 +13,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :breed
     t.string :other_breed
     t.string :another_breed
+    t.string :personality
   end
 end
 
@@ -37,6 +38,12 @@ class CatBreed::Abyssian < CatBreed; end
 class CatBreed::Bengal < CatBreed; end
 class CatBreed::Birman < CatBreed; end
 class CatBreed::Persian < CatBreed; end
+class CatBreed::Tabby < CatBreed; end
+
+class Personality < ClassyEnum::Base; end
+class Personality::Curious < Personality; end
+class Personality::Affectionate < Personality; end
+class Personality::Agile < Personality; end
 
 class Dog < ActiveRecord::Base; end
 
@@ -217,6 +224,10 @@ class OtherCat < Cat
   delegate :breed_color, :to => :breed
 end
 
+class PersonableCat < Cat
+  classy_enum_array :personality, :enum => 'Personality'
+end
+
 describe DefaultCat do
   let(:abyssian) { DefaultCat.new(:breed => :abyssian, :color => 'black') }
   let(:persian) { OtherCat.new(:breed => :persian, :color => 'white') }
@@ -256,3 +267,15 @@ describe DefaultCat do
     OtherCat.last.another_breed.should_not be_nil
   end
 end
+
+describe PersonableCat do
+  subject { PersonableCat.new(:breed => :tabby, :personality => [:curious, :affectionate] ) }
+
+  it "should persist and load a diverse personality" do
+    subject.save!
+    subject.reload
+    subject.personality[0].should be_a( Personality::Curious )
+    subject.personality[1].should be_a( Personality::Affectionate )
+  end
+end
+

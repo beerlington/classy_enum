@@ -95,6 +95,37 @@ module ClassyEnum
 
     end
 
+    # Class macro used to associate an array of enum with an attribute on an
+    # ActiveRecord model.  This method is automatically added to all
+    # ActiveRecord models when the classy_enum gem is installed. Accepts an
+    # argument for the enum class to be associated with the array. ActiveRecord
+    # validation is automatically added to ensure that a value is one of its
+    # pre-defined enum members.
+    def classy_enum_array(attribute, options={})
+      enum              = (options[:enum] || options[:class_name] || attribute).to_s.camelize.constantize
+      serialize_as_json = options[:serialize_as_json] || false
+      default           = ClassyEnum._normalize_default(options[:default], enum)
+
+      # Define getter method that returns an array ClassyEnum instance
+      define_method attribute do
+        read_attribute( attribute ).split( ',' ).map do |array_value|
+          enum.build( array_value,
+                   :owner             => self,
+                   :serialize_as_json => serialize_as_json
+                  )
+        end
+      end
+
+      # Define setter method that accepts string, symbol, instance or class for member
+      define_method "#{attribute}=" do |value|
+        value = value.map do |array_value|
+          ClassyEnum._normalize_value( array_value, default )
+        end.join( ',' )
+        super(value)
+      end
+
+    end
+
   end
 end
 
