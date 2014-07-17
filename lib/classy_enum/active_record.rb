@@ -102,7 +102,7 @@ module ClassyEnum
     # validation is automatically added to ensure that a value is one of its
     # pre-defined enum members.
     def classy_enum_array(attribute, options={})
-      enum              = (options[:enum] || options[:class_name] || attribute).to_s.camelize.constantize
+      enum              = (options[:enum] || options[:class_name] || ActiveSupport::Inflector.singularize( attribute )).to_s.camelize.constantize
       serialize_as_json = options[:serialize_as_json] || false
       default           = ClassyEnum._normalize_default(options[:default], enum)
 
