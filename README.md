@@ -145,6 +145,58 @@ end
 @alarm.alarm_priority  # => Priority::Medium
 ```
 
+### 4. Using it with Single Table Inheritance
+
+When using Single Table Inheritance (STI) you can use ClassyEnum to access the inheritance column (by default `:type`), as
+long as you follow a few conventions:
+
+* The name of the ClassyEnum should be exactly the same as the subclass;
+* You can't define your models using namespaces.
+
+For instance:
+
+```ruby
+class Breed < ClassyEnum::Base; end
+class Breed::GoldenRetriever < Breed; end
+class Breed::Snoop < Breed; end
+
+class Dog < ActiveRecord::Base
+  classy_enum_attr :type, enum: Breed
+  classy_enum_sti
+end
+class GoldenRetriever < Dog; end
+class Snoop < Dog; end
+```
+
+That way you can use:
+
+```ruby
+dog.type.snoop?
+dog.type == :snoop
+dog.type == Breed::Snoop.new
+```
+
+You can also use a shorthand:
+
+```ruby
+class Dog < ActiveRecord::Base
+  classy_enum_attr :type, enum: Breed, :sti => true
+end
+```
+
+Or, probably better:
+
+```ruby
+class Dog < ActiveRecord::Base
+  classy_enum_attr :breed, enum: Breed, :sti => true
+  self.inheritance_column = :breed
+end
+
+dog.breed.snoop?
+```
+
+Just note that some options of `classy_enum_attr` may not make sense when using STI.
+
 ## Internationalization
 
 ClassyEnum provides built-in support for translations using Ruby's I18n

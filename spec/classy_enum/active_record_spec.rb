@@ -14,6 +14,11 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string :other_breed
     t.string :another_breed
   end
+
+  create_table :sti_bases, :force => true do |t|
+    t.string :kind
+    t.string :type
+  end
 end
 
 class Breed < ClassyEnum::Base; end
@@ -255,4 +260,82 @@ describe DefaultCat do
     OtherCat.last.another_breed.should be_blank
     OtherCat.last.another_breed.should_not be_nil
   end
+end
+
+class StiBaseKind < ClassyEnum::Base; end
+class StiBaseKind::Sub1 < StiBaseKind; end
+class StiBaseKind::Sub2 < StiBaseKind; end
+
+describe 'single table inheritance' do
+
+  let(:sub1_id) { Sub1.create.id }
+  let(:sub2_id) { Sub2.create.id }
+
+  let(:sub1) { StiBase.find(sub1_id) }
+  let(:sub2) { StiBase.find(sub2_id) }
+
+  before do
+    class StiBase < ActiveRecord::Base; end
+    class Sub1 < StiBase; end
+    class Sub2 < StiBase; end
+  end
+
+  after do
+    Object.send :remove_const, 'StiBase' if Object.const_defined? 'StiBase'
+    Object.send :remove_const, 'Sub1' if Object.const_defined? 'Sub1'
+    Object.send :remove_const, 'Sub2' if Object.const_defined? 'Sub2'
+  end
+
+  it 'should support basic usage'  do
+    StiBase.classy_enum_attr :type, :enum => StiBaseKind
+    StiBase.classy_enum_sti
+
+    expect(sub1).to be_a Sub1
+    expect(sub1.type.sub1?).to be_true
+    expect(sub2).to be_a Sub2
+    expect(sub2.type).to eq(StiBaseKind::Sub2.new)
+  end
+
+  it 'should support :sti configuration'  do
+    StiBase.classy_enum_attr :type, :enum => StiBaseKind, :sti => true
+
+    expect(sub1).to be_a Sub1
+    expect(sub1.type).to eq(:sub1)
+    expect(sub2).to be_a Sub2
+    expect(sub2.type).to eq(StiBaseKind::Sub2.new)
+  end
+
+  it 'should allow custom inheritance column' do
+    StiBase.classy_enum_attr :kind, :enum => StiBaseKind
+    StiBase.inheritance_column = :kind
+    StiBase.classy_enum_sti
+
+    expect(sub1).to be_a Sub1
+    expect(sub1.kind).to eq(StiBaseKind::Sub1.new)
+    expect(sub2).to be_a Sub2
+    expect(sub2.kind.sub2?).to be_true
+  end
+
+  it 'should allow custom inheritance column with :sti configuration' do
+    StiBase.classy_enum_attr :kind, :enum => StiBaseKind, :sti => true
+    StiBase.inheritance_column = :kind
+
+    expect(sub1).to be_a Sub1
+    expect(sub1.kind).to eq(StiBaseKind::Sub1.new)
+    expect(sub2).to be_a Sub2
+    expect(sub2.kind).to eq(:sub2)
+  end
+
+  it 'should work with base class namespace' do
+    class StiBase::Sub1 < StiBase; end
+    class StiBase::Sub2 < StiBase; end
+
+    StiBase.classy_enum_attr :type, :enum => StiBaseKind, :sti => true
+
+    expect(sub1).to be_a StiBase::Sub1
+    expect(sub1.type).to eq(StiBaseKind::Sub1.new)
+    expect(sub2).to be_a StiBase::Sub2
+    expect(sub2.type).to eq(StiBaseKind::Sub2.new)
+  end
+
 end
