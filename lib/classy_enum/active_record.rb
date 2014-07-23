@@ -71,13 +71,16 @@ module ClassyEnum
                    :owner             => self,
                    :serialize_as_json => serialize_as_json,
                    :allow_blank       => (allow_blank || allow_nil)
-                  )
+                   )
       end
 
       # Define setter method that accepts string, symbol, instance or class for member
       define_method "#{attribute}=" do |value|
         value = ClassyEnum._normalize_value(value, default, (allow_nil || allow_blank))
-        super(value)
+        begin
+          super(value)
+        rescue NoMethodError => e
+        end
       end
 
       # Initialize the object with the default value if it is present
