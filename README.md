@@ -207,6 +207,24 @@ Priority.each do |priority|
 end
 ```
 
+If you want to persist the collection to a database, use the `classy_enum_array`
+method.
+
+```ruby
+class OperatingSystem < ClassyEnum::Base; end
+class Windows < OperatingSystem; end
+class Linux < OperatingSystem; end
+class MacOsX < OperatingSystem; end
+
+class Product < ActiveRecord::Base
+  classy_enum_array :operating_systems
+end
+
+product = Product.new
+product.operating_systems = [:windows, :linux]
+product.save!
+```
+
 ## Default Enum Value
 
 As with any Active Record attribute, default values can be specified in
