@@ -108,7 +108,7 @@ module ClassyEnum
 
       # Define getter method that returns an array ClassyEnum instance
       define_method attribute do
-        read_attribute( attribute ).split( ',' ).map do |array_value|
+        read_attribute( attribute ).to_s.split( ',' ).map do |array_value|
           enum.build( array_value,
                    :owner             => self,
                    :serialize_as_json => serialize_as_json
