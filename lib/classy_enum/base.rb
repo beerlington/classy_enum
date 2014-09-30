@@ -86,6 +86,7 @@ module ClassyEnum
       #  Priority.build(:low) # => Priority::Low.new
       #  Priority.build(:invalid_option) # => :invalid_option
       def build(value, options={})
+        return value if value == nil
         object = find(value)
 
         if object.nil? || (options[:allow_blank] && object.nil?)

@@ -29,9 +29,11 @@ describe ClassyEnum::Base do
 
     context 'nil' do
       subject { ClassyEnumBase.build(nil) }
-      it { should be_a(ClassyEnumBase) }
       it { should be_nil }
       it { should be_blank }
+      it { should eql(nil) }
+      it { should == nil }
+      it { fail "Expected to be falsy" if subject }
     end
 
     context 'empty string' do

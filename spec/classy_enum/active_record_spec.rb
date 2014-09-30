@@ -113,6 +113,14 @@ describe "A ClassyEnum that allows nils" do
     subject { AllowNilBreedDog.new(:breed => :golden_retriever) }
     it { should be_valid }
     its('breed.allow_blank') { should be_true }
+
+    it 'should return nil when set to nil' do
+      bd = AllowNilBreedDog.new(:breed => nil)
+      expect(bd.breed).to eql(nil)
+      if bd.breed
+        fail 'Expected breed to be falsy'
+      end
+    end
   end
 
   context "with invalid breed options" do
