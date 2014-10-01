@@ -35,32 +35,6 @@ module ClassyEnum
             raise SubclassNameError, "subclass must be namespaced with #{base_class.name}::"
           end
 
-          # Add visit_EnumMember methods to support validates_uniqueness_of with enum field
-          # This is due to a bug in Rails where it uses the method result as opposed to the
-          # database value for validation scopes. A fix will be released in Rails 4, but
-          # this will remain until Rails 3.x is no longer prevalent.
-          if defined?(Arel::Visitors::ToSql)
-            visitor_method = "visit_#{klass.name.split('::').join('_')}"
-
-            Arel::Visitors::ToSql.class_eval do
-              define_method visitor_method, lambda {|*values|
-                values[0] = values[0].to_s
-                begin
-                  quoted(*values)
-                rescue NoMethodError
-                  quote(*values)
-                end
-              }
-            end
-
-            Arel::Visitors::DepthFirst.class_eval do
-              define_method visitor_method, lambda {|*values|
-                values[0] = values[0].to_s
-                terminal(*values)
-              }
-            end
-          end
-
           # Convert from MyEnumClass::NumberTwo to :number_two
           enum = klass.name.split('::').last.underscore.to_sym
 

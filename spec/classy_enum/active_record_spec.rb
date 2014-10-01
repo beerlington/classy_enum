@@ -133,7 +133,7 @@ end
 class ActiveDog < Dog
   classy_enum_attr :color
   validates_uniqueness_of :name, :scope => :color
-  scope :goldens, lambda { where(:breed => Breed.build('golden_retriever')) }
+  scope :goldens, lambda { where(:breed => Breed.build('golden_retriever').to_s) }
 end
 
 describe ActiveDog do
