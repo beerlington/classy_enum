@@ -28,6 +28,9 @@ module ClassyEnum
   end
 
   module ActiveRecord
+    def self.included(klass)
+      klass.extend self
+    end
 
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
     # This method is automatically added to all ActiveRecord models when the classy_enum gem
@@ -96,8 +99,4 @@ module ClassyEnum
     end
 
   end
-end
-
-if defined?(ActiveRecord::Base)
-  ActiveRecord::Base.send :extend, ClassyEnum::ActiveRecord
 end

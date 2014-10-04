@@ -1,5 +1,9 @@
 # ClassyEnum Changelog
 
+## 4.0.0 (Unreleased)
+
+* [BREAKING] Active Record models must explicitly include ClassyEnum::ActiveRecord now
+
 ## 3.5.0
 
 * Fixes long standing issue with default values not being persisted to

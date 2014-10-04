@@ -40,7 +40,9 @@ class CatBreed::Bengal < CatBreed; end
 class CatBreed::Birman < CatBreed; end
 class CatBreed::Persian < CatBreed; end
 
-class Dog < ActiveRecord::Base; end
+class Dog < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+end
 
 class DefaultDog < Dog
   classy_enum_attr :breed
@@ -202,6 +204,7 @@ describe Dog, 'with invalid default value' do
 end
 
 class Cat < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
 end
 
 class DefaultCat < Cat
