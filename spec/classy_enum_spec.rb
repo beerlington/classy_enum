@@ -45,7 +45,7 @@ describe ClassyEnum do
     end
 
     it 'allows a proc' do
-      value = lambda {|enum| enum.max }
+      value = ->(enum) { enum.max }
       default = ClassyEnum._normalize_default(value, enum)
       default.should == enum.max
     end

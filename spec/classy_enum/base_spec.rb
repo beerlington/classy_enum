@@ -50,7 +50,7 @@ describe ClassyEnum::Base do
 
   context 'Subclass naming' do
     it 'should raise an error when invalid' do
-      lambda {
+      -> {
         class WrongSublcassName < ClassyEnumBase; end
       }.should raise_error(ClassyEnum::SubclassNameError)
     end

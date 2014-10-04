@@ -45,16 +45,16 @@ module ClassyEnum
     #  end
     #
     #  # Associate an enum Priority with Alarm model's alarm_priority attribute
-    #  classy_enum_attr :alarm_priority, :enum => 'Priority'
+    #  classy_enum_attr :alarm_priority, enum: 'Priority'
     #
     #  # Allow enum value to be nil
-    #  classy_enum_attr :priority, :allow_nil => true
+    #  classy_enum_attr :priority, allow_nil: true
     #
     #  # Allow enum value to be blank
-    #  classy_enum_attr :priority, :allow_blank => true
+    #  classy_enum_attr :priority, allow_blank: true
     #
     #  # Specifying a default enum value
-    #  classy_enum_attr :priority, :default => 'low'
+    #  classy_enum_attr :priority, default: 'low'
     def classy_enum_attr(attribute, options={})
       enum              = (options[:enum] || options[:class_name] || attribute).to_s.camelize.constantize
       allow_blank       = options[:allow_blank] || false
@@ -64,16 +64,16 @@ module ClassyEnum
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
-        :in          => enum,
-        :allow_blank => allow_blank,
-        :allow_nil   => allow_nil
+        in:          enum,
+        allow_blank: allow_blank,
+        allow_nil:   allow_nil
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
         enum.build(read_attribute(attribute),
-                   :owner             => self,
-                   :serialize_as_json => serialize_as_json,
-                   :allow_blank       => (allow_blank || allow_nil)
+                   owner:             self,
+                   serialize_as_json: serialize_as_json,
+                   allow_blank:       (allow_blank || allow_nil)
                   )
       end
 

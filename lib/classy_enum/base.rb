@@ -90,7 +90,7 @@ module ClassyEnum
       #    end
       #  end
       def owner(owner)
-        define_method owner, lambda { @owner }
+        define_method owner, -> { @owner }
       end
 
       private
@@ -100,7 +100,7 @@ module ClassyEnum
         Class.new(base_class) {
           @option = value
           @index = 0
-          delegate :blank?, :nil?, :to => :option
+          delegate :blank?, :nil?, to: :option
         }.new
       end
     end
