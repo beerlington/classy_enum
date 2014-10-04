@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 ActiveRecord::Schema.define(:version => 1) do
+  self.verbose = false
+
   create_table :dogs, :force => true do |t|
     t.string :breed
     t.string :other_breed
