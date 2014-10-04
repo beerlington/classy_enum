@@ -208,16 +208,16 @@ class Cat < ActiveRecord::Base
 end
 
 class DefaultCat < Cat
-  classy_enum_attr :breed, enum: 'CatBreed'
-  classy_enum_attr :other_breed, enum: 'CatBreed', default: 'persian'
+  classy_enum_attr :breed, class_name: 'CatBreed'
+  classy_enum_attr :other_breed, class_name: 'CatBreed', default: 'persian'
   attr_accessor :color
   delegate :breed_color, to: :breed
 end
 
 class OtherCat < Cat
-  classy_enum_attr :breed, enum: 'CatBreed', serialize_as_json: true
-  classy_enum_attr :other_breed, enum: 'CatBreed', default: 'persian', allow_nil: true
-  classy_enum_attr :another_breed, enum: 'CatBreed', default: 'persian', allow_blank: true
+  classy_enum_attr :breed, class_name: 'CatBreed', serialize_as_json: true
+  classy_enum_attr :other_breed, class_name: 'CatBreed', default: 'persian', allow_nil: true
+  classy_enum_attr :another_breed, class_name: 'CatBreed', default: 'persian', allow_blank: true
   attr_accessor :color
   delegate :breed_color, to: :breed
 end

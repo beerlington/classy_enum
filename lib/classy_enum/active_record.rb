@@ -43,9 +43,9 @@ module ClassyEnum
     #  class Alarm < ActiveRecord::Base
     #    classy_enum_attr :priority
     #  end
-    #
+
     #  # Associate an enum Priority with Alarm model's alarm_priority attribute
-    #  classy_enum_attr :alarm_priority, enum: 'Priority'
+    #  classy_enum_attr :alarm_priority, class_name: 'Priority'
     #
     #  # Allow enum value to be nil
     #  classy_enum_attr :priority, allow_nil: true
@@ -56,7 +56,7 @@ module ClassyEnum
     #  # Specifying a default enum value
     #  classy_enum_attr :priority, default: 'low'
     def classy_enum_attr(attribute, options={})
-      enum              = (options[:enum] || options[:class_name] || attribute).to_s.camelize.constantize
+      enum              = (options[:class_name] || options[:enum] || attribute).to_s.camelize.constantize
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
       serialize_as_json = options[:serialize_as_json] || false

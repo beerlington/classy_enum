@@ -134,11 +134,11 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 
 #### What if your enum class name is not the same as your model's attribute name?
 
-Just provide an optional `enum` or `class_name` argument to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
+Just provide an optional `class_name` argument to declare the enum's class name. In this case, the model's attribute is called *alarm_priority*.
 
 ```ruby
 class Alarm < ActiveRecord::Base
-  classy_enum_attr :alarm_priority, enum: 'Priority'
+  classy_enum_attr :alarm_priority, class_name: 'Priority'
 end
 
 @alarm = Alarm.create(alarm_priority: :medium)
