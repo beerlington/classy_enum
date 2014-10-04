@@ -5,6 +5,8 @@ require 'rubygems'
 require 'active_record'
 require 'classy_enum'
 
+I18n.enforce_available_locales = true
+
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 
 RSpec.configure do |config|

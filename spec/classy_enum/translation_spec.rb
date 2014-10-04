@@ -13,6 +13,7 @@ describe ClassyEnum::Translation do
 
   before do
     I18n.reload!
+    I18n.available_locales = ['en', 'es']
     I18n.backend.store_translations :en, :classy_enum => {:classy_enum_translation => {:one => 'One!', :two => 'Two!' } }
     I18n.backend.store_translations :es, :classy_enum => {:classy_enum_translation => {:one => 'Uno', :two => 'Dos' } }
   end
@@ -20,11 +21,9 @@ describe ClassyEnum::Translation do
   context '#text' do
     subject { ClassyEnumTranslation::One.new }
 
-    # Rails 4.2 enforces available locales and this will always fail
-    unless I18n.enforce_available_locales
-      context 'default' do
-        its(:text) { should == 'One' }
-      end
+    context 'default' do
+      before { I18n.reload! }
+      its(:text) { should == 'One' }
     end
 
     context 'en' do
@@ -41,12 +40,9 @@ describe ClassyEnum::Translation do
   context '.select_options' do
     subject { ClassyEnumTranslation }
 
-    # Rails 4.2 enforces available locales and this will always fail
-    unless I18n.enforce_available_locales
-      context 'default' do
-        before { I18n.reload! }
-        its(:select_options) { should == [["One", "one"], ["Two", "two"]] }
-      end
+    context 'default' do
+      before { I18n.reload! }
+      its(:select_options) { should == [["One", "one"], ["Two", "two"]] }
     end
 
     context 'en' do
