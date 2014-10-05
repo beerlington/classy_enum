@@ -57,16 +57,15 @@ module ClassyEnum
       #
       #  Priority.build(:low) # => Priority::Low.new
       #  Priority.build(:invalid_option) # => :invalid_option
-      def build(value, owner: nil, allow_blank: nil)
+      def build(value, owner: nil)
         object = find(value)
 
-        if object.nil? || (allow_blank && object.nil?)
-          return value
+        if object.nil?
+          value
+        else
+          object.owner = owner
+          object
         end
-
-        object.owner = owner
-        object.allow_blank = allow_blank
-        object
       end
 
       # DSL setter method for overriding reference to enum owner (ActiveRecord model)

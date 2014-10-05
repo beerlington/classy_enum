@@ -67,10 +67,7 @@ module ClassyEnum
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
-        enum.build(read_attribute(attribute),
-                   owner:       self,
-                   allow_blank: (allow_blank || allow_nil)
-                  )
+        enum.build(read_attribute(attribute), owner: self)
       end
 
       # Define setter method that accepts string, symbol, instance or class for member
