@@ -24,8 +24,6 @@ module ClassyEnum
       end
 
       def inherited(klass)
-        return if klass.anonymous?
-
         if self == ClassyEnum::Base
           klass.base_class = klass
         else
