@@ -334,8 +334,7 @@ end
 ## Form Usage
 
 ClassyEnum includes a `select_options` helper method to generate an array of enum options
-that can be used by Rails' form builders such as SimpleForm and
-Formtastic.
+that can be used by Rails' form builders such as SimpleForm and Formtastic.
 
 ```erb
 # SimpleForm
@@ -345,19 +344,6 @@ Formtastic.
   <%= f.button :submit %>
 <% end %>
 ```
-
-```erb
-# Formtastic
-
-<%= semantic_form_for @alarm do |f| %>
-  <%= f.input :priority, as: :select, collection: Priority.select_options %>
-  <%= f.button :submit %>
-<% end %>
-```
-
-Built-in Formtastic support has been removed as of ClassyEnum 2.0. It is still
-available but needs to be enabled manually. To enable support visit
-[the wiki](https://github.com/beerlington/classy_enum/wiki/Formtastic-Support)
 
 ## Copyright
 

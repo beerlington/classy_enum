@@ -63,11 +63,7 @@ module ClassyEnum
         object = find(value)
 
         if object.nil? || (options[:allow_blank] && object.nil?)
-          if value.blank?
-            object = build_null_object(value)
-          else
-            return value
-          end
+          return value
         end
 
         object.owner = options[:owner]
@@ -92,18 +88,6 @@ module ClassyEnum
       def owner(owner)
         define_method owner, -> { @owner }
       end
-
-      private
-
-      # Subclass the base class and make it behave like the value that it is
-      def build_null_object(value)
-        Class.new(base_class) {
-          @option = value
-          @index = 0
-          delegate :blank?, :nil?, to: :option
-        }.new
-      end
     end
-
   end
 end
