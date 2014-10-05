@@ -59,7 +59,6 @@ module ClassyEnum
       enum              = (options[:class_name] || options[:enum] || attribute).to_s.camelize.constantize
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
-      serialize_as_json = options[:serialize_as_json] || false
       default           = ClassyEnum._normalize_default(options[:default], enum)
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
@@ -71,9 +70,8 @@ module ClassyEnum
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
         enum.build(read_attribute(attribute),
-                   owner:             self,
-                   serialize_as_json: serialize_as_json,
-                   allow_blank:       (allow_blank || allow_nil)
+                   owner:       self,
+                   allow_blank: (allow_blank || allow_nil)
                   )
       end
 

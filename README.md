@@ -286,26 +286,6 @@ In the above examples, high priority alarms are only emailed if the owning alarm
 @alarm.send_email? # => false
 ```
 
-## Serializing as JSON
-
-By default, the enum will be serialized as a string representing the value:
-
-```ruby
-@alarm = Alarm.create(priority: :high, enabled: true)
-@alarm.to_json.should == "{\"alarm\":{\"priority\":\"high\"}}"
-```
-
-This behavior can be overridden by using the `serialize_as_json: true` option in your Active Record model:
-
-```ruby
-class Alarm < ActiveRecord::Base
-  classy_enum_attr :priority, serialize_as_json: true
-end
-
-@alarm = Alarm.create(priority: :high, enabled: true)
-@alarm.to_json.should == "{\"alarm\":{\"priority\":{}}}"
-```
-
 ## Model Validation
 
 An Active Record validator `validates_inclusion_of :field, in: ENUM` is automatically added to your model when you use `classy_enum_attr`.

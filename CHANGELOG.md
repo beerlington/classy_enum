@@ -6,6 +6,7 @@
 * [BREAKING] Removes support for Rails 3.0.x and 3.1.x
 * [BREAKING] Active Record models must explicitly include ClassyEnum::ActiveRecord now
 * [BREAKING] Removed use of null objects. Blank values are now returned as is from Enum.build.
+* [BREAKING] Removed serialize_as_json option. #as_json should be overriden in ClassyEnum::Base subclasses instead.
 * Prefer 'class_name' over 'enum' as optional class name argument
 
 ## 3.5.0

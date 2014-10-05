@@ -8,7 +8,7 @@ module ClassyEnum
     include Translation
     include Collection
 
-    attr_accessor :owner, :serialize_as_json, :allow_blank
+    attr_accessor :owner, :allow_blank
 
     def base_class
       self.class.base_class
@@ -65,7 +65,6 @@ module ClassyEnum
         end
 
         object.owner = options[:owner]
-        object.serialize_as_json = options[:serialize_as_json]
         object.allow_blank = options[:allow_blank]
         object
       end
