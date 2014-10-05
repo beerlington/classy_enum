@@ -198,8 +198,7 @@ Priority.map { |p| p.to_s } # => ["low", "medium", "high"]
 Priority.find(&:send_email?) # => Priority::High.new
 
 # Find the priorities that are lower than Priority::High
-high_priority = Priority::High.new
-Priority.select {|p| p < high_priority } # => [Priority::Low.new, Priority::Medium.new]
+Priority.select {|p| p < :high } # => [Priority::Low.new, Priority::Medium.new]
 
 # Iterate over each priority:
 Priority.each do |priority|
