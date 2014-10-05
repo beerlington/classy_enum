@@ -2,7 +2,7 @@
 
 ## 4.0.0 (Unreleased)
 
-* [BREAKING] Removes support for Ruby 1.8.7
+* [BREAKING] Removes support for Ruby 1.8.7, 1.9.2 and 1.9.3
 * [BREAKING] Removes support for Rails 3.0.x and 3.1.x
 * [BREAKING] Active Record models must explicitly include ClassyEnum::ActiveRecord now
 * [BREAKING] Removed use of null objects. Blank values are now returned as is from Enum.build.

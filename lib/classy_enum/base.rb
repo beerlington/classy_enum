@@ -57,15 +57,15 @@ module ClassyEnum
       #
       #  Priority.build(:low) # => Priority::Low.new
       #  Priority.build(:invalid_option) # => :invalid_option
-      def build(value, options={})
+      def build(value, owner: nil, allow_blank: nil)
         object = find(value)
 
-        if object.nil? || (options[:allow_blank] && object.nil?)
+        if object.nil? || (allow_blank && object.nil?)
           return value
         end
 
-        object.owner = options[:owner]
-        object.allow_blank = options[:allow_blank]
+        object.owner = owner
+        object.allow_blank = allow_blank
         object
       end
 
