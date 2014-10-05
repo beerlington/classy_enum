@@ -67,16 +67,40 @@ module ClassyEnum
         allow_blank: allow_blank,
         allow_nil:   allow_nil
 
-      # Define getter method that returns a ClassyEnum instance
-      define_method attribute do
-        enum.build(read_attribute(attribute), owner: self)
+      # Use a module so that the reader methods can be overridden in classes and
+      # use super to get the enum value.
+      mod = Module.new do
+
+        # Define getter method that returns a ClassyEnum instance
+        define_method attribute do
+          enum.build(read_attribute(attribute), owner: self)
+        end
+
+        # Define setter method that accepts string, symbol, instance or class for member
+        define_method "#{attribute}=" do |value|
+          value = ClassyEnum._normalize_value(value, default, (allow_nil || allow_blank))
+          super(value)
+        end
+
+        define_method :save_changed_attribute do |attr_name, arg|
+          if attribute.to_s == attr_name.to_s && !attribute_changed?(attr_name)
+            arg = enum.build(arg)
+            current_value = clone_attribute_value(:read_attribute, attr_name)
+
+            if arg != current_value
+              if respond_to?(:set_attribute_was, true)
+                set_attribute_was(attr_name, enum.build(arg, owner: self))
+              else
+                changed_attributes[attr_name] = enum.build(current_value, owner: self)
+              end
+            end
+          else
+            super(attr_name, arg)
+          end
+        end
       end
 
-      # Define setter method that accepts string, symbol, instance or class for member
-      define_method "#{attribute}=" do |value|
-        value = ClassyEnum._normalize_value(value, default, (allow_nil || allow_blank))
-        super(value)
-      end
+      include mod
 
       # Initialize the object with the default value if it is present
       # because this will let you store the default value in the
