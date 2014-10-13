@@ -33,8 +33,8 @@ module ClassyEnum
     end
 
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
-    # This method is automatically added to all ActiveRecord models when the classy_enum gem
-    # is installed. Accepts an argument for the enum class to be associated with
+    # This method is added to an ActiveRecord model when ClassEnum::ActiveRecord
+    # is included. Accepts an argument for the enum class to be associated with
     # the model. ActiveRecord validation is automatically added to ensure
     # that a value is one of its pre-defined enum members.
     #

@@ -104,10 +104,12 @@ end
 NOTE: Alternatively, you may use an enum type if your database supports it. See
 [this issue](https://github.com/beerlington/classy_enum/issues/12) for more information.
 
-Then in my model I've added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the `#send_email?` method to my Priority enum class.
+Then in my model I've included `ClassyEnum::ActiveRecord` and added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the `#send_email?` method to my Priority enum class.
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority
 
   delegate :send_email?, to: :priority
@@ -138,6 +140,8 @@ Just provide an optional `class_name` argument to declare the enum's class name.
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :alarm_priority, class_name: 'Priority'
 end
 
@@ -177,7 +181,7 @@ I18n.locale = :es
 
 ## Using Enum as a Collection
 
-ClassyEnum::Base extends the [Enumerable module](http://ruby-doc.org/core-1.9.3/Enumerable.html)
+ClassyEnum::Base extends the [Enumerable module](http://ruby-doc.org/core-2.1.3/Enumerable.html)
 which provides several traversal and searching methods. This can
 be useful for situations where you are working with the collection,
 as opposed to the attributes on an Active Record object.
@@ -216,6 +220,8 @@ so:
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority, default: 'medium'
 end
 
@@ -228,6 +234,8 @@ runtime.
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority, default: ->(enum){ enum.max }
 end
 
@@ -303,6 +311,8 @@ To allow nil or blank values, you can pass in `:allow_nil` and `:allow_blank` as
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority, allow_nil: true
 end
 
