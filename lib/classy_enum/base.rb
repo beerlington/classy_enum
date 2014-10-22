@@ -57,13 +57,13 @@ module ClassyEnum
       #
       #  Priority.build(:low) # => Priority::Low.new
       #  Priority.build(:invalid_option) # => :invalid_option
-      def build(value, owner: nil)
+      def build(value, options={})
         object = find(value)
 
         if object.nil?
           value
         else
-          object.owner = owner
+          object.owner = options[:owner]
           object
         end
       end

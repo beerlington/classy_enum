@@ -11,9 +11,9 @@ This README is also available in a [user-friendly DocumentUp format](http://beer
 
 ## Rails & Ruby Versions Supported
 
-*Rails:* 3.2.x - 4.2.x
+*Rails:* 3.0.x - 4.1.x
 
-*Ruby:* 2.0.x and 2.1.x
+*Ruby:* 1.9.2, 1.9.3, 2.0.0 and 2.1.0
 
 ## Installation
 

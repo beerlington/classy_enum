@@ -55,9 +55,11 @@ module ClassyEnum
     #
     #  # Specifying a default enum value
     #  classy_enum_attr :priority, default: 'low'
-    def classy_enum_attr(attribute, class_name: nil, allow_blank: nil, allow_nil: nil, default: nil)
-      enum    = (class_name || attribute).to_s.camelize.constantize
-      default = ClassyEnum._normalize_default(default, enum)
+    def classy_enum_attr(attribute, options={})
+      enum              = (options[:class_name] || options[:enum] || attribute).to_s.camelize.constantize
+      allow_blank       = options[:allow_blank] || false
+      allow_nil         = options[:allow_nil] || false
+      default           = ClassyEnum._normalize_default(options[:default], enum)
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
