@@ -35,6 +35,7 @@ describe ClassyEnum::Collection do
 
   context '#<=> (equality)' do
     its(:first) { should == ClassyEnumCollection::One.new }
+    its(:first) { should == ClassyEnumCollection::One }
     its(:first) { should == :one }
     its(:first) { should == 'one' }
     its(:first) { should_not == :two }

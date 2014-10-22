@@ -21,6 +21,8 @@ module ClassyEnum
     def <=> other
       if other.is_a?(Symbol) || other.is_a?(String)
         other = self.class.find(other)
+      elsif other.is_a?(Class)
+        other = other.new
       end
 
       index <=> other.index
