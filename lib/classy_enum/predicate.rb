@@ -4,7 +4,7 @@ module ClassyEnum
     # Define attribute methods like two?
     def self.define_predicate_method(klass, enum)
       klass.base_class.class_eval do
-        define_method "#{enum}?", lambda { attribute?(enum) }
+        define_method "#{enum}?", -> { attribute?(enum) }
       end
     end
 
@@ -25,7 +25,7 @@ module ClassyEnum
     #    classy_enum_attr :breed
     #  end
     #
-    #  @dog = Dog.new(:breed => :snoop)
+    #  @dog = Dog.new(breed: :snoop)
     #  @dog.breed.snoop? # => true
     #  @dog.breed.golden_retriever? # => false
     def attribute?(attribute)

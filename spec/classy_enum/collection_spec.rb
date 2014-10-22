@@ -23,6 +23,7 @@ describe ClassyEnum::Collection do
   context '.map' do
     it 'should behave like an enumerable' do
       enum.map(&:to_s).should == %w(one two three)
+      enum.select {|e| e < :three }.should include(:one, :two)
     end
   end
 
@@ -34,6 +35,7 @@ describe ClassyEnum::Collection do
 
   context '#<=> (equality)' do
     its(:first) { should == ClassyEnumCollection::One.new }
+    its(:first) { should == ClassyEnumCollection::One }
     its(:first) { should == :one }
     its(:first) { should == 'one' }
     its(:first) { should_not == :two }

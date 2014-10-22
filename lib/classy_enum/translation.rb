@@ -26,7 +26,7 @@ module ClassyEnum
     #
     #  Priority::Low.new.text # => 'Bajo'
     def text
-      I18n.translate to_s, :scope => i18n_scope, :default => to_s.titleize
+      I18n.translate to_s, scope: i18n_scope, default: to_s.titleize
     end
 
     private

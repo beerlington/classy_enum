@@ -1,7 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-ActiveRecord::Schema.define(:version => 1) do
-  create_table :dogs, :force => true do |t|
+ActiveRecord::Schema.define(version: 1) do
+  self.verbose = false
+
+  create_table :dogs, force: true do |t|
     t.string :breed
     t.string :other_breed
     t.string :color
@@ -9,7 +11,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.integer :age
   end
 
-  create_table :cats, :force => true do |t|
+  create_table :cats, force: true do |t|
     t.string :breed
     t.string :other_breed
     t.string :another_breed
@@ -38,31 +40,33 @@ class CatBreed::Bengal < CatBreed; end
 class CatBreed::Birman < CatBreed; end
 class CatBreed::Persian < CatBreed; end
 
-class Dog < ActiveRecord::Base; end
+class Dog < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+end
 
 class DefaultDog < Dog
   classy_enum_attr :breed
 end
 
 class AllowBlankBreedDog < Dog
-  classy_enum_attr :breed, :allow_blank => true
+  classy_enum_attr :breed, allow_blank: true
 end
 
 class AllowNilBreedDog < Dog
-  classy_enum_attr :breed, :allow_nil => true
+  classy_enum_attr :breed, allow_nil: true
 end
 
 class OtherDog < Dog
-  classy_enum_attr :other_breed, :class_name => 'Breed'
+  classy_enum_attr :other_breed, class_name: 'Breed'
 end
 
 describe DefaultDog do
-  specify { DefaultDog.new(:breed => nil).should_not be_valid }
-  specify { DefaultDog.new(:breed => '').should_not be_valid }
+  specify { DefaultDog.new(breed: nil).should_not be_valid }
+  specify { DefaultDog.new(breed: '').should_not be_valid }
 
   [:golden_retriever, 'golden_retriever', Breed::GoldenRetriever.new, Breed::GoldenRetriever].each do |option|
     context "with a valid breed option" do
-      subject { DefaultDog.new(:breed => option) }
+      subject { DefaultDog.new(breed: option) }
       it { should be_valid }
       its(:breed) { should be_a(Breed::GoldenRetriever) }
       its('breed.allow_blank') { should be_false }
@@ -76,7 +80,7 @@ describe DefaultDog do
   end
 
   context "with invalid breed options" do
-    subject { DefaultDog.new(:breed => :fake_breed) }
+    subject { DefaultDog.new(breed: :fake_breed) }
     it { should_not be_valid }
     it 'has an error on :breed' do
       subject.valid?
@@ -86,17 +90,16 @@ describe DefaultDog do
 end
 
 describe "A ClassyEnum that allows blanks" do
-  specify { AllowBlankBreedDog.new(:breed => nil).should be_valid }
-  specify { AllowBlankBreedDog.new(:breed => '').should be_valid }
+  specify { AllowBlankBreedDog.new(breed: nil).should be_valid }
+  specify { AllowBlankBreedDog.new(breed: '').should be_valid }
 
   context "with valid breed options" do
-    subject { AllowBlankBreedDog.new(:breed => :golden_retriever) }
+    subject { AllowBlankBreedDog.new(breed: :golden_retriever) }
     it { should be_valid }
-    its('breed.allow_blank') { should be_true }
   end
 
   context "with invalid breed options" do
-    subject { AllowBlankBreedDog.new(:breed => :fake_breed) }
+    subject { AllowBlankBreedDog.new(breed: :fake_breed) }
     it { should_not be_valid }
     it 'has an error on :breed' do
       subject.valid?
@@ -106,17 +109,16 @@ describe "A ClassyEnum that allows blanks" do
 end
 
 describe "A ClassyEnum that allows nils" do
-  specify { AllowNilBreedDog.new(:breed => nil).should be_valid }
-  specify { AllowNilBreedDog.new(:breed => '').should_not be_valid }
+  specify { AllowNilBreedDog.new(breed: nil).should be_valid }
+  specify { AllowNilBreedDog.new(breed: '').should_not be_valid }
 
   context "with valid breed options" do
-    subject { AllowNilBreedDog.new(:breed => :golden_retriever) }
+    subject { AllowNilBreedDog.new(breed: :golden_retriever) }
     it { should be_valid }
-    its('breed.allow_blank') { should be_true }
   end
 
   context "with invalid breed options" do
-    subject { AllowNilBreedDog.new(:breed => :fake_breed) }
+    subject { AllowNilBreedDog.new(breed: :fake_breed) }
     it { should_not be_valid }
     it 'has an error on :breed' do
       subject.valid?
@@ -126,24 +128,24 @@ describe "A ClassyEnum that allows nils" do
 end
 
 describe "A ClassyEnum that has a different field name than the enum" do
-  subject { OtherDog.new(:other_breed => :snoop) }
+  subject { OtherDog.new(other_breed: :snoop) }
   its(:other_breed) { should be_a(Breed::Snoop) }
 end
 
 class ActiveDog < Dog
   classy_enum_attr :color
-  validates_uniqueness_of :name, :scope => :color
-  scope :goldens, lambda { where(:breed => Breed.build('golden_retriever')) }
+  validates_uniqueness_of :name, scope: :color
+  scope :goldens, -> { where(breed: Breed.build('golden_retriever').to_s) }
 end
 
 describe ActiveDog do
   context 'uniqueness on name' do
-    subject { ActiveDog.new(:name => 'Kitteh', :breed => :golden_retriever, :color => :black) }
+    subject { ActiveDog.new(name: 'Kitteh', breed: :golden_retriever, color: :black) }
     it { should be_valid }
 
     context 'with existing kitteh' do
       before do
-        ActiveDog.create!(:name => 'Kitteh', :breed => :husky, :color => :black)
+        ActiveDog.create!(name: 'Kitteh', breed: :husky, color: :black)
       end
 
       it 'has an error on :name' do
@@ -154,8 +156,8 @@ describe ActiveDog do
   end
 
   context 'scopes' do
-    let!(:golden) { ActiveDog.create!(:name => 'Sebastian', :breed => :golden_retriever, :color => :white) }
-    let!(:husky) { ActiveDog.create!(:name => 'Sirius', :breed => :husky, :color => :black) }
+    let!(:golden) { ActiveDog.create!(name: 'Sebastian', breed: :golden_retriever, color: :white) }
+    let!(:husky) { ActiveDog.create!(name: 'Sirius', breed: :husky, color: :black) }
 
     after { ActiveDog.destroy_all }
 
@@ -176,7 +178,7 @@ describe ActiveDog do
 end
 
 class DefaultValueDog < Dog
-  classy_enum_attr :breed, :default => :snoop
+  classy_enum_attr :breed, default: :snoop
 end
 
 describe DefaultValueDog do
@@ -184,7 +186,7 @@ describe DefaultValueDog do
 end
 
 class DynamicDefaultValueDog < Dog
-  classy_enum_attr :breed, :default => lambda { |enum| enum.max }
+  classy_enum_attr :breed, default: ->(enum) { enum.max }
 end
 
 describe DynamicDefaultValueDog do
@@ -194,32 +196,35 @@ end
 describe Dog, 'with invalid default value' do
   it 'raises error with invalid default' do
     expect {
-      Class.new(Dog) { classy_enum_attr :breed, :default => :nope }
+      Class.new(Dog) { classy_enum_attr :breed, default: :nope }
     }.to raise_error(ClassyEnum::InvalidDefault)
   end
 end
 
 class Cat < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
 end
 
 class DefaultCat < Cat
-  classy_enum_attr :breed, :enum => 'CatBreed'
-  classy_enum_attr :other_breed, :enum => 'CatBreed', :default => 'persian'
+  classy_enum_attr :breed, class_name: 'CatBreed'
+  classy_enum_attr :other_breed, class_name: 'CatBreed', default: 'persian'
   attr_accessor :color
-  delegate :breed_color, :to => :breed
+  delegate :breed_color, to: :breed
 end
 
 class OtherCat < Cat
-  classy_enum_attr :breed, :enum => 'CatBreed', :serialize_as_json => true
-  classy_enum_attr :other_breed, :enum => 'CatBreed', :default => 'persian', :allow_nil => true
-  classy_enum_attr :another_breed, :enum => 'CatBreed', :default => 'persian', :allow_blank => true
+  classy_enum_attr :breed, class_name: 'CatBreed'
+  classy_enum_attr :other_breed, class_name: 'CatBreed', default: 'persian', allow_nil: true
+
+  # Use enum option to ensure the tests are covering it somewhere
+  classy_enum_attr :another_breed, enum: 'CatBreed', default: 'persian', allow_blank: true
   attr_accessor :color
-  delegate :breed_color, :to => :breed
+  delegate :breed_color, to: :breed
 end
 
 describe DefaultCat do
-  let(:abyssian) { DefaultCat.new(:breed => :abyssian, :color => 'black') }
-  let(:persian) { OtherCat.new(:breed => :persian, :color => 'white') }
+  let(:abyssian) { DefaultCat.new(breed: :abyssian, color: 'black') }
+  let(:persian) { OtherCat.new(breed: :persian, color: 'white') }
 
   it 'should delegate breed color to breed with an ownership reference' do
     abyssian.breed_color { should eql('black Abyssian') }
@@ -227,31 +232,31 @@ describe DefaultCat do
   end
 
   it 'persists the default, when set to nil' do
-    cat = DefaultCat.create(:breed => :abyssian)
-    expect(DefaultCat.where(:other_breed => 'persian')).to include(cat)
+    cat = DefaultCat.create(breed: :abyssian)
+    expect(DefaultCat.where(other_breed: 'persian')).to include(cat)
   end
 
   it 'uses the default if explictly set to nil and does not allow nil' do
-    abyssian.update_attributes!(:other_breed => nil)
-    DefaultCat.where(:other_breed => 'persian').should include(abyssian)
+    abyssian.update_attributes!(other_breed: nil)
+    DefaultCat.where(other_breed: 'persian').should include(abyssian)
     DefaultCat.last.other_breed.should == 'persian'
   end
 
   it 'uses the default if explictly set to blank and does not allow blank' do
-    abyssian.update_attributes!(:other_breed => '')
-    DefaultCat.where(:other_breed => 'persian').should include(abyssian)
+    abyssian.update_attributes!(other_breed: '')
+    DefaultCat.where(other_breed: 'persian').should include(abyssian)
     DefaultCat.last.other_breed.should == 'persian'
   end
 
   it 'allows nil even with a default' do
-    persian.update_attributes!(:other_breed => nil)
-    OtherCat.where(:other_breed => nil).count.should eql(1)
+    persian.update_attributes!(other_breed: nil)
+    OtherCat.where(other_breed: nil).count.should eql(1)
     OtherCat.last.other_breed.should be_nil
   end
 
   it 'allows blank even with a default' do
-    persian.update_attributes!(:another_breed => '')
-    OtherCat.where(:another_breed => '').count.should eql(1)
+    persian.update_attributes!(another_breed: '')
+    OtherCat.where(another_breed: '').count.should eql(1)
     OtherCat.last.another_breed.should be_blank
     OtherCat.last.another_breed.should_not be_nil
   end

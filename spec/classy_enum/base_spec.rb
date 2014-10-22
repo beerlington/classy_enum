@@ -29,16 +29,12 @@ describe ClassyEnum::Base do
 
     context 'nil' do
       subject { ClassyEnumBase.build(nil) }
-      it { should be_a(ClassyEnumBase) }
-      it { should be_nil }
-      it { should be_blank }
+      it { should eq(nil) }
     end
 
     context 'empty string' do
       subject { ClassyEnumBase.build('') }
-      it { should be_a(ClassyEnumBase) }
-      it { should_not be_nil }
-      it { should be_blank }
+      it { should eq('') }
     end
   end
 
@@ -50,7 +46,7 @@ describe ClassyEnum::Base do
 
   context 'Subclass naming' do
     it 'should raise an error when invalid' do
-      lambda {
+      -> {
         class WrongSublcassName < ClassyEnumBase; end
       }.should raise_error(ClassyEnum::SubclassNameError)
     end
@@ -64,11 +60,5 @@ describe ClassyEnum::Base do
       enum.class.base_class = base_class
       enum.base_class.should == base_class
     end
-  end
-end
-
-describe ClassyEnum::Base, 'Arel visitor' do
-  specify do
-    Arel::Visitors::ToSql.instance_methods.map(&:to_sym).should include(:'visit_ClassyEnumBase_One', :'visit_ClassyEnumBase_Two')
   end
 end

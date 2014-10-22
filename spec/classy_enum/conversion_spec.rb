@@ -31,25 +31,7 @@ describe ClassyEnum::Conversion do
   end
 
   context '#as_json' do
-    context 'serialize_as_json is false' do
-      specify { ClassyEnumConversion::One.new.as_json.should == 'one' }
-      specify { ClassyEnumConversion::Two.new.as_json.should == 'two' }
-    end
-
-    context 'serialize_as_json is true' do
-      specify do
-        enum = ClassyEnumConversion::One.new
-        enum.serialize_as_json = true
-        enum.instance_variable_set('@key', 'value')
-        enum.as_json.should == {'key' => 'value' }
-      end
-
-      specify do
-        enum = ClassyEnumConversion::One.new
-        enum.serialize_as_json = true
-        enum.instance_variable_set('@key', 'value')
-        enum.as_json.should == {'key' => 'value' }
-      end
-    end
+    specify { ClassyEnumConversion::One.new.as_json.should == 'one' }
+    specify { ClassyEnumConversion::Two.new.as_json.should == 'two' }
   end
 end

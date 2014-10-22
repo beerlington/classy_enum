@@ -28,10 +28,13 @@ module ClassyEnum
   end
 
   module ActiveRecord
+    def self.included(klass)
+      klass.extend self
+    end
 
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
-    # This method is automatically added to all ActiveRecord models when the classy_enum gem
-    # is installed. Accepts an argument for the enum class to be associated with
+    # This method is added to an ActiveRecord model when ClassEnum::ActiveRecord
+    # is included. Accepts an argument for the enum class to be associated with
     # the model. ActiveRecord validation is automatically added to ensure
     # that a value is one of its pre-defined enum members.
     #
@@ -40,38 +43,33 @@ module ClassyEnum
     #  class Alarm < ActiveRecord::Base
     #    classy_enum_attr :priority
     #  end
-    #
+
     #  # Associate an enum Priority with Alarm model's alarm_priority attribute
-    #  classy_enum_attr :alarm_priority, :enum => 'Priority'
+    #  classy_enum_attr :alarm_priority, class_name: 'Priority'
     #
     #  # Allow enum value to be nil
-    #  classy_enum_attr :priority, :allow_nil => true
+    #  classy_enum_attr :priority, allow_nil: true
     #
     #  # Allow enum value to be blank
-    #  classy_enum_attr :priority, :allow_blank => true
+    #  classy_enum_attr :priority, allow_blank: true
     #
     #  # Specifying a default enum value
-    #  classy_enum_attr :priority, :default => 'low'
+    #  classy_enum_attr :priority, default: 'low'
     def classy_enum_attr(attribute, options={})
-      enum              = (options[:enum] || options[:class_name] || attribute).to_s.camelize.constantize
+      enum              = (options[:class_name] || options[:enum] || attribute).to_s.camelize.constantize
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
-      serialize_as_json = options[:serialize_as_json] || false
       default           = ClassyEnum._normalize_default(options[:default], enum)
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
-        :in          => enum,
-        :allow_blank => allow_blank,
-        :allow_nil   => allow_nil
+        in:          enum,
+        allow_blank: allow_blank,
+        allow_nil:   allow_nil
 
       # Define getter method that returns a ClassyEnum instance
       define_method attribute do
-        enum.build(read_attribute(attribute),
-                   :owner             => self,
-                   :serialize_as_json => serialize_as_json,
-                   :allow_blank       => (allow_blank || allow_nil)
-                  )
+        enum.build(read_attribute(attribute), owner: self)
       end
 
       # Define setter method that accepts string, symbol, instance or class for member
@@ -96,8 +94,4 @@ module ClassyEnum
     end
 
   end
-end
-
-if defined?(ActiveRecord::Base)
-  ActiveRecord::Base.send :extend, ClassyEnum::ActiveRecord
 end

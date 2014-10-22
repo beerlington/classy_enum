@@ -58,11 +58,7 @@ module ClassyEnum
 
     # Overrides as_json to remove owner reference recursion issues
     def as_json(options=nil)
-      return to_s unless serialize_as_json
-      json = super(options)
-      json.delete('owner')
-      json.delete('serialize_as_json')
-      json
+      to_s
     end
 
     private

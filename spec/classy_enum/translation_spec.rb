@@ -13,8 +13,9 @@ describe ClassyEnum::Translation do
 
   before do
     I18n.reload!
-    I18n.backend.store_translations :en, :classy_enum => {:classy_enum_translation => {:one => 'One!', :two => 'Two!' } }
-    I18n.backend.store_translations :es, :classy_enum => {:classy_enum_translation => {:one => 'Uno', :two => 'Dos' } }
+    I18n.available_locales = ['en', 'es']
+    I18n.backend.store_translations :en, classy_enum: {classy_enum_translation: {one: 'One!', two: 'Two!' } }
+    I18n.backend.store_translations :es, classy_enum: {classy_enum_translation: {one: 'Uno', two: 'Dos' } }
   end
 
   context '#text' do

@@ -104,10 +104,12 @@ end
 NOTE: Alternatively, you may use an enum type if your database supports it. See
 [this issue](https://github.com/beerlington/classy_enum/issues/12) for more information.
 
-Then in my model I've added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the `#send_email?` method to my Priority enum class.
+Then in my model I've included `ClassyEnum::ActiveRecord` and added a line that calls `classy_enum_attr` with a single argument representing the enum I want to associate with my model. I am also delegating the `#send_email?` method to my Priority enum class.
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority
 
   delegate :send_email?, to: :priority
@@ -134,11 +136,13 @@ The enum field works like any other model attribute. It can be mass-assigned usi
 
 #### What if your enum class name is not the same as your model's attribute name?
 
-Just provide an optional `enum` or `class_name` argument to declare the attribute name. In this case, the model's attribute is called *alarm_priority*.
+Just provide an optional `class_name` argument to declare the enum's class name. In this case, the model's attribute is called *alarm_priority*.
 
 ```ruby
 class Alarm < ActiveRecord::Base
-  classy_enum_attr :alarm_priority, enum: 'Priority'
+  include ClassyEnum::ActiveRecord
+
+  classy_enum_attr :alarm_priority, class_name: 'Priority'
 end
 
 @alarm = Alarm.create(alarm_priority: :medium)
@@ -177,7 +181,7 @@ I18n.locale = :es
 
 ## Using Enum as a Collection
 
-ClassyEnum::Base extends the [Enumerable module](http://ruby-doc.org/core-1.9.3/Enumerable.html)
+ClassyEnum::Base extends the [Enumerable module](http://ruby-doc.org/core-2.1.3/Enumerable.html)
 which provides several traversal and searching methods. This can
 be useful for situations where you are working with the collection,
 as opposed to the attributes on an Active Record object.
@@ -198,8 +202,7 @@ Priority.map { |p| p.to_s } # => ["low", "medium", "high"]
 Priority.find(&:send_email?) # => Priority::High.new
 
 # Find the priorities that are lower than Priority::High
-high_priority = Priority::High.new
-Priority.select {|p| p < high_priority } # => [Priority::Low.new, Priority::Medium.new]
+Priority.select {|p| p < :high } # => [Priority::Low.new, Priority::Medium.new]
 
 # Iterate over each priority:
 Priority.each do |priority|
@@ -217,6 +220,8 @@ so:
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority, default: 'medium'
 end
 
@@ -229,6 +234,8 @@ runtime.
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority, default: ->(enum){ enum.max }
 end
 
@@ -287,26 +294,6 @@ In the above examples, high priority alarms are only emailed if the owning alarm
 @alarm.send_email? # => false
 ```
 
-## Serializing as JSON
-
-By default, the enum will be serialized as a string representing the value:
-
-```ruby
-@alarm = Alarm.create(priority: :high, enabled: true)
-@alarm.to_json.should == "{\"alarm\":{\"priority\":\"high\"}}"
-```
-
-This behavior can be overridden by using the `serialize_as_json: true` option in your Active Record model:
-
-```ruby
-class Alarm < ActiveRecord::Base
-  classy_enum_attr :priority, serialize_as_json: true
-end
-
-@alarm = Alarm.create(priority: :high, enabled: true)
-@alarm.to_json.should == "{\"alarm\":{\"priority\":{}}}"
-```
-
 ## Model Validation
 
 An Active Record validator `validates_inclusion_of :field, in: ENUM` is automatically added to your model when you use `classy_enum_attr`.
@@ -324,6 +311,8 @@ To allow nil or blank values, you can pass in `:allow_nil` and `:allow_blank` as
 
 ```ruby
 class Alarm < ActiveRecord::Base
+  include ClassyEnum::ActiveRecord
+
   classy_enum_attr :priority, allow_nil: true
 end
 
@@ -334,8 +323,7 @@ end
 ## Form Usage
 
 ClassyEnum includes a `select_options` helper method to generate an array of enum options
-that can be used by Rails' form builders such as SimpleForm and
-Formtastic.
+that can be used by Rails' form builders such as SimpleForm and Formtastic.
 
 ```erb
 # SimpleForm
@@ -345,19 +333,6 @@ Formtastic.
   <%= f.button :submit %>
 <% end %>
 ```
-
-```erb
-# Formtastic
-
-<%= semantic_form_for @alarm do |f| %>
-  <%= f.input :priority, as: :select, collection: Priority.select_options %>
-  <%= f.button :submit %>
-<% end %>
-```
-
-Built-in Formtastic support has been removed as of ClassyEnum 2.0. It is still
-available but needs to be enabled manually. To enable support visit
-[the wiki](https://github.com/beerlington/classy_enum/wiki/Formtastic-Support)
 
 ## Copyright
 
