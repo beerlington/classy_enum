@@ -79,6 +79,78 @@ describe DefaultDog do
     end
   end
 
+  if ::ActiveRecord::VERSION::MAJOR == 4 && ::ActiveRecord::VERSION::MINOR > 0
+    context "works with ActiveModel's attributes" do
+      subject { DefaultDog.create(breed: :golden_retriever) }
+      let(:old_breed) { Breed::GoldenRetriever.new }
+
+      it "sets changed_attributes to enum object" do
+        subject.breed = :snoop
+        subject.changed_attributes[:breed].should eq(old_breed)
+      end
+
+      it "sets changes to array" do
+        subject.breed = :snoop
+        subject.changes[:breed].should eq([old_breed, :snoop])
+      end
+
+      it "works with attribute_changed?" do
+        subject.breed = :snoop
+        subject.breed_was.should eq(old_breed)
+        subject.breed_changed?.should be_true
+
+        if subject.respond_to? :attribute_changed?
+          subject.attribute_changed?(:breed, to: Breed::Snoop.new).should be_true
+          subject.breed_changed?(
+            from: Breed::GoldenRetriever.new,
+            to: Breed::Snoop.new
+          ).should be_true
+        end
+      end
+
+      it "returns enum object for *_was" do
+        subject.breed = :snoop
+        subject.breed_was.golden_retriever?.should be_true
+      end
+
+      it "reverts changes" do
+        subject.breed = :snoop
+        subject.breed_changed?.should be_true
+        subject.breed = old_breed
+        subject.breed_changed?.should be_false
+      end
+
+      it "does not track the same value" do
+        subject.breed = :golden_retriever
+        subject.breed_changed?.should be_false
+      end
+
+      it "retains changes with multiple assignments" do
+        subject.breed = :snoop
+        subject.breed_changed?.should be_true
+        subject.breed = :husky
+        subject.breed_changed?.should be_true
+      end
+
+      it "allows tracks changes when nil is allowed" do
+        dog = AllowNilBreedDog.create(breed: :snoop)
+        dog.breed = nil
+        dog.save!
+        dog.breed = :snoop
+        dog.breed_changed?.should be_true
+        dog.breed = nil
+        dog.breed_changed?.should be_false
+      end
+
+      it "restores breed (Rails 4.2+)" do
+        if subject.respond_to?(:restore_breed)
+          subject.restore_breed!
+          subject.breed.should eq(:golden_retriever)
+        end
+      end
+    end
+  end
+
   context "with invalid breed options" do
     subject { DefaultDog.new(breed: :fake_breed) }
     it { should_not be_valid }

@@ -8,6 +8,7 @@
 * [BREAKING] Removed use of null objects. Blank values are now returned as is from Enum.build.
 * [BREAKING] Removed serialize_as_json option. #as_json should be overriden in ClassyEnum::Base subclasses instead.
 * [BREAKING] Removed allow_blank option from Enum.build. This was used internally for legacy reasons and is no longer needed.
+* [BREAKING] Fixes support for ActiveModel::Dirty. Now dirty attribute methods always return enum class instance (instead of string).
 * Prefer 'class_name' over 'enum' as optional class name argument
 
 ## 3.5.0
