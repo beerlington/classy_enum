@@ -41,6 +41,8 @@ module ClassyEnum
     # ==== Example
     #  # Associate an enum Priority with Alarm model's priority attribute
     #  class Alarm < ActiveRecord::Base
+    #    include ClassyEnum::ActiveRecord
+    #
     #    classy_enum_attr :priority
     #  end
 

@@ -22,6 +22,8 @@ module ClassyEnum
     #
     #  # Create an ActiveRecord class using the Breed enum
     #  class Dog < ActiveRecord::Base
+    #    include ClassyEnum::ActiveRecord
+    #
     #    classy_enum_attr :breed
     #  end
     #
