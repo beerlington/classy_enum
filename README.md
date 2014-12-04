@@ -334,6 +334,39 @@ that can be used by Rails' form builders such as SimpleForm and Formtastic.
 <% end %>
 ```
 
+## Testing Enums
+
+ClassyEnums can be tested by creating new instances of the ClassyEnum and
+testing expectations. For example:
+
+``` ruby
+class TestPriorityHigh < Minitest::Test
+  def setup
+    @priority_high_enum = Priority::High.new
+  end
+
+  def test_send_email_enabled
+    assert @priority_high_enum.send_email?
+  end
+end
+```
+
+If the ClassyEnum method implementations rely upon the owner, the
+`ClassyEnum#build` method can be used with the `owner` option. For example:
+
+``` ruby
+class TestPriorityHigh < Minitest::Test
+  def setup
+    @alarm = Alarm.create
+    @priority_high_enum = Priority::High.build(:high, owner: @alarm)
+  end
+
+  def test_send_email_enabled
+    assert_equal @priority_high_enum.owner, @alarm
+  end
+end
+```
+
 ## Copyright
 
 Copyright (c) 2010-2014 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
