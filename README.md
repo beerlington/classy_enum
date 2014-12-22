@@ -1,9 +1,9 @@
 # ClassyEnum
 
-[![Build Status](https://secure.travis-ci.org/beerlington/classy_enum.png?branch=master)](http://travis-ci.org/beerlington/classy_enum)
+[![Build Status](https://travis-ci.org/beerlington/classy_enum.svg?branch=master)](https://travis-ci.org/beerlington/classy_enum)
 [![Gem Version](https://badge.fury.io/rb/classy_enum.png)](http://badge.fury.io/rb/classy_enum)
-[![Code Climate](https://codeclimate.com/github/beerlington/classy_enum.png)](https://codeclimate.com/github/beerlington/classy_enum)
-[![Dependency Status](https://gemnasium.com/beerlington/classy_enum.png)](https://gemnasium.com/beerlington/classy_enum)
+[![Code Climate](https://codeclimate.com/github/beerlington/classy_enum/badges/gpa.svg)](https://codeclimate.com/github/beerlington/classy_enum)
+[![Dependency Status](https://gemnasium.com/beerlington/classy_enum.svg)](https://gemnasium.com/beerlington/classy_enum)
 
 ClassyEnum is a Ruby on Rails gem that adds class-based enumerator functionality to Active Record attributes.
 
@@ -11,7 +11,7 @@ This README is also available in a [user-friendly DocumentUp format](http://beer
 
 ## Rails & Ruby Versions Supported
 
-*Rails:* 3.2.x - 4.1.x
+*Rails:* 3.2.x - 4.2.x
 
 *Ruby:* 1.9.2, 1.9.3, 2.0.0 and 2.1.0
 
