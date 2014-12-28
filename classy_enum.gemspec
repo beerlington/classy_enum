@@ -17,8 +17,8 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency('activerecord', '>= 3.2')
 
-  gem.add_development_dependency('rspec', '>= 2.11')
-  gem.add_development_dependency('sqlite3', '>= 1.3')
+  gem.add_development_dependency('rspec', '~> 2.11.0')
+  gem.add_development_dependency('sqlite3', '~> 1.3')
   gem.add_development_dependency('json', '>= 1.6')
 
 end

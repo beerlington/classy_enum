@@ -25,7 +25,11 @@ module ClassyEnum
         other = other.new
       end
 
-      index <=> other.index
+      if other.is_a? ClassyEnum::Base
+        index <=> other.index
+      else
+        nil
+      end
     end
 
     def enum_options

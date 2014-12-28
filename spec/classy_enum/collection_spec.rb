@@ -40,6 +40,7 @@ describe ClassyEnum::Collection do
     its(:first) { should == 'one' }
     its(:first) { should_not == :two }
     its(:first) { should_not == :not_found }
+    its(:first) { should_not == String }
 
     its(:max) { should == :three }
   end
