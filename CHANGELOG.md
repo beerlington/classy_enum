@@ -1,7 +1,9 @@
 # ClassyEnum Changelog
 
-## 4.0.0 (Unreleased)
+## 4.0.0
 
+* Adds support for Ruby 2.2.0
+* Adds support for Rails 4.2.0
 * [BREAKING] Removes support for Ruby 1.8.7
 * [BREAKING] Removes support for Rails 3.0.x and 3.1.x
 * [BREAKING] Active Record models must explicitly include ClassyEnum::ActiveRecord now
