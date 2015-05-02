@@ -19,6 +19,18 @@ This README is also available in a [user-friendly DocumentUp format](http://beer
 
 The gem is hosted at [rubygems.org](https://rubygems.org/gems/classy_enum)
 
+Despite [RailsGuides](http://guides.rubyonrails.org/configuring.html#rails-general-configuration)
+claiming that all directories under app will be autoloaded,
+I've had [reports](https://github.com/beerlington/classy_enum/issues/50)
+of this not being the case with newer versions of Ruby and Rails.
+
+You may need to add the enums path to **config/application.rb**:
+
+```ruby
+# Make sure classy_enum enums get loaded
+config.autoload_paths += %W(#{config.root}/app/enums)
+```
+
 ## Upgrading?
 
 See the [wiki](https://github.com/beerlington/classy_enum/wiki/Upgrading) for notes about upgrading from previous versions.
