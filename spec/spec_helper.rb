@@ -11,4 +11,5 @@ ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:"
 
 RSpec.configure do |config|
   config.color_enabled = true
+  config.filter_run_excluding rails_3: :broken if ActiveRecord::VERSION::MAJOR < 4
 end

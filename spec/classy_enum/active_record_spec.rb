@@ -9,6 +9,7 @@ ActiveRecord::Schema.define(version: 1) do
     t.string :color
     t.string :name
     t.integer :age
+    t.text :properties
   end
 
   create_table :cats, force: true do |t|
@@ -270,6 +271,26 @@ describe Dog, 'with invalid default value' do
     expect {
       Class.new(Dog) { classy_enum_attr :breed, default: :nope }
     }.to raise_error(ClassyEnum::InvalidDefault)
+  end
+end
+
+class Bark < ClassyEnum::Base; end
+class Bark::Quiet < Bark; end;
+class Bark::Loud < Bark; end;
+
+class StoreDog < Dog
+  store :properties, accessors: [:bark]
+  classy_enum_attr :bark
+end
+
+describe StoreDog, rails_3: :broken  do
+  subject { StoreDog.new(bark: :loud) }
+  it { should be_valid }
+
+  it 'persists the enum in a store accessor' do
+    subject.save!
+    subject.reload
+    subject.bark.should be_a(Bark::Loud)
   end
 end
 
