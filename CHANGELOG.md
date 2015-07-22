@@ -1,5 +1,9 @@
 # ClassyEnum Changelog
 
+## 4.0.1 (Beta)
+
+* Adds support for Active Record store accessors (#52)
+
 ## 4.0.0
 
 * Adds support for Ruby 2.2.0
