@@ -75,7 +75,7 @@ module ClassyEnum
 
         # Define getter method that returns a ClassyEnum instance
         define_method attribute do
-          enum.build(read_attribute(attribute), owner: self)
+          enum.build(read_attribute(attribute) || super(), owner: self)
         end
 
         # Define setter method that accepts string, symbol, instance or class for member
@@ -109,7 +109,7 @@ module ClassyEnum
       # database and make it searchable.
       if default.present?
         after_initialize do
-          value = read_attribute(attribute)
+          value = read_attribute(attribute) || send(attribute)
 
           if (value.blank? && !(allow_blank || allow_nil)) || (value.nil? && !allow_nil)
             send("#{attribute}=", default)
