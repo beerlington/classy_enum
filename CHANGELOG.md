@@ -15,6 +15,9 @@
 * [BREAKING] Removed serialize_as_json option. #as_json should be overriden in ClassyEnum::Base subclasses instead.
 * [BREAKING] Removed allow_blank option from Enum.build. This was used internally for legacy reasons and is no longer needed.
 * [BREAKING] Fixes support for ActiveModel::Dirty. Now dirty attribute methods always return enum class instance (instead of string).
+* [BREAKING] Removed support for Active Record queries with enum objects. Instead of `Alarm.where(priority: Priority.find(:high))`,
+  you must convert the enum to a string so Active Record knows how to use it. Correct: `Alarm.where(priority: Priority.find(:high).to_s)`.
+  Otherwise you will get an error like "Cannot visit \<Enum\>". See [issue #53](https://github.com/beerlington/classy_enum/issues/53).
 * Prefer 'class_name' over 'enum' as optional class name argument
 
 ## 3.5.0
