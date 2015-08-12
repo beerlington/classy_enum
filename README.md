@@ -332,6 +332,33 @@ end
 @alarm.valid? # => true
 ```
 
+## Active Record Querying
+
+Classy Enum classes are plain Ruby objects, and Active Record does not
+know how to typecast them to strings when querying. Therefore you must explicitly
+convert the object to a string or symbol for the query to be valid.
+
+Classy Enum versions before 4.0.0 supported querying directly with the enum objects.
+Suppport for this was removed in 4.0.0 because it depended on ARel
+internals, and maintaining backwards compatibility with older version of
+Rails was not possible.
+
+Any of these are valid:
+
+```ruby
+Alarm.where(priority: 'high')
+
+Alarm.where(priority: Priority[:high].to_s)
+
+Alarm.where(priority: Priority::High.new.to_s)
+```
+
+**Note** If you get an error like `Cannot visit <Enum>`, it means that
+ActiveRecord - or more accurately ARel - has received the Classy Enum
+class or instance directly, rather than a string representing
+corresponding to the database value. To resolve this issue, you need to
+convert the object to a string.
+
 ## Form Usage
 
 ClassyEnum includes a `select_options` helper method to generate an array of enum options
