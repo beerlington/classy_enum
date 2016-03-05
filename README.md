@@ -13,7 +13,7 @@ This README is also available in a [user-friendly DocumentUp format](http://beer
 
 *Rails:* 3.2.x - 4.2.x
 
-*Ruby:* 1.9.3, 2.0.0, 2.1.x, and 2.2.x
+*Ruby:* 1.9.3, 2.0.0, 2.1.x, 2.2.x, and 2.3.x
 
 ## Installation
 
