@@ -408,4 +408,4 @@ end
 
 ## Copyright
 
-Copyright (c) 2010-2014 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
+Copyright (c) 2010-2016 [Peter Brown](https://github.com/beerlington). See LICENSE for details.
