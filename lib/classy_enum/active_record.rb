@@ -32,6 +32,8 @@ module ClassyEnum
       klass.extend self
     end
 
+    @@enums = {}
+
     # Class macro used to associate an enum with an attribute on an ActiveRecord model.
     # This method is added to an ActiveRecord model when ClassEnum::ActiveRecord
     # is included. Accepts an argument for the enum class to be associated with
@@ -62,6 +64,11 @@ module ClassyEnum
       allow_blank       = options[:allow_blank] || false
       allow_nil         = options[:allow_nil] || false
       default           = ClassyEnum._normalize_default(options[:default], enum)
+      sti               = options[:sti] || false
+
+      @@enums[attribute] = enum
+
+      classy_enum_sti if sti
 
       # Add ActiveRecord validation to ensure it won't be saved unless it's an option
       validates_inclusion_of attribute,
@@ -115,6 +122,25 @@ module ClassyEnum
             send("#{attribute}=", default)
           end
         end
+      end
+
+    end
+
+    def classy_enum_sti
+
+      define_singleton_method :find_sti_class do |type_name|
+        clazz = @@enums[inheritance_column.to_sym].find(type_name);
+        base_class = self.base_class
+        if clazz
+          name = clazz.class.name.demodulize
+          base_class.const_get(name) || Object.const_get(name)
+        else
+          base_class
+        end
+      end
+
+      define_singleton_method :sti_name do
+        self.name.demodulize.underscore
       end
 
     end
