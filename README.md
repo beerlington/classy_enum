@@ -301,9 +301,9 @@ In the above examples, high priority alarms are only emailed if the owning alarm
 @alarm = Alarm.create(priority: :high, enabled: true)
 
 # Should this alarm send an email?
-@alarm.send_email? # => true
+@alarm.priority.send_email? # => true
 @alarm.enabled = false
-@alarm.send_email? # => false
+@alarm.priority.send_email? # => false
 ```
 
 ## Model Validation
